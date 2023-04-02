@@ -1,4 +1,6 @@
 <?php 
+    //include_once './classes/Db.php';
+
     if(!empty($_POST)){
 		//gesubmit
         //inputs uitlezen
@@ -29,7 +31,7 @@
         if(empty($emailError) && empty($passwordError)){
             try{
                 //meerdere databasestypes mogelijk
-                $conn = new PDO('mysql:host=localhost;dbname=promptbase', "root", "root");
+                $conn = Db::getInstance();
                 //query voorbereiden voor beveiligd te worden = statement
                 //: staat voor placeholder
                 $statement = $conn->prepare("INSERT INTO users (email, password) VALUES (:email, :password);");
