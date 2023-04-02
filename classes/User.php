@@ -41,7 +41,10 @@ class User{
      */ 
     public function setPassword($password)
     {
-        $this->password = $password;
+        $options = [
+            'cost' => 14,
+        ];
+        $this->password = password_hash($password, PASSWORD_DEFAULT, $options);
 
         return $this;
     }

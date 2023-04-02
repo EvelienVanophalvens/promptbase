@@ -2,25 +2,9 @@
     include_once(__DIR__."/bootstrap.php");
 
     if(!empty($_POST)){
-		//gesubmit
-        //als beide validaties slagen kunnen we de gebruiker opslaan in de database
-        if(empty($emailError) && empty($passwordError)){
-            try{
-                $user = new User();
-                $user->setEmail($_POST['email']);
-                $user->setPassword($_POST['password']);
-                //save database -> de gebruiker op te slaan
-                $res = $user->save();
-                //de data zit in onze database en we worden doorgestuurd naar de login pagina
-                header("Location: login.php");
-            }
-            catch(Throwable $e){
-                echo $e->getMessage();
-                var_dump($e);
-            }
-        }
+		//gesubmit        
         //inputs uitlezen
-        // Email validatie
+        // EMAIL VALIDATIE
         if(empty($_POST['email'])){
             $emailError = "Please, don't forget your email!";
         }else if(!filter_var($_POST['email'],FILTER_VALIDATE_EMAIL)){
@@ -29,19 +13,29 @@
             $email = $_POST['email'];
         };
 
-        //Wachtwoord validitie
+        //WACHTWOORD VALIDATIE
         //Controleer of het wachtwoord lang genoeg is (meer dan vijf karakters)
         if(empty($_POST['password'])){
             $passwordError = "Please, don't forget your password!";
         }else if(strlen($_POST['password'])<5){
             $passwordError = "Your password needs to be at least 5 characters long.";
         }else{
-            //2 tot de koste keer (14) keer hashen van het wachtwoord
-            $options = [
-                'cost' => 14,
-            ];
-            //$password = md5($_POST['password']);  --> md5 onveilig
-            $password = password_hash($_POST['password'], PASSWORD_DEFAULT, $options);
+            //als beide validaties slagen kunnen we de gebruiker opslaan in de database
+            if(empty($emailError) && empty($passwordError)){
+                try{
+                    $user = new User();
+                    $user->setEmail($_POST['email']);
+                    $user->setPassword($_POST['password']);
+                    //save database -> de gebruiker op te slaan
+                    $res = $user->save();
+                    //de data zit in onze database en we worden doorgestuurd naar de login pagina
+                    header("Location: login.php");
+                }
+                catch(Throwable $e){
+                    echo $e->getMessage();
+                    var_dump($e);
+                }
+            }           
         };
 	}; 
 ?>
