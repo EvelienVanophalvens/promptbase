@@ -1,5 +1,6 @@
 <?php 
-    //include_once './classes/Db.php';
+    include_once("bootstrap.php");
+
 
     if(!empty($_POST)){
 		//gesubmit
