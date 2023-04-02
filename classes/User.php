@@ -1,9 +1,9 @@
 <?php
 
 class User{
-    private $email;
-    private $password;
-    private $errors;
+    private string $email;
+    private string $password;
+    private array $errors;
 
 
     /**
@@ -64,5 +64,15 @@ class User{
         $this->errors = $errors;
 
         return $this;
+    }
+
+    //FUNCTIES
+    public function save(){
+        $conn = Db::getInstance();
+        //query voorbereiden voor beveiligd te worden = statement
+        $statement = $conn->prepare("INSERT INTO users (email, password) VALUES (:email, :password);");
+        $statement->bindValue(":email", $this -> email); // beveiliging sql injection
+        $statement->bindValue(":password", $this -> password);
+        $statement->execute();
     }
 }

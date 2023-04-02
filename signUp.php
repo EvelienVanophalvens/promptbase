@@ -1,9 +1,24 @@
 <?php 
-    include_once("bootstrap.php");
-
+    include_once(__DIR__."/bootstrap.php");
 
     if(!empty($_POST)){
 		//gesubmit
+        //als beide validaties slagen kunnen we de gebruiker opslaan in de database
+        if(empty($emailError) && empty($passwordError)){
+            try{
+                $user = new User();
+                $user->setEmail($_POST['email']);
+                $user->setPassword($_POST['password']);
+                //save database -> de gebruiker op te slaan
+                $res = $user->save();
+                //de data zit in onze database en we worden doorgestuurd naar de login pagina
+                header("Location: login.php");
+            }
+            catch(Throwable $e){
+                echo $e->getMessage();
+                var_dump($e);
+            }
+        }
         //inputs uitlezen
         // Email validatie
         if(empty($_POST['email'])){
@@ -28,25 +43,6 @@
             //$password = md5($_POST['password']);  --> md5 onveilig
             $password = password_hash($_POST['password'], PASSWORD_DEFAULT, $options);
         };
-        //als beide validaties slagen kunnen we de gebruiker opslaan in de database
-        if(empty($emailError) && empty($passwordError)){
-            try{
-                //meerdere databasestypes mogelijk
-                $conn = Db::getInstance();
-                //query voorbereiden voor beveiligd te worden = statement
-                //: staat voor placeholder
-                $statement = $conn->prepare("INSERT INTO users (email, password) VALUES (:email, :password);");
-                $statement->bindValue(":email", $email); // beveiliging sql injection
-                $statement->bindValue(":password", $password);
-                $statement->execute();
-                //de data zit in onze database en we worden doorgestuurd naar de login pagina
-                header("Location: login.php");
-    
-            }catch(Throwable $e) {
-                //error genereren
-                $error = $e->getMessage();
-            };	
-        };        
 	}; 
 ?>
 <!DOCTYPE html>
