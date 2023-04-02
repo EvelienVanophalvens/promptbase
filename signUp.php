@@ -2,38 +2,49 @@
     if(!empty($_POST)){
 		//gesubmit
         //inputs uitlezen
-        // Controleer of het e-mailveld is ingevuld
+        // Email validatie
         if(empty($_POST['email'])){
-            $error = "Email veld is verplicht";
+            $emailError = "Please, don't forget your email!";
+        }else if(!filter_var($_POST['email'],FILTER_VALIDATE_EMAIL)){
+            $emailError = "Sorry, this is a invalid email.";
         }else{
             $email = $_POST['email'];
         };
 
-		//2 tot de koste keer (14) keer hashen van het wachtwoord
-		$options = [
-			'cost' => 14,
-		];
-
-        //$password = md5($_POST['password']);  --> md5 onveilig
-		$password = password_hash($_POST['password'], PASSWORD_DEFAULT, $options);
-		
-		try{
-			//meerdere databasestypes mogelijk
-			$conn = new PDO('mysql:host=localhost;dbname=promptbase', "root", "root");
-			//query voorbereiden voor beveiligd te worden = statement
-			//: staat voor placeholder
-			$statement = $conn->prepare("INSERT INTO users (email, password) VALUES (:email, :password);");
-			$statement->bindValue(":email", $email); // beveiliging sql injection
-			$statement->bindValue(":password", $password);
-			$statement->execute();
-			//de data zit in onze database en we worden doorgestuurd naar de login pagina
-			header("Location: login.php");
-
-		}catch(Throwable $e) {
-			//error genereren
-			$error = $e->getMessage();
-		}
-	} 
+        //Wachtwoord validitie
+        //Controleer of het wachtwoord lang genoeg is (meer dan vijf karakters)
+        if(empty($_POST['password'])){
+            $passwordError = "Please, don't forget your password!";
+        }else if(strlen($_POST['password'])<5){
+            $passwordError = "Your password needs to be at least 5 characters long.";
+        }else{
+            //2 tot de koste keer (14) keer hashen van het wachtwoord
+            $options = [
+                'cost' => 14,
+            ];
+            //$password = md5($_POST['password']);  --> md5 onveilig
+            $password = password_hash($_POST['password'], PASSWORD_DEFAULT, $options);
+        };
+        //als beide validaties slagen kunnen we de gebruiker opslaan in de database
+        if(empty($emailError) && empty($passwordError)){
+            try{
+                //meerdere databasestypes mogelijk
+                $conn = new PDO('mysql:host=localhost;dbname=promptbase', "root", "root");
+                //query voorbereiden voor beveiligd te worden = statement
+                //: staat voor placeholder
+                $statement = $conn->prepare("INSERT INTO users (email, password) VALUES (:email, :password);");
+                $statement->bindValue(":email", $email); // beveiliging sql injection
+                $statement->bindValue(":password", $password);
+                $statement->execute();
+                //de data zit in onze database en we worden doorgestuurd naar de login pagina
+                header("Location: login.php");
+    
+            }catch(Throwable $e) {
+                //error genereren
+                $error = $e->getMessage();
+            };	
+        };        
+	}; 
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -55,13 +66,16 @@
         <input type="hidden" name="remember" value="true">
         <div class="form-element">
             <div class="login-input">
-                <?php if(isset($error)) { ?>
-                    <p class="error"><?php echo "Please don't forget you're email!"; ?></p>
+                <?php if(!empty($emailError)) { ?>
+                    <p class="error"><?php echo $emailError; ?></p>
                 <?php } ?>
             <label for="email-address" class="hidden">Email address</label>
             <input id="email-address" name="email" type="email" autocomplete="email" placeholder="Email address">
             </div>
             <div class="login-input">
+                <?php if(!empty($passwordError)) { ?>
+                    <p class="error"><?php echo $passwordError; ?></p>
+                <?php } ?>
             <label for="password" class="hidden">Password</label>
             <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Password">
             </div>
