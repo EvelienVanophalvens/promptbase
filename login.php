@@ -44,7 +44,7 @@ if(!empty($_POST) ){
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign in</title>
+    <title>Log in</title>
     <link rel="stylesheet" type="text/css" href="./css/style.css">
 
     <!--The excisting user wants to log in their account-->
@@ -53,7 +53,7 @@ if(!empty($_POST) ){
 <div class="canvas">
     <div class="box">
         <div class="title">
-        <h2>Sign in to your account</h2>
+        <h2>Log in to your account</h2>
         </div>
         <form class="" action="#" method="POST">
         <input type="hidden" name="remember" value="true">
@@ -92,7 +92,7 @@ if(!empty($_POST) ){
                 <path fill-rule="evenodd" d="M10 1a4.5 4.5 0 00-4.5 4.5V9H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-.5V5.5A4.5 4.5 0 0010 1zm3 8V5.5a3 3 0 10-6 0V9h6z" clip-rule="evenodd" />
                 </svg>
             </span>
-            Sign in
+            Log in
             </button>
         </div>
         </form>
