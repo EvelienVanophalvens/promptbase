@@ -121,7 +121,16 @@ class User{
 			return false;
             
 		}
-        }
+    }
+
+    public static function update($email, $password){
+        $conn = Db::getInstance();
+        $hashed_password = password_hash($password, PASSWORD_BCRYPT);
+        $statement = $conn-> prepare("UPDATE users SET password=:password WHERE email=:email");
+        $statement->bindValue(":password", $hashed_password);
+        $statement->bindValue(":email", $email);
+        $statement->execute();
+    }
 
     
     }

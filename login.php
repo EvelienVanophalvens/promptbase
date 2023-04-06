@@ -82,7 +82,7 @@ if(!empty($_POST) ){
             <label for="remember-me" class="checkmark">Remember me</label>
             </div>
             <div class="items-center">
-            <a href="#" class="forgot">Forgot your password?</a>
+            <a href="resetPassword.php" class="forgot">Forgot your password?</a>
             </div>
         </div>
         <div class="form-element">

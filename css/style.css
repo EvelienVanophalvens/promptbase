@@ -11,6 +11,10 @@ body{
 }
 .box{
     width: 340px; 
+    /*background-color: #ffffff;*/
+}
+.info{
+    text-align: left;
 }
 .form-element{
     margin-bottom: 16px;
