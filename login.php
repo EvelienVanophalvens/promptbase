@@ -21,7 +21,7 @@ if(!empty($_POST) ){
         $email = $_POST['email'];
         $password = $_POST['password'];
         try{
-            if(User::login($email, $password)){
+            if(User::login($username, $email, $password)){
                 header("Location: home.php");
             }else{
                 $loginError = "Email or password is incorrect";

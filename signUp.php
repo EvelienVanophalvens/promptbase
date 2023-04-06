@@ -4,6 +4,12 @@
     if(!empty($_POST)){
 		//gesubmit        
         //inputs uitlezen
+        //USERNAME VALIDATIE
+        if(empty($_POST['username'])){
+            $usernameError = "Please, don't forget your username!";
+        }else{
+            $username = $_POST['username'];
+        };
         // EMAIL VALIDATIE
         if(empty($_POST['email'])){
             $emailError = "Please, don't forget your email!";
@@ -20,10 +26,11 @@
         }else if(strlen($_POST['password'])<5){
             $passwordError = "Your password needs to be at least 5 characters long.";
         }else{
-            //als beide validaties slagen kunnen we de gebruiker opslaan in de database
-            if(empty($emailError) && empty($passwordError)){
+            //als alle validaties slagen kunnen we de gebruiker opslaan in de database
+            if(empty($usernameError) && empty($emailError) && empty($passwordError)){
                 try{
                     $user = new User();
+                    $user->setUsername($_POST['username']);
                     $user->setEmail($_POST['email']);
                     $user->setPassword($_POST['password']);
                     //save database -> de gebruiker op te slaan
@@ -58,6 +65,13 @@
         <form class="" action="#" method="POST">
         <input type="hidden" name="remember" value="true">
         <div class="form-element">
+        <div class="login-input">
+                <?php if(!empty($usernameError)) { ?>
+                    <p class="error"><?php echo $usernameError; ?></p>
+                <?php } ?>
+            <label for="username" class="hidden">Username</label>
+            <input id="username" name="username" type="text" autocomplete="username" placeholder="Username">
+            </div>
             <div class="login-input">
                 <?php if(!empty($emailError)) { ?>
                     <p class="error"><?php echo $emailError; ?></p>

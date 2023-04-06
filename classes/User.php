@@ -1,10 +1,30 @@
 <?php
 
 class User{
+    private string $username;
     private string $email;
     private string $password;
     private array $errors;
 
+    /**
+     * Get the value of username
+     */ 
+    public function getUsername()
+    {
+        return $this->username;
+    }
+
+    /**
+     * Set the value of username
+     *
+     * @return  self
+     */ 
+    public function setUsername($username)
+    {
+        $this->username = $username;
+
+        return $this;
+    }
 
     /**
      * Get the value of email
@@ -73,13 +93,14 @@ class User{
     public function save(){
         $conn = Db::getInstance();
         //query voorbereiden voor beveiligd te worden = statement
-        $statement = $conn->prepare("INSERT INTO users (email, password) VALUES (:email, :password);");
-        $statement->bindValue(":email", $this -> email); // beveiliging sql injection
+        $statement = $conn->prepare("INSERT INTO users (username, email, password, active, moderator, credits, verified) VALUES (:username, :email, :password, 0, 0, 0, 0);");
+        $statement->bindValue(":username", $this -> username); // beveiliging sql injection
+        $statement->bindValue(":email", $this -> email);
         $statement->bindValue(":password", $this -> password);
         $statement->execute();
     }
 
-    public static function login($email, $password){
+    public static function login($username, $email, $password){
         //checken of de gebruiker bestaat
         $conn = Db::getInstance();
         $statement = $conn->prepare("SELECT * FROM users WHERE email = :email");
@@ -101,5 +122,7 @@ class User{
             
 		}
         }
+
+    
     }
 
