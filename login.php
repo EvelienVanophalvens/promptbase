@@ -1,13 +1,14 @@
 <?php
 include_once(__DIR__."/bootstrap.php");
+
 //kijken of post niet leeg is
 if(!empty($_POST) ){
     //kijken of email niet leeg is ander error
-    if(!empty($_POST['email'])){
-        $email = $_POST['email'];
+    if(!empty($_POST['username'])){
+        $username = $_POST['username'];
     }
     else{
-        $emailError = "Please enter your email";
+        $usernameError = "Please enter your username";
     }
     //kijken of password niet leeg is ander error
     if(!empty($_POST['password'])){
@@ -18,13 +19,17 @@ if(!empty($_POST) ){
     }
     //als beide error niet leeg zijn, dan kan je inloggen
     if(empty($emailError) && empty($passwordError)){
-        $email = $_POST['email'];
+        $username = $_POST['username'];
         $password = $_POST['password'];
+        $userid = User::login($username, $password);
         try{
-            if(User::login($username, $email, $password)){
+            if($userid){
                 header("Location: home.php");
+                session_start();
+                $_SESSION['loggedin'] = true;
+                $_SESSION['userid'] = $userid ;
             }else{
-                $loginError = "Email or password is incorrect";
+                $loginError = "Username or password is incorrect";
             };
         }
         catch(Throwable $e){
@@ -62,11 +67,11 @@ if(!empty($_POST) ){
             <p class="error"><?php echo $loginError; ?></p>
             <?php } ?>
             <div class="login-input">
-                <?php if(!empty($emailError)) { ?>
-                    <p class="error"><?php echo $emailError; ?></p>
+                <?php if(!empty($usernameError)) { ?>
+                    <p class="error"><?php echo $usernameError; ?></p>
                 <?php } ?>
-            <label for="email-address" class="hidden">Email address</label>
-            <input id="email-address" name="email" type="email" autocomplete="email" placeholder="Email address">
+            <label for="username" class="hidden">Username</label>
+            <input id="username" name="username" placeholder="Username">
             </div>
             <div class="login-input">
                 <?php if(!empty($passwordError)) { ?>

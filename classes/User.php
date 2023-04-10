@@ -100,11 +100,11 @@ class User{
         $statement->execute();
     }
 
-    public static function login($username, $email, $password){
+    public static function login($username, $password){
         //checken of de gebruiker bestaat
         $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT * FROM users WHERE email = :email");
-        $statement->bindValue(":email", $email);
+        $statement = $conn->prepare("SELECT * FROM users WHERE username = :username");
+        $statement->bindValue(":username", $username);
         $statement->execute();
         $user = $statement->fetch(PDO::FETCH_ASSOC);
         
@@ -113,7 +113,7 @@ class User{
         if($user){
 			$hash = $user['password'];
 			if(password_verify($password, $hash)){
-				return true;
+				return $user['id'];
 			}else{
                 return var_dump("wrong password");
 			}

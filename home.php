@@ -1,3 +1,13 @@
+<?php
+    include_once(__DIR__."/bootstrap.php");
+    session_start();
+    if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true){
+        header("Location: login.php");
+        exit;
+    }
+    include_once (__DIR__."/navbar.php");
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,5 +18,6 @@
 </head>
 <body>
     <h2>dit is de home pagina na het inloggen</h2>
+    
 </body>
 </html>
