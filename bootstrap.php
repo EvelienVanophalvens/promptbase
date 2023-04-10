@@ -6,6 +6,9 @@
     // interfaces
     //require_once("interfaces/User.php");
 
+
+    // functions
+    require_once("functions/functions.php");
     // traits
     require_once("traits/Json.php");
 ?>
