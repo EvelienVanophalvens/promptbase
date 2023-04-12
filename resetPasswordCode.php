@@ -62,7 +62,7 @@ function send_password_reset($get_name, $get_email,$token)
     <h2>Hello</h2>
     <h3>You are receiving this email because we received a password reset request for your account.</h3>
     <br></br>
-    <a href='http://localhost/promptbase/login.php/passwordChange.php?token=$token&email=$get_email'>Click me </a>";
+    <a href='http://localhost/promptbase/passwordChange.php?token=$token&email=$get_email'>Click me </a>";
 
     $mail->Body = $email_template;
     if (!$mail->send()) {
@@ -99,14 +99,76 @@ if(isset($_POST['passwordResetLink'])){
             header("Location: resetPassword.php");
             exit(0);
         }else{
-            $_GET['status'] = "Something went wrong";
+            $_SESSION['status'] = "Something went wrong";
             header("Location: resetPassword.php");
             exit(0);
         }
     }else{
-        $_GET['status'] = "No email found";
+        $_SESSION['status'] = "No email found";
         header("Location: resetPassword.php");
         exit(0);
     }
+}
+
+if(isset($_POST['passwordUpdate']))
+{
+    $email = $_POST['email'];
+    $token = $_POST['token'];
+    $newPassword = $_POST['newPassword'];
+    $confirmationPassword = $_POST['confirmationPassword'];
+
+    if(!empty($token))
+    {
+        if(!empty($email)&&!empty($newPassword)&&!empty($confirmationPassword))
+        {
+            $conn = Db::getInstance();
+            //Validatie token
+            $check_token = "SELECT password FROM users WHERE password=:password LIMIT 1";
+            $statement = $conn -> prepare($check_token);
+            $statement->bindValue(":password", $token);
+            $statement->execute();
+            $resl = $statement->fetch(PDO::FETCH_ASSOC);
+
+            if($resl!==false)
+            {
+                //Validatie paswoord invoer
+                if($newPassword == $confirmationPassword)
+                {
+                    $update_password = "UPDATE users SET password=:password WHERE password=:token LIMIT 1";
+                    $statement = $conn -> prepare($update_password);
+                    $statement->bindValue(":password", $newPassword);
+                    $statement->bindValue(":token", $token);
+                    $statement->execute();
+                    
+                    if($statement){
+                        $_SESSION['status'] = "Confirmed new password!<br>You can log in with your new password.";
+                        header("Location: passwordChange.php?token=$token&email=$email");
+                        exit(0);
+                    }
+                }else
+                {
+                    $_SESSION['status'] = "Password and confirm password does not match";
+                    header("Location: passwordChange.php?token=$token&email=$email");
+                    exit(0);
+                }
+            }else
+            {
+                $_SESSION['status'] = "Invalid token";
+                header("Location: passwordChange.php?token=$token&email=$email");
+                exit(0);
+            }
+        }else
+        {
+            $_SESSION['status'] = "All fields are required!";
+            header("Location: passwordChange.php?token=$token&email=$email");
+            exit(0);
+        }
+    }else
+    {
+        $_SESSION['status'] = "No token avaible";
+        header("Location: passwordChange.php");
+        exit(0);
+    }
+
 }
 ?>

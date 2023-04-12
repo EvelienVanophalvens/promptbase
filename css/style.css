@@ -59,6 +59,15 @@ input#email{
     color: #afafaf;
     padding-left: 8px;
 }
+.passwordChange-input input#password{
+    margin-top: 4px;
+    width: 96%;
+    padding-top: 12px;
+    padding-left: 12px;
+    padding-bottom: 12px;
+    border: 1px solid #d1d1d1;
+    border-radius: 4px;
+}
 .remember{
     float: left;
 }

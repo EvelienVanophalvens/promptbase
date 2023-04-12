@@ -32,11 +32,11 @@ include_once(__DIR__."/bootstrap.php");
                         </div>
                         <div class="passwordChange-input">
                             <label for="newPassword">Enter your new password:</label>
-                            <input type="password" id="password" name="password" required>
+                            <input type="password" id="password" name="newPassword" required>
                         </div>
                         <div class="passwordChange-input">
                             <label for="newpasswordConfirmation">Confirm your new password:</label>
-                            <input type="password" id="password" name="password" required>
+                            <input type="password" id="password" name="confirmationPassword" required>
                         </div>
                     </div>
                     <div class="form-element">
@@ -54,6 +54,9 @@ include_once(__DIR__."/bootstrap.php");
                     ?>
                     <div class="alert-succes">
                         <h5><?php echo $_SESSION['status'];?></h5>
+                    </div>
+                    <div>
+                        <a href="login.php">Opnieuw inloggen</a>
                     </div>
                     <?php
                     unset($_SESSION['status']);
