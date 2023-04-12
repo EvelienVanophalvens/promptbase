@@ -117,6 +117,12 @@ if(isset($_POST['passwordUpdate']))
     $newPassword = $_POST['newPassword'];
     $confirmationPassword = $_POST['confirmationPassword'];
 
+    // Hash wachtwoord met Bcrypt
+    $options = [
+        'cost' => 12, // Het aantal iteraties om de hash te berekenen, 12 wordt als veilig beschouwd voor de meeste toepassingen
+    ];
+    $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT, $options);
+
     if(!empty($token))
     {
         if(!empty($email)&&!empty($newPassword)&&!empty($confirmationPassword))
@@ -136,7 +142,7 @@ if(isset($_POST['passwordUpdate']))
                 {
                     $update_password = "UPDATE users SET password=:password WHERE password=:token LIMIT 1";
                     $statement = $conn -> prepare($update_password);
-                    $statement->bindValue(":password", $newPassword);
+                    $statement->bindValue(":password", $hashedPassword);
                     $statement->bindValue(":token", $token);
                     $statement->execute();
                     
