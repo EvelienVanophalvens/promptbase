@@ -4,6 +4,7 @@ class User{
     private string $username;
     private string $email;
     private string $password;
+    private string $bio;
     private array $errors;
 
     /**
@@ -88,6 +89,26 @@ class User{
 
         return $this;
     }
+    
+    /**
+     * Get the value of bio
+     */ 
+    public function getBio()
+    {
+        return $this->bio;
+    }
+
+    /**
+     * Set the value of bio
+     *
+     * @return  self
+     */ 
+    public function setBio($bio)
+    {
+        $this->bio = $bio;
+
+        return $this;
+    }
 
     //FUNCTIES
     public function save(){
@@ -97,6 +118,13 @@ class User{
         $statement->bindValue(":username", $this -> username); // beveiliging sql injection
         $statement->bindValue(":email", $this -> email);
         $statement->bindValue(":password", $this -> password);
+        $statement->execute();
+    }
+
+    public static function update($bio){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("UPDATE users SET bio=:bio WHERE id = 24");
+        $statement->bindParam(":bio", $bio);
         $statement->execute();
     }
 
@@ -123,15 +151,14 @@ class User{
 		}
     }
 
-    public static function update($email, $password){
-        $conn = Db::getInstance();
-        $hashed_password = password_hash($password, PASSWORD_BCRYPT);
-        $statement = $conn-> prepare("UPDATE users SET password=:password WHERE email=:email");
-        $statement->bindValue(":password", $hashed_password);
-        $statement->bindValue(":email", $email);
-        $statement->execute();
-    }
-
-    
+    // public static function changePassword($email, $password){
+    //     $conn = Db::getInstance();
+    //     $hashed_password = password_hash($password, PASSWORD_BCRYPT);
+    //     $statement = $conn-> prepare("UPDATE users SET password=:password WHERE email=:email");
+    //     $statement->bindValue(":password", $hashed_password);
+    //     $statement->bindValue(":email", $email);
+    //     $statement->execute();
+    //     return true;
+    // }
     }
 
