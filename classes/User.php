@@ -151,6 +151,20 @@ class User{
 		}
     }
 
+    //kijken of gebruiker een moderator is
+    public static function isModerator(){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT * FROM users WHERE id = :id");
+        $statement->bindValue(":id", $_SESSION['userid']);
+        $statement->execute();
+        $user = $statement->fetch(PDO::FETCH_ASSOC);
+        if($user['moderator'] == 1){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     // public static function changePassword($email, $password){
     //     $conn = Db::getInstance();
     //     $hashed_password = password_hash($password, PASSWORD_BCRYPT);

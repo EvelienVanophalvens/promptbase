@@ -24,6 +24,9 @@
                     <div class="dropdown-content">
                         <a href="profile.php">Mijn account</a>
                         <a href="logout.php">Log out</a>
+                        <?php if(User::isModerator()){
+                            echo "<a href='./moderator/moderator.php'>Moderator</a>";
+                        }?>
                     </div>
                 </div> 
             </li>

@@ -190,3 +190,34 @@ nav ul a{
     border-radius: 4px;
     color: #2b975a;
 }
+
+.promptDetails{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 3fr 1fr;
+}
+
+.promptDetails .title{
+   font-size: 1.3em;
+}
+
+.promptDetails .img{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    
+
+}
+
+.promptDetails .img img{
+    min-width: 100px;
+    min-height: 100px;
+    width: 50%;
+    position: relative;
+
+}
+
+.promptDetails input{
+    width: 50%;
+    height: 50%;
+    justify-self: center;
+    align-self: end;
+}
