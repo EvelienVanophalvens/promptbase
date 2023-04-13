@@ -23,13 +23,13 @@ use PHPMailer\PHPMailer\Exception;
         $mail->SMTPAuth = true;
 
         $mail->Host = 'smtp.gmail.com';
-        $mail->Username = 'ilke.heyvaert419@gmail.com';
-        $mail->Password = 'zfqpjjqwmwtytsbh';
+        $mail->Username = 'lindsay.prompt@gmail.com';
+        $mail->Password = 'xenfawrsbprsfzta';
 
         $mail->SMTPSecure = 'tls';
         $mail->Port = 587;
 
-        $mail->setFrom('ilke.heyvaert@gmail.com');
+        $mail->setFrom('lindsay.prompt@gmail.com', 'PromptBase');
         $mail->addAddress($email);
 
         $mail->isHTML(true);
