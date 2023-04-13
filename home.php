@@ -1,7 +1,6 @@
 <?php
     include_once(__DIR__."/bootstrap.php");
-    session_start();
-    
+    include('authentication.php');
     include_once (__DIR__."/navbar.php");
 ?>
 
@@ -12,12 +11,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
 </head>
 <body>
-    <div class="context">
-        <h2>Hello! Welcome to the home page.</h2>
-
+    <div class="canvas">
+    <div class="box2">
+<?php if(isset($_SESSION['status'])) { ?>
+    <div class="alert">
+        <h5><?= $_SESSION['status']; ?></h5>
     </div>
-    
+    <?php unset($_SESSION['status']); ?>
+<?php } ?>
+    <div class="context">
+        <h2>Hello! Welcome to the home page <?= $_SESSION['auth_user']['username']; ?>.</h2>
+       
+    </div>
+    </div>
+    </div>
 </body>
 </html>

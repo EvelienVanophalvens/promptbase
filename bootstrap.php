@@ -10,8 +10,4 @@
     require_once("functions/functions.php");
     // traits
     require_once("traits/Json.php");
-    //plugins
-    require_once("plugins/PHPMailer-master/src/PHPMailer.php");
-    require_once("plugins/PHPMailer-master/src/Exception.php");
-    require_once("plugins/PHPMailer-master/src/SMTP.php");
 ?>

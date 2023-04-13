@@ -1,5 +1,13 @@
 <?php
+session_start();
 include_once(__DIR__."/bootstrap.php");
+
+if(isset($_SESSION['authenticated']))
+{
+    $_SESSION['status'] = "You are already Logged In";
+    header("Location: home.php");
+    exit(0);
+}
 
 //kijken of post niet leeg is
 if(!empty($_POST) ){
@@ -56,11 +64,21 @@ if(!empty($_POST) ){
 </head>
 <body>
 <div class="canvas">
+
+
+
     <div class="box">
+   
         <div class="title">
-        <h2>Log in to your account</h2>
+        <h2>Log in to your account</h2> 
+        <?php if(isset($_SESSION['status'])) { ?>
+    <div class="alert">
+        <h5><?= $_SESSION['status']; ?></h5>
+    </div>
+    <?php unset($_SESSION['status']); ?>
+<?php } ?>
         </div>
-        <form class="" action="#" method="POST">
+        <form class="" action="logincode.php" method="POST">
         <input type="hidden" name="remember" value="true">
         <div class="form-element">
             <?php if(!empty($loginError)){  ?>
@@ -91,7 +109,7 @@ if(!empty($_POST) ){
             </div>
         </div>
         <div class="form-element">
-            <button type="submit" class="submit">
+            <button type="submit" name="login_now_btn" class="submit">
             <span>
                 <svg class="" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                 <path fill-rule="evenodd" d="M10 1a4.5 4.5 0 00-4.5 4.5V9H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-.5V5.5A4.5 4.5 0 0010 1zm3 8V5.5a3 3 0 10-6 0V9h6z" clip-rule="evenodd" />

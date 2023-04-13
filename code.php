@@ -8,7 +8,7 @@ if(isset($_POST['submit_btn']))
     $username = $_POST['username'];
     $email = $_POST['email'];
     $password = $_POST['password'];
-    $verified = 0;
+    $verified = md5(rand());
 
     // Hash the password
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
@@ -30,12 +30,12 @@ if(isset($_POST['submit_btn']))
     else
     {
         // Insert User / Registered User Data
-        $query = "INSERT INTO users (username,password,email,verified) VALUES (:username, :password, :email, :verified)";
+        $query = "INSERT INTO users (username,password,email,verify_token) VALUES (:username, :password, :email, :verify_token)";
         $stmt = $pdo->prepare($query);
         $stmt->bindParam(':username', $username);
         $stmt->bindParam(':password', $hashed_password);
         $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':verified', $verified);
+        $stmt->bindParam(':verify_token', $verified);
 
         if($stmt->execute())
         {
