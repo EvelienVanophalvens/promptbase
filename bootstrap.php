@@ -11,12 +11,4 @@
     require_once("functions/functions.php");
     // traits
     require_once("traits/Json.php");
-    // phpmailer
-    require_once("PHPMailer-master/src/PHPMailer.php");
-    require_once("PHPMailer-master/src/SMTP.php");
-    require_once("PHPMailer-master/src/Exception.php");
-    require_once("PHPMailer-master/src/OAuth.php");
-    require_once("PHPMailer-master/src/POP3.php");
-    
-
 ?>
