@@ -1,6 +1,54 @@
 <?php
     include_once(__DIR__."/bootstrap.php");    
     include_once (__DIR__."/navbar.php");
+    authenticated();
+
+    $error = "";
+    if(!empty($_FILES)){
+        //data van de file
+        $file = $_FILES["profilePicture"];
+        $fileName = $file["name"];
+        $fileTmpName = $file["tmp_name"];
+        $fileSize = $file["size"];
+        $fileError = $file["error"];
+        $fileType = $file["type"];
+
+        //everything after the dot needs to be lowercase
+        $fileExt = explode(".", $fileName);
+        $fileActualExt = strtolower(end($fileExt));
+
+        //wich filetypes are allowed
+        $allowed = array("jpg", "jpeg", "png", "svg");
+
+        if(in_array($fileActualExt, $allowed)){
+            //check errors in file
+            if($fileError === 0){
+                //check the size of the file (in bytes) 1mb = 1000000 bytes
+                if($fileSize < 1000000){
+                    //give the file a unique name
+                    $fileNameNew = "profile".$_SESSION['userid'].".".$fileActualExt;
+                    //where the file needs to go
+                    $fileDestination = "uploads/".$fileNameNew;
+                    //move the file to the destination
+                    move_uploaded_file($fileTmpName, $fileDestination);
+                    //update the profile picture in the database
+                    User::updateProfilePicture($fileNameNew);
+                    
+                }else{
+                    $error = "Your file is too big";
+                }
+            }else{
+                $error = "There was an error uploading your file";
+            }
+        }
+        else{
+            $error = "You cannot upload files of this type";
+        }
+
+    }
+    //get the profile picture from the database
+    $profilePicture = User::getProfilePicture();
+    $profilePicturePath = "uploads/".$profilePicture;
 ?>
 
 <!DOCTYPE html>
@@ -15,14 +63,28 @@
 </head>
 <body>
     <div class="context">
+        <p><?php echo $error?></p>
         <div class="userinfo">
             <div id="userProfilePicture">
-                <img src="https://placehold.co/200x200.png" alt="profile picture">
+                <img src="<?php echo $profilePicturePath?>" alt="profile picture">
+                <div class="hidden" id="profilePictureMenu">
+                <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17.44 20.14" height="20px"><defs><style>.cls-1{fill: #ddd;}</style></defs><polygon class="cls-1" points="0 10.07 17.44 0 17.44 20.14 0 10.07"/></svg>
+                    <ul>
+                        <li id="changePicture"><a href="#">Change</a></li>
+                        <li id="choseAvatar"><a href="#">Chose avatar</a></li>
+                    </ul>
+                </div>
             </div>
             <h2 class="username">Louise</h2>
             <p class="bio">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Volutpat sed cras ornare arcu. Ut porttitor leo a diam sollicitudin tempor id. Sit amet consectetur adipiscing elit ut aliquam purus sit amet. Nulla pharetra diam sit amet. Magna eget est lorem ipsum dolor sit. In aliquam sem fringilla ut morbi tincidunt augue interdum. Odio morbi quis commodo odio aenean. Vitae auctor eu augue ut. Sagittis aliquam malesuada bibendum arcu vitae elementum curabitur vitae nunc. Facilisi cras fermentum odio eu feugiat. Ipsum dolor sit amet consectetur adipiscing elit ut. In arcu cursus euismod quis viverra nibh cras. Morbi tempus iaculis urna id. Ultrices tincidunt arcu non sodales.</p>
         </div>
         <div class="userPrompts">Hier komen de gemaakte prompts</div>
-    </div> 
+    </div>
+    <form class="" id="profilePictureForm" method="POST" enctype="multipart/form-data">
+        <input type="file" name="profilePicture" id="profilePicture" accept=".jpg, .jpeg, .png">
+        <button type="submit" id="submitProfilePicture">Upload</button>
+        <button id="cancelPicture"type="button" id="cancelProfilePicture">Cancel</button>
+    </form> 
 </body>
+<script src="./scripts/script.js"></script>
 </html>

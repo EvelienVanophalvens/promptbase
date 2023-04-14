@@ -175,11 +175,72 @@ nav ul a{
 .dropdown:hover .dropdown-content {
   display: block;
 }
+#userProfilePicture{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 #userProfilePicture img{
     border-radius: 100%;
-}
-.userinfo{
     width: 300px;
+    height: 300px;
+}
+#userProfilePicture img:hover{
+    cursor: pointer;
+    opacity: 0.7;
+}
+#userProfilePicture ul{
+    background-color: #ddd;
+    padding: 0px;
+    border-radius: 10%;
+}
+
+#userProfilePicture ul li{
+    list-style: none;
+    padding: 10px 20px;
+    border-radius: 10%;  
+
+}
+
+#userProfilePicture li a{
+    border-bottom: none;
+    text-decoration: none;
+    color: black;
+}
+
+#userProfilePicture ul li:hover{
+    cursor: pointer;
+    background-color: #ccc;
+}
+
+#profilePictureMenu{
+    float: right;
+    border-radius: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+}
+
+#profilePictureForm{
+    position: absolute;
+    display: flex;
+    width: 25%;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0;
+    top:  50%;
+    left: 50%;
+    transform: translate(-500%, -50%);
+
+}
+
+#profilePictureForm input{
+    align-self: center;
+}
+
+
+.userinfo{
+    width: 350px;
     background-color:#fafafa;
     padding: 24px;
     margin: -24px;
@@ -222,3 +283,10 @@ nav ul a{
     align-self: end;
 }
 
+.hidden{
+    opacity: 0;
+}
+
+.faded{
+    opacity: 0.5;
+}
