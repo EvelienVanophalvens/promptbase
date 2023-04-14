@@ -1,4 +1,7 @@
 <?php
+
+session_start();
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
@@ -41,4 +44,13 @@ use PHPMailer\PHPMailer\Exception;
 
         $mail->send();
         //echo 'Message has been sent';
+    }
+
+    function authenticated(){
+        if(!isset($_SESSION['authenticated']))
+{
+    $_SESSION['status'] = "Please Login to Access User Home!";
+    header("Location: login.php");
+    exit(0);
+}
     }

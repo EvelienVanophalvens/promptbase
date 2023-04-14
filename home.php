@@ -1,6 +1,5 @@
 <?php
     include_once(__DIR__."/bootstrap.php");
-    include('authentication.php');
     include_once (__DIR__."/navbar.php");
 ?>
 
