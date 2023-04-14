@@ -1,6 +1,8 @@
 <?php 
     include_once(__DIR__."/../bootstrap.php");
     include_once(__DIR__."/navbarM.php");
+    authenticated();
+
     $prompt = Prompts::detailPromptM($_GET["prompt"]);
     if(!empty($_POST)){
         Prompts::acceptPrompt($_POST["id"]);
