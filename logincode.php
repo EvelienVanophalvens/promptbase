@@ -22,6 +22,7 @@ if(isset($_POST['login_now_btn'])) {
                     'username' => $row['username'],
                     
                 ];
+                $_SESSION['userid'] = $row['id'] ;
                 $_SESSION['status'] = "Login Successfull";
                 header("Location: home.php");
             } else {
@@ -29,7 +30,7 @@ if(isset($_POST['login_now_btn'])) {
                 header("Location: login.php");
             }
         } else {
-            $_SESSION['status'] = "Invalid Email or Password";
+            $_SESSION['status'] = "Invalid Username or Password";
             header("Location: login.php");
         }
     } else {

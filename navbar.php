@@ -1,3 +1,4 @@
+<?php var_dump($_SESSION)?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,6 +28,8 @@
                         <a href="logout.php">Log out</a>
                         <?php if(User::isModerator()){
                             echo "<a href='./moderator/moderator.php'>Moderator</a>";
+                        }else{
+                            die();
                         }?>
                     </div>
                 </div> 
