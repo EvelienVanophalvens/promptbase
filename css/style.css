@@ -293,3 +293,24 @@ nav ul a{
 .faded{
     opacity: 0.5;
 }
+#edit-button{
+    width: 20px;
+    height: 20px;
+    background-color: #e7e7e7; color: black;
+    border: none;
+    border-radius: 3px;
+    justify-content: center;
+}
+#edit-button svg{
+    width: 10px;
+    height: 10px;
+}
+#bio-input{
+    margin-top: 4px;
+    width: 96%;
+    padding-top: 12px;
+    padding-left: 12px;
+    padding-bottom: 12px;
+    border: 1px solid #d1d1d1;
+    border-radius: 4px;
+}
