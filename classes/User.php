@@ -165,6 +165,25 @@ class User{
         }
     }
 
+    //update profile picture
+    public static function updateProfilePicture($profilePicture){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("UPDATE users SET profilePicture=:profile_picture WHERE id = :id");
+        $statement->bindParam(":profile_picture", $profilePicture);
+        $statement->bindParam(":id", $_SESSION['userid']);
+        $statement->execute();
+    }
+
+    //get profile picture
+    public static function getProfilePicture(){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT profilePicture FROM users WHERE id = :id");
+        $statement->bindParam(":id", $_SESSION['userid']);
+        $statement->execute();
+        $profilePicture = $statement->fetch(PDO::FETCH_ASSOC);
+        return $profilePicture['profilePicture'];
+    }
+
     // public static function changePassword($email, $password){
     //     $conn = Db::getInstance();
     //     $hashed_password = password_hash($password, PASSWORD_BCRYPT);
