@@ -240,10 +240,13 @@ nav ul a{
 
 
 .userinfo{
+    position: fixed;
+    bottom: 0;
+    top:92px;
     width: 350px;
-    background-color:#fafafa;
     padding: 24px;
-    margin: -24px;
+    margin-left: -24px;
+    background-color:#fafafa;
 }
 .alert-succes{
     border: 2px solid #2b975a;

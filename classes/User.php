@@ -123,8 +123,9 @@ class User{
 
     public static function update($bio){
         $conn = Db::getInstance();
-        $statement = $conn->prepare("UPDATE users SET bio=:bio WHERE id = 24");
+        $statement = $conn->prepare("UPDATE users SET bio=:bio WHERE id = :id");
         $statement->bindParam(":bio", $bio);
+        $statement->bindValue(":id", $_SESSION['userid']);
         $statement->execute();
     }
 
@@ -182,6 +183,15 @@ class User{
         $statement->execute();
         $profilePicture = $statement->fetch(PDO::FETCH_ASSOC);
         return $profilePicture['profilePicture'];
+    }
+    //get profile picture
+    public static function getRecentBio(){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT bio FROM users WHERE id = :id");
+        $statement->bindParam(":id", $_SESSION['userid']);
+        $statement->execute();
+        $bio = $statement->fetch(PDO::FETCH_ASSOC);
+        return implode($bio);
     }
 
     // public static function changePassword($email, $password){

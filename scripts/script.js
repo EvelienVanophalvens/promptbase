@@ -24,3 +24,23 @@ document.addEventListener("click", function(e) {
         document.querySelector("#profilePictureMenu").classList.add("hidden");
     }
 });
+const bio = document.getElementById('bio');
+
+// Voeg een event listener toe aan het p element om een input veld te maken
+  bio.addEventListener('click', () => {
+  const inputVeld = document.createElement('input');
+  inputVeld.setAttribute('type', 'text');
+  inputVeld.value = bio.textContent;
+  bio.replaceWith(inputVeld);
+  
+  // Voeg een event listener toe aan het input veld om de wijzigingen op te slaan en het input veld te vervangen door het p element
+    inputVeld.addEventListener('keyup', (event) => {
+    if (event.key === 'Enter') {
+      const newBio = inputVeld.value;
+      bio.textContent = newBio;
+      inputVeld.replaceWith(bio);
+      User.update(newBio);
+    }
+  });
+
+});
