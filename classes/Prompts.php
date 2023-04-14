@@ -117,6 +117,21 @@
         return array("prompts" => $result,
                       "examples" => $result2);
     }
+    public static function detailPrompt($id){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT prompts.prompt, prompts.date, prompts.userId, prompts.accepted, prompts.id, users.id AS user, users.username FROM prompts LEFT JOIN users ON prompts.userid = users.id LEFT JOIN prompt_examples ON prompts.id = prompt_examples.promptId  WHERE prompts.id = :id AND accepted = 1 ");
+        $statement->bindValue(":id", $id);
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+        $statement2 = $conn->prepare("SELECT  prompt_examples.example FROM prompts LEFT JOIN prompt_examples ON prompts.id = prompt_examples.promptId WHERE prompts.id= :id");
+        $statement2->bindValue(":id", $id);
+        $statement2->execute();
+        $result2 = $statement2->fetchALL(PDO::FETCH_ASSOC);
+
+        return array("prompts" => $result,
+                      "examples" => $result2);
+    }
 
     public static function acceptPrompt($id){
         $conn = Dbm::getInstance();
