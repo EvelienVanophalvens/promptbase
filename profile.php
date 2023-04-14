@@ -1,6 +1,7 @@
 <?php
     include_once(__DIR__."/bootstrap.php");    
     include_once (__DIR__."/navbar.php");
+    session_start();
 ?>
 
 <!DOCTYPE html>
