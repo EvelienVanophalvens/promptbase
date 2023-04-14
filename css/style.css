@@ -21,6 +21,9 @@ body{
 .info{
     text-align: left;
 }
+.content{
+    margin: 24px;
+}
 .form-element{
     margin-bottom: 16px;
 }
@@ -313,4 +316,43 @@ nav ul a{
     padding-bottom: 12px;
     border: 1px solid #d1d1d1;
     border-radius: 4px;
+}
+.chartContainer{
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+}
+.chart{
+    height: 250px;
+    width: 300px;
+    background-color: #1f2937;
+    border-radius: 3px;
+    display: flex;
+    justify-content: center;
+    padding: 12px;
+}
+.chart a{
+    text-decoration: none;
+}
+.coverImage{
+    max-width: 300px;
+    max-height: 300px;
+    border-radius: 3px;
+}
+.promptInfo{
+    color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+    align-content: center;
+}
+.categoryLabel{
+    border-radius: 3px;
+    color: black;
+    background-color: white;
+    width: 100px;
+    float: right;
+    padding: 4px 2px;
+    text-align: center;
 }

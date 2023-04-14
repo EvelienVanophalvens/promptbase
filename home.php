@@ -3,6 +3,8 @@
     include_once (__DIR__."/navbar.php");
 
     authenticated();
+    $accepted =  Prompts::accepted();
+
 ?>
 
 <!DOCTYPE html>
@@ -16,18 +18,38 @@
 </head>
 <body>
     <div class="canvas">
-    <div class="box2">
-<?php if(isset($_SESSION['status'])) { ?>
-    <div class="alert">
-        <h5><?= $_SESSION['status']; ?></h5>
+        <div class="box2">
+            <?php if(isset($_SESSION['status'])) { ?>
+                <div class="alert">
+                    <h5><?= $_SESSION['status']; ?></h5>
+                </div>
+                <?php unset($_SESSION['status']); ?>
+            <?php } ?>
+            <div class="context">
+                <h2>Hello! Welcome to the home page <?= $_SESSION['auth_user']['username']; ?>.</h2>
+            </div>
+        </div>
     </div>
-    <?php unset($_SESSION['status']); ?>
-<?php } ?>
-    <div class="context">
-        <h2>Hello! Welcome to the home page <?= $_SESSION['auth_user']['username']; ?>.</h2>
-       
-    </div>
-    </div>
+    <div class="content">
+        <div class="newestPrompts">
+            <h3>Newest prompts</h3>
+            <hr>
+            <div class="chartContainer">
+                <?php if(!empty($accepted)){ foreach($accepted as $prompt):?>
+                    <div class="chart">
+                        <a href="promptDetail.php?prompt=<?php echo $prompt["id"]?>">
+                            <div class="coverImage">
+                                <img src="https://placehold.co/300x200" alt="coverImage">
+                            </div>
+                            <div class="promptInfo">
+                                <?php echo htmlspecialchars($prompt["prompt"])?>
+                                <div class="categoryLabel">Category</div>
+                            </div>
+                        </a>
+                    </div>
+                <?php endforeach; }  ?>
+            </div>
+        </div>
     </div>
 </body>
 </html>
