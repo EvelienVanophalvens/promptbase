@@ -30,6 +30,9 @@
                             echo "";
                         }?>
                         <a href="logout.php">Log out</a>
+                        <form action="deleteaccount.php" method="POST">
+                        <button  name="user_delete" type="submit" value="<?= $_SESSION['auth_user']['username']; ?>">Account verwijderen</button>
+                    </form>
                     </div>
                 </div> 
             </li>

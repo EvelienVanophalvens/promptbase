@@ -1,7 +1,12 @@
 <?php 
 
-session_start();
+//session_start();
 include_once(__DIR__."/bootstrap.php");
+
+
+
+
+
 
 if(isset($_POST['submit_btn']))
 {
