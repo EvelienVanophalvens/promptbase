@@ -6,6 +6,8 @@ class User{
     private string $password;
     private string $bio;
     private array $errors;
+    public int $userId;
+
 
     /**
      * Get the value of username
@@ -110,6 +112,26 @@ class User{
         return $this;
     }
 
+      /**
+     * Get the value of userId
+     */ 
+    public function getUserId()
+    {
+        return $this->userId;
+    }
+
+    /**
+     * Set the value of userId
+     *
+     * @return  self
+     */ 
+    public function setUserId($userId)
+    {
+        $this->userId = $userId;
+
+        return $this;
+    }
+
     //FUNCTIES
     public function save(){
         $conn = Db::getInstance();
@@ -203,5 +225,19 @@ class User{
     //     $statement->execute();
     //     return true;
     // }
+
+   
+
+    public static function deleteUser(){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("DELETE FROM users WHERE id = :id LIMIT 1");
+        $statement->bindValue(":id", $_SESSION['userid']);
+        $statement->execute();
+    }
+
+
+ 
+
+  
     }
 
