@@ -335,9 +335,11 @@ nav ul a{
     text-decoration: none;
 }
 .coverImage{
-    max-width: 300px;
-    max-height: 300px;
     border-radius: 3px;
+}
+.coverImage img{
+    max-width: 300px;
+    max-height: 200px;
 }
 .promptInfo{
     color: white;

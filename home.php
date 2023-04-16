@@ -39,7 +39,11 @@
                     <div class="chart">
                         <a href="promptDetail.php?prompt=<?php echo $prompt["id"]?>">
                             <div class="coverImage">
-                                <img src="https://placehold.co/300x200" alt="coverImage">
+                                <?php if(!empty($prompt["example"])){?>
+                                    <img src="<?php echo $prompt["example"]?>" alt="coverImage">
+                                <?php ;}else{?>
+                                    <img src="https://image-placeholder.com/images/actual-size/200x200.png" alt="coverImage">
+                                <?php ;}?>
                             </div>
                             <div class="promptInfo">
                                 <?php echo htmlspecialchars($prompt["prompt"])?>
