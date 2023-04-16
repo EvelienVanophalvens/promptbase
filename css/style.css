@@ -109,6 +109,9 @@ button.small{
 button a{
     text-decoration: none;
 }
+button.danger{
+    background-color: #ad0000;
+}
 nav{
     width: 100%;
     margin: 0px;
