@@ -5,6 +5,7 @@
     authenticated();
     $prompt =  Prompts::detailPrompt($_GET["prompt"]);
 
+
 ?>
 
 <!DOCTYPE html>

@@ -10,6 +10,7 @@ $db = Db::getInstance();
 $user = $_SESSION['userid'];
 
 
+
 $statusMsg = '';
 
 // File upload path
@@ -41,6 +42,19 @@ if(isset($_FILES["file"]) && !empty($_FILES["file"]["name"])){
 }else{
     $statusMsg = 'Please select a file to upload.';
 }
+
+//getting the category in the database
+if(isset($_POST['category'])) {
+    $category = $_POST['category'];
+    $insert = $db->query("INSERT into categories (name) VALUES ('".$category."')");
+    if($insert){
+        $statusMsg = "The category ".$category. " has been uploaded successfully.";
+    }else{
+        $statusMsg = "File upload failed, please try again.";
+    }
+    
+}
+
 
 // Display status message
 echo $statusMsg;
@@ -90,13 +104,9 @@ echo $statusMsg;
     <input type="text" id="beschrijving" name="beschrijving" v>
     <br>
     <br>
-    <label for="category">Choose a Category:</label>
-  <select id="category" name="category">
-    <option value="cars">Cars</option>
-    <option value="music">Music</option>
-    <option value="art">Art</option>
-    <option value="travel">Travel</option>
-  </select>
+    <label for="category">Category:</label>
+    <br>
+    <input type="text" name="category">
     <br>
     <br>
     
