@@ -6,6 +6,10 @@ include_once (__DIR__."/navbar.php");
 //get connection to database
 $db = Db::getInstance();
 
+//get user id
+$user = $_SESSION['userid'];
+
+
 $statusMsg = '';
 
 // File upload path
@@ -22,7 +26,7 @@ if(isset($_FILES["file"]) && !empty($_FILES["file"]["name"])){
         // Upload file to server
         if(move_uploaded_file($_FILES["file"]["tmp_name"], $targetFilePath)){
             // Insert image file name into database
-            $insert = $db->query("INSERT into prompts (prompt, date) VALUES ('".$fileName."', NOW())");
+            $insert = $db->query("INSERT into prompts (prompt, date, userId) VALUES ('".$fileName."', NOW(), $user)");
             if($insert){
                 $statusMsg = "The file ".$fileName. " has been uploaded successfully.";
             }else{
