@@ -85,10 +85,6 @@
                 </div>
             </div>
             <h2 class="username"><?php echo $_SESSION['auth_user']['username']?></h2>
-           <!--  <form action="" method="POST">
-                <p class="bio" id="bio"></p>
-                <input type="text" name="bio" id="bio" class="" value="">
-            </form> -->
             <form action="" method="POST">
                 <p id="bio-text">
                     <?php echo $bio; ?>
@@ -96,6 +92,7 @@
                 </p>
                 <textarea name="new_bio" id="bio-input" style="display: none;" value="<?php echo $bio; ?>"></textarea>
             </form>
+            <button class="submit small"><a href="profileSettings.php">Profiel bewerken</a></button>
         </div>
         <div class="userPrompts">Hier komen de gemaakte prompts</div>
     </div>
