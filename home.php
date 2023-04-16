@@ -43,7 +43,7 @@
                             </div>
                             <div class="promptInfo">
                                 <?php echo htmlspecialchars($prompt["prompt"])?>
-                                <div class="categoryLabel">Category</div>
+                                <div class="categoryLabel"><?php echo $prompt["name"]?></div>
                             </div>
                         </a>
                     </div>
