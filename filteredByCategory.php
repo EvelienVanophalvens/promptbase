@@ -3,7 +3,11 @@
     include_once (__DIR__."/navbar.php");
 
     authenticated();
-    $accepted =  Prompts::accepted();
+
+    if(!empty($_POST)){
+        //Alle prompts waarin de ingetypte categorie voorkomt
+        $results = Prompts::filteredPromptsByCategory($_POST['search']);
+    }
 ?>
 
 <!DOCTYPE html>
@@ -16,25 +20,12 @@
     <link rel="stylesheet" type="text/css" href="./css/style.css">
 </head>
 <body>
-    <div class="canvas">
-        <div class="box2">
-            <?php if(isset($_SESSION['status'])) { ?>
-                <div class="alert">
-                    <h5><?= $_SESSION['status']; ?></h5>
-                </div>
-                <?php unset($_SESSION['status']); ?>
-            <?php } ?>
-            <div class="context">
-                <h2>Hello! Welcome to the home page <?= $_SESSION['auth_user']['username']; ?>.</h2>
-            </div>
-        </div>
-    </div>
     <div class="content">
         <div class="newestPrompts">
-            <h3>Newest prompts</h3>
+            <h3>By category </h3>
             <hr>
             <div class="chartContainer">
-                <?php if(!empty($accepted)){ foreach($accepted as $prompt):?>
+                <?php if(!empty($results)){ foreach($results as $prompt):?>
                     <div class="chart">
                         <a href="promptDetail.php?prompt=<?php echo $prompt["id"]?>">
                             <div class="coverImage">
@@ -45,7 +36,7 @@
                                 <?php ;}?>
                             </div>
                             <div class="promptInfo">
-                                <?php echo htmlspecialchars($prompt["prompt"])?>
+                                <?php echo htmlspecialchars($prompt["promptName"])?>
                                 <div class="categoryLabel"><?php echo $prompt["name"]?></div>
                             </div>
                         </a>
