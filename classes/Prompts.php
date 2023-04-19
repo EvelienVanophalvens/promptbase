@@ -5,6 +5,7 @@
         private string $author;
         private string $date;
         private array $categories;
+   
         /**
          * Get the value of prompt
          */ 
@@ -155,18 +156,13 @@
         return $result;
     }*/
 
-       
-
-        public static function getPrompts(){
+    public static function getAll(){
         $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT prompts.prompt, prompts.date, prompts.userId, prompts.accepted, prompts.id, users.id AS user, users.username FROM prompts LEFT JOIN users ON prompts.userid = users.id  WHERE accepted = 1");
+        $statement = $conn->prepare("SELECT prompts.prompt, prompts.date, prompts.userId, prompts.accepted, prompts.id, users.id AS user, users.username FROM prompts LEFT JOIN users ON prompts.userid = users.id");
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $result;
-        }
-
-
-
+    }
 
 
 

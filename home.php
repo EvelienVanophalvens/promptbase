@@ -6,7 +6,8 @@
     $accepted =  Prompts::accepted();
 
     //get the prompts from the database
-    $prompts = Prompts::getPrompts();
+    $prompts = Prompts::getAll();
+    
 
     
 ?>
@@ -46,7 +47,7 @@
                                 <?php if(!empty($prompt["example"])){?>
                                     <img src="<?php echo $prompt["example"]?>" alt="coverImage">
                                 <?php ;}else{?>
-                                    <img src="<?php echo $image_src; ?>" alt="coverImage">
+                                    <img src="uploads/<?= $prompt['prompt']; ?>" alt="prompt">
                                 <?php ;}?>
                             </div>
                             <div class="promptInfo">

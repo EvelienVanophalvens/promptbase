@@ -58,6 +58,10 @@
         echo "het is niet gelukt";
     }
 
+    //get the prompts from the database
+    $prompts = Prompts::getPrompts();
+    $accepted = Prompts::accepted();
+    
 
     
 ?>
@@ -97,6 +101,20 @@
             <button class="submit small"><a href="profileSettings.php">Profiel bewerken</a></button>
         </div>
         <div class="userPrompts">Hier komen de gemaakte prompts</div>
+        //prompts
+        <div class="userPrompts">
+            <h2>Recente prompts</h2>
+            <?php foreach($prompts as $prompt): ?>
+                <div class="prompt">
+                    <h3><?php echo $prompt['prompt']?></h3>
+                    <p><?php echo $prompt['userId']?></p>
+                    <p><?php echo $prompt['date']?></p>
+                    <button class="submit small"><a href="prompt.php?id=<?php echo $prompt['id']?>">Bekijk</a></button>
+                </div>
+            <?php endforeach; ?>
+            
+
+
     </div>
     <form class="" id="profilePictureForm" method="POST" enctype="multipart/form-data">
         <input type="file" name="profilePicture" id="profilePicture" accept=".jpg, .jpeg, .png">
