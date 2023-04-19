@@ -58,9 +58,11 @@
         echo "het is niet gelukt";
     }
 
+    authenticated();
+    $accepted =  Prompts::accepted();
+
     //get the prompts from the database
-    $prompts = Prompts::getPrompts();
-    $accepted = Prompts::accepted();
+    $prompts = Prompts::getAll();
     
 
     
@@ -80,7 +82,7 @@
     <div class="context">
         <p><?php echo $error?></p>
         <div class="userinfo">
-            <div id="userProfilePicture">
+           <div id="userProfilePicture">
                 <img src="<?php echo $profilePicturePath?>" alt="profile picture">
                 <div class="hidden" id="profilePictureMenu">
                 <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17.44 20.14" height="20px"><defs><style>.cls-1{fill: #ddd;}</style></defs><polygon class="cls-1" points="0 10.07 17.44 0 17.44 20.14 0 10.07"/></svg>
@@ -99,19 +101,29 @@
                 <textarea name="new_bio" id="bio-input" style="display: none;" value="<?php echo $bio; ?>"></textarea>
             </form>
             <button class="submit small"><a href="profileSettings.php">Profiel bewerken</a></button>
-        </div>
+        </div>  
         <div class="userPrompts">Hier komen de gemaakte prompts</div>
-        //prompts
-        <div class="userPrompts">
-            <h2>Recente prompts</h2>
-            <?php foreach($prompts as $prompt): ?>
-                <div class="prompt">
-                    <h3><?php echo $prompt['prompt']?></h3>
-                    <p><?php echo $prompt['userId']?></p>
-                    <p><?php echo $prompt['date']?></p>
-                    <button class="submit small"><a href="prompt.php?id=<?php echo $prompt['id']?>">Bekijk</a></button>
-                </div>
-            <?php endforeach; ?>
+        <h3>Newest prompts</h3>
+        <hr>
+            <div class="chartContainer">
+                <?php if(!empty($accepted)){ foreach($accepted as $prompt):?>
+                    <div class="chart">
+                        <a href="promptDetail.php?prompt=<?php echo $prompt["id"]?>">
+                            <div class="coverImage">
+                                <?php if(!empty($prompt["example"])){?>
+                                    <img src="<?php echo $prompt["example"]?>" alt="coverImage">
+                                <?php ;}else{?>
+                                    <img src="uploads/<?= $prompt['prompt']; ?>" alt="prompt">
+                                <?php ;}?>
+                            </div>
+                            <div class="promptInfo">
+                                <?php echo htmlspecialchars($prompt["prompt"])?>
+                                <div class="categoryLabel"><?php echo $prompt["name"]?></div>
+                            </div>
+                        </a>
+                    </div>
+                <?php endforeach; }  ?>
+            </div>
             
 
 
