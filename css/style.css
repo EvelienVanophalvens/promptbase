@@ -45,7 +45,7 @@ input#password{
     border-bottom-left-radius: 4px;
     border-bottom-right-radius: 4px;
 }
-input#email, input#search{
+input#email, input#search, input#comment{
     margin-top: 4px;
     width: 96%;
     padding-top: 12px;
@@ -53,6 +53,9 @@ input#email, input#search{
     padding-bottom: 12px;
     border: 1px solid #d1d1d1;
     border-radius: 4px;
+}
+input#comment{
+    width: 30%;
 }
 .login-input input{
     width: 100%;
@@ -105,6 +108,7 @@ button.submit svg{
 button.submit a{
     color: white;
 }
+/*Kleine submitbuttons*/
 button.small{
     width: 200px;
 }
@@ -429,8 +433,19 @@ nav ul a{
     display: flex;
     justify-content: space-between;
   }
-  .subInfo{
+  .half{
     width: 50%;
+  }
+  .comment{
+    background-color: #cfedf9;
+    border-bottom: 1px solid darkblue;
+    padding-top: 10px;
+    padding-left: 15px;
+    padding-bottom: 10px;
+    border-radius: 3px;
+  }
+  .comment p{
+    margin: 0px;
   }
   /*Opmaak error inputs*/
   .error{
