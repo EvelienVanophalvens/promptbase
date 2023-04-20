@@ -164,6 +164,14 @@
         $allComments = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $allComments;
     }
+    public static function addComment($userId, $promptId, $comment){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("INSERT INTO prompt_comments (promptId, userId, comment)VALUES (:prompt, :user, :comment);");
+        $statement->bindValue(":prompt", $promptId);
+        $statement->bindValue(":user", $userId);
+        $statement->bindValue(":comment", $comment);
+        $statement->execute();
+    }
 
 
 

@@ -5,6 +5,10 @@
     authenticated();
     $prompt =  Prompts::detailPrompt($_GET["prompt"]);
     $comment = Prompts::getAllComments($_GET["prompt"]);
+    if(!empty($_POST)){
+        $commentMessage = $_POST['comment'];
+
+    }
 ?>
 
 <!DOCTYPE html>
@@ -58,7 +62,7 @@
                 </div>
                 <br>
             <?php endforeach; ?>
-            <form action="" method="POST">
+            <form id="comment-form" method="POST">
                 <div class="title">
                     <h4>Hi <?= $_SESSION['auth_user']['username']; ?>, what do you think?</h4>
                 </div>
@@ -74,5 +78,39 @@
         </div>               
         </div>     
     </div>
+    <script>
+        const commentForm = document.getElementById('comment-form');
+        const commentInput = document.getElementById('comment');
+
+        commentForm.onsubmit = (e) => {
+            // Voorkomt standaard verzending van het formulier
+            e.preventDefault(); 
+            // Maak een nieuw AJAX-verzoek
+            const xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = () => {
+                if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                    // Succesvol AJAX-verzoek
+                    const response = JSON.parse(xhr.responseText);
+                    console.log(response);
+                    // Voeg het nieuwe commentaar toe aan de HTML
+                    const commentSection = document.querySelector('.commentsection');
+                    const newComment = `
+                            <div class="comment half">
+                                <p><strong>${response.username}</strong></p>
+                                <p>${response.comment}</p>
+                            </div>
+                            <br>
+                        `;
+                    commentSection.insertAdjacentHTML('beforeend', newComment);
+                    // Leeg het invoerveld
+                    commentInput.value = '';
+                }
+            }
+            xhr.open('POST', 'post-comment.php'); // AJAX-verzoek naar deze URL
+            xhr.setRequestHeader('Content-Type', 'application/json'); // Stel het inhoudstype in op JSON
+            const data = {comment: commentInput.value, prompt: <?php echo $_GET["prompt"]; ?>}; // Gegevens die naar de server worden verzonden
+            xhr.send(JSON.stringify(data)); // Verzend het AJAX-verzoek met de gegevens
+        };
+</script>
 </body>
 </html>
