@@ -3,12 +3,9 @@
     include_once (__DIR__."/navbar.php");
 
     authenticated();
+    
     $prompt =  Prompts::detailPrompt($_GET["prompt"]);
     $comment = Prompts::getAllComments($_GET["prompt"]);
-    if(!empty($_POST)){
-        $commentMessage = $_POST['comment'];
-
-    }
 ?>
 
 <!DOCTYPE html>
@@ -62,6 +59,7 @@
                 </div>
                 <br>
             <?php endforeach; ?>
+        </div>
             <form id="comment-form" method="POST">
                 <div class="title">
                     <h4>Hi <?= $_SESSION['auth_user']['username']; ?>, what do you think?</h4>
@@ -74,8 +72,7 @@
                         Send
                     </button>
                 </div>
-            </form>
-        </div>               
+            </form>               
         </div>     
     </div>
     <script>
@@ -91,25 +88,35 @@
                 if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
                     // Succesvol AJAX-verzoek
                     const response = JSON.parse(xhr.responseText);
-                    console.log(response);
-                    // Voeg het nieuwe commentaar toe aan de HTML
+                    //Het maken van een nieuwe comment begint hier
                     const commentSection = document.querySelector('.commentsection');
-                    const newComment = `
-                            <div class="comment half">
-                                <p><strong>${response.username}</strong></p>
-                                <p>${response.comment}</p>
-                            </div>
-                            <br>
-                        `;
-                    commentSection.insertAdjacentHTML('beforeend', newComment);
+                    const newComment = document.createElement('div');
+                    newComment.className = 'comment half';
+                    //De user toekennen
+                    const userParagraph = document.createElement('p');
+                    const lastCommentIndex = response.length - 1;
+                    const comment = response[lastCommentIndex];
+                    userParagraph.innerHTML = `<strong>${comment.username}</strong>`;
+                    newComment.appendChild(userParagraph);
+                    //De comment zelf toekennen
+                    const commentParagraph = document.createElement('p');
+                    commentParagraph.innerHTML = comment.comment;
+                    newComment.appendChild(commentParagraph);
+                    commentSection.appendChild(newComment);
+                    // voeg hier een nieuw <br> element toe
+                    commentSection.appendChild(document.createElement('br'));
                     // Leeg het invoerveld
                     commentInput.value = '';
                 }
             }
-            xhr.open('POST', 'post-comment.php'); // AJAX-verzoek naar deze URL
-            xhr.setRequestHeader('Content-Type', 'application/json'); // Stel het inhoudstype in op JSON
-            const data = {comment: commentInput.value, prompt: <?php echo $_GET["prompt"]; ?>}; // Gegevens die naar de server worden verzonden
-            xhr.send(JSON.stringify(data)); // Verzend het AJAX-verzoek met de gegevens
+            // AJAX-verzoek naar deze URL
+            xhr.open('POST', 'post-comment.php');
+            // Stel het inhoudstype in op JSON
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            // Gegevens die naar de server worden verzonden
+            const data = {comment: commentInput.value, prompt: <?php echo $_GET["prompt"]; ?>};
+            // Verzend het AJAX-verzoek met de gegevens
+            xhr.send(JSON.stringify(data));
         };
 </script>
 </body>
