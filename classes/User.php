@@ -235,5 +235,19 @@ class User{
         $statement->execute();
     }
 
+    public static function getUserByEmail($email){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT email FROM users WHERE email= :email");
+        $statement->bindValue(":email", $email);
+        $statement->execute();
+        $user = $statement->fetch(PDO::FETCH_ASSOC);
+        if($user){
+            //als er een user te vinden is zal het true weergeven anders false
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 
 }

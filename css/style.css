@@ -390,3 +390,13 @@ nav ul a{
     padding: 20px;
     margin: 20px;
   }
+  /*Opmaak error inputs*/
+  .error{
+    border: 3px solid red !important;
+  }
+  .error::placeholder{
+    color: red;
+  }
+  .error input[type="email"] {
+    color: #ff0000;
+  }

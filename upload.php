@@ -10,6 +10,7 @@ $db = Db::getInstance();
 $user = $_SESSION['userid'];
 
 
+
 $statusMsg = '';
 
 // File upload path
@@ -42,8 +43,31 @@ if(isset($_FILES["file"]) && !empty($_FILES["file"]["name"])){
     $statusMsg = 'Please select a file to upload.';
 }
 
-// Display status message
-echo $statusMsg;
+//getting the category in the database
+if(isset($_POST['category'])) {
+    $category = $_POST['category'];
+    $insert = $db->query("INSERT into categories (name) VALUES ('".$category."')"); 
+    if($insert){
+        $statusMsg = "The category ".$category. " has been uploaded successfully.";
+    }else{
+        $statusMsg = "File upload failed, please try again.";
+    }
+    
+}
+
+//getting the categoryId in the database prompt_categories
+if(isset($_POST['category'])) {
+    $category = $_POST['category'];
+    $insert = $db->query("INSERT into prompt_categories (categoryId) VALUES ('".$category."')");
+}
+
+//getting the promptId in the database prompt_categories
+if(isset($_POST['promptId'])) {
+    $promptId = $_POST['promptId'];
+    $insert = $db->query("INSERT into prompt_categories (promptId) VALUES ('".$promptId."')");
+}
+
+
 
 ?>
 <!DOCTYPE html>
@@ -62,6 +86,7 @@ echo $statusMsg;
             <p class="statusMsg"> <?php echo $statusMsg; ?> </p> 
             <?php } ?>
     <form  action="upload.php" method="POST" enctype="multipart/form-data">
+
     <label for="file">Upload afbeelding:</label>
     <br>
     <input type="file" name="file" >
@@ -90,13 +115,9 @@ echo $statusMsg;
     <input type="text" id="beschrijving" name="beschrijving" v>
     <br>
     <br>
-    <label for="category">Choose a Category:</label>
-  <select id="category" name="category">
-    <option value="cars">Cars</option>
-    <option value="music">Music</option>
-    <option value="art">Art</option>
-    <option value="travel">Travel</option>
-  </select>
+    <label for="category">Category:</label>
+    <br>
+    <input type="text" name="category">
     <br>
     <br>
     

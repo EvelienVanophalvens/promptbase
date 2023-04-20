@@ -118,5 +118,37 @@
         </form>
     </div>
   </div>
+  <script>
+    //Controleren of het email al dan niet bestaat.
+    //de juiste HTML-elementen selecteren
+    let typedEmail = document.getElementById("email-address");
+    let errorMessage = document.querySelector(".alert");
+    //FUNCTIE: dez word enkel uitgevoerd wanneer het element veranderd
+    typedEmail.addEventListener("change",function(e){
+        //autorefresh voorkomen
+        e.preventDefault();
+        // Maak een AJAX-request naar getUserByEmail.php
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", "getUserByEmail.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function() {
+            if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+            // Het resultaat van de functie is in xhr.responseText beschikbaar
+                let result = JSON.parse(xhr.responseText);
+                if(result.status === "error") {
+                    typedEmail.classList.add("error");
+                    errorMessage.innerText = result.message;
+                }
+                else {
+                    typedEmail.classList.remove("error");
+                    errorMessage.innerText = "";
+                }
+            }
+        };
+        xhr.send("email=" + typedEmail.value);
+
+        console.log("gesubmit");
+    })
+  </script>
 </body>
 </html>
