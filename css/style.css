@@ -31,6 +31,7 @@ body{
 .title h2{
     font-size: 32px;
     font-weight: 600;
+    margin-bottom: 0px;
 }
 .hidden{
     display: none;
@@ -285,7 +286,7 @@ nav ul a{
 .promptDetails .img{
     display: grid;
     grid-template-columns: 1fr 1fr;
-    
+    background-color: #1f2937;
 
 }
 
@@ -356,6 +357,21 @@ nav ul a{
     max-width: 300px;
     max-height: 200px;
 }
+.imageExample{
+    background-color: #1f2937;
+    height: 200px;
+    width: 200px;
+    border-radius: 3px;
+}
+.imageExample img{
+    height: 200px;
+}
+#exampleBox{
+    display:flex;
+    flex-direction: row;
+    gap: 20px;
+    margin-top: 40px;
+}
 .promptInfo{
     color: white;
     display: flex;
@@ -377,8 +393,6 @@ nav ul a{
     text-decoration: none;
     color:#0099CB;
 }
-
-
 .upload {
     display: flex;
     flex-direction: column;
@@ -389,6 +403,34 @@ nav ul a{
     border-radius: 4px;
     padding: 20px;
     margin: 20px;
+  }
+  .dark{
+    background-color: #1f2937;
+    color: white;
+  }
+  .left{
+    float: left;
+  }
+  .promptUserInfo{
+    width: 50%;
+    border-radius: 3px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: -10px;
+  }
+  .likes{
+    margin: 0px;
+    background-color:#afafaf;
+    padding: 5px;
+    border-radius: 3px;
+    width: 100px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .subInfo{
+    width: 50%;
   }
   /*Opmaak error inputs*/
   .error{

@@ -120,20 +120,19 @@
     }
     public static function detailPrompt($id){
         $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT prompts.prompt, prompts.date, prompts.userId, prompts.accepted, prompts.id, users.id AS user, users.username FROM prompts LEFT JOIN users ON prompts.userid = users.id LEFT JOIN prompt_examples ON prompts.id = prompt_examples.promptId  WHERE prompts.id = :id AND accepted = 1 ");
+        $statement = $conn->prepare("SELECT prompts.prompt AS promptName, prompts.date, prompts.userId, prompts.accepted, prompts.id, users.id AS user, users.username, prompt_categories.promptId, prompt_categories.categoryId,categories.name, prompt_examples.example FROM prompts LEFT JOIN users ON prompts.userid = users.id  LEFT JOIN prompt_categories ON prompts.id = prompt_categories.promptId LEFT JOIN categories ON prompt_categories.categoryId = categories.id LEFT JOIN prompt_examples ON prompts.id = prompt_examples.promptId WHERE accepted = 1 AND prompts.id = :id LIMIT 1;");
         $statement->bindValue(":id", $id);
         $statement->execute();
-        $result = $statement->fetch(PDO::FETCH_ASSOC);
-
-        $statement2 = $conn->prepare("SELECT  prompt_examples.example FROM prompts LEFT JOIN prompt_examples ON prompts.id = prompt_examples.promptId WHERE prompts.id= :id");
+        $results =$statement->fetch(PDO::FETCH_ASSOC);
+        //statement voor meerdere voorbeelden te kunnen laden
+        $statement2 = $conn->prepare("SELECT  prompt_examples.example FROM prompts LEFT JOIN prompt_examples ON prompts.id = prompt_examples.promptId WHERE prompts.id= :id;");
         $statement2->bindValue(":id", $id);
         $statement2->execute();
-        $result2 = $statement2->fetchALL(PDO::FETCH_ASSOC);
-
-        return array("prompts" => $result,
-                      "examples" => $result2);
+        $results2 = $statement2->fetchALL(PDO::FETCH_ASSOC);
+        //beide resultaten worden doorgestuurd
+        return array("prompts" => $results,
+                      "examples" => $results2);
     }
-
     public static function acceptPrompt($id){
         $conn = Dbm::getInstance();
         $statement = $conn->prepare("UPDATE prompts SET accepted = 1 WHERE id = :id");
@@ -148,13 +147,6 @@
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
-   /* public static function filteredPromptsByCategory($category){
-        $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT prompts.prompt AS promptName, prompts.date, prompts.userId, prompts.accepted, prompts.id, users.id AS user, users.username, prompt_categories.promptId, prompt_categories.categoryId,categories.name, prompt_examples.example FROM prompts LEFT JOIN users ON prompts.userid = users.id  LEFT JOIN prompt_categories ON prompts.id = prompt_categories.promptId LEFT JOIN categories ON prompt_categories.categoryId = categories.id LEFT JOIN prompt_examples ON prompts.id = prompt_examples.promptId WHERE accepted = 1 AND categories.name LIKE '%$category%' ORDER BY prompts.date ASC;");
-        $statement->execute();
-        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-        return $result;
-    }*/
 
     public static function getAll(){
         $conn = Db::getInstance();
