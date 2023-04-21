@@ -6,6 +6,8 @@
     
     $prompt =  Prompts::detailPrompt($_GET["prompt"]);
     $comment = Prompts::getAllComments($_GET["prompt"]);
+    $accepted =  Prompts::accepted();
+    $prompts = Prompts::getAll();
 ?>
 
 <!DOCTYPE html>
@@ -27,7 +29,7 @@
         <section id="exampleBox">
             <?php foreach($prompt["examples"] as $example):?>
                 <div class="imageExample">
-                    <img scr="<?php echo $example;?>" alt="example">
+                    <img src="<?php echo $example["image"]?>" alt="example">
                 </div>
             <?php endforeach; ?>
         </section>

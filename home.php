@@ -8,25 +8,19 @@
     //get the prompts from the database
     $prompts = Prompts::getAll();
     
-    $prompts = array(
-        new Prompt('Prompt 1', 'Author 1', 'GPT-2', 'paid'),
-        new Prompt('Prompt 2', 'Author 2', 'GPT-3', 'free'),
-        new Prompt('Prompt 3', 'Author 3', 'GPT-2', 'free'),
-        // add more prompts as needed
-      );
-      
-      $prompts_collection = new Prompts($prompts);
-      
-      $paid_free_filter = isset($_GET['paid_free']) ? $_GET['paid_free'] : '';
-      $model_filter = isset($_GET['model_choice']) ? $_GET['model_choice'] : '';
-      
-      $filtered_prompts = $prompts_collection->filterPrompts($paid_free_filter, $model_filter);
-      
-      foreach ($filtered_prompts as $prompt) {
-        // display the prompt
-      }
+  
+    //get the paid from the filter
+$paid = isset($_POST['paid_free']) ? $_POST['paid_free'] : null;
+//get the model from the filter
+$model = isset($_POST['model_choice']) ? $_POST['model_choice'] : null;
+//get the filter
+if ($paid || $model) {
+    $prompts = Prompts::getFilter($paid, $model);
+} else {
+    $prompts = Prompts::getAll();
+}
 
-    
+
 ?>
 
 <!DOCTYPE html>
@@ -53,7 +47,7 @@
         </div>
     </div>
     <div id="filter">
-    <form method="GET" action="prompts.php">
+    <form method="POST" action="home.php">
   <label for="paid_free">Paid/Free:</label>
   <select id="paid_free" name="paid_free">
     <option value="">All</option>
@@ -62,7 +56,7 @@
   </select>
 
   <label for="model_choice">Model:</label>
-  <select id="model_choice" name="model_choice">
+  <select name="model_choice">
     <option value="">All</option>
     <option value="stable diffusion">stable diffusion</option>
     <option value="dall-e">dall-e</option>

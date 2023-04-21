@@ -5,7 +5,6 @@
         private string $author;
         private string $date;
         private array $categories;
-        private $prompts;
    
         /**
          * Get the value of prompt
@@ -121,7 +120,7 @@
     }
     public static function detailPrompt($id){
         $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT prompts.prompt AS promptName, prompts.date, prompts.userId, prompts.accepted, prompts.id,prompts.description, users.id AS user, users.username, prompt_categories.promptId, prompt_categories.categoryId,categories.name, prompt_examples.example FROM prompts LEFT JOIN users ON prompts.userid = users.id  LEFT JOIN prompt_categories ON prompts.id = prompt_categories.promptId LEFT JOIN categories ON prompt_categories.categoryId = categories.id LEFT JOIN prompt_examples ON prompts.id = prompt_examples.promptId WHERE accepted = 1 AND prompts.id = :id LIMIT 1;");
+        $statement = $conn->prepare("SELECT prompts.prompt AS promptName, prompts.date, prompts.userId, prompts.accepted, prompts.id, prompts.description, users.id AS user, users.username, prompt_categories.promptId, prompt_categories.categoryId,categories.name, prompt_examples.example FROM prompts LEFT JOIN users ON prompts.userid = users.id  LEFT JOIN prompt_categories ON prompts.id = prompt_categories.promptId LEFT JOIN categories ON prompt_categories.categoryId = categories.id LEFT JOIN prompt_examples ON prompts.id = prompt_examples.promptId WHERE accepted = 1 AND prompts.id = :id LIMIT 1;");
         $statement->bindValue(":id", $id);
         $statement->execute();
         $results =$statement->fetch(PDO::FETCH_ASSOC);
@@ -174,21 +173,14 @@
         $statement->execute();
     }
 
-
-    public function __construct($prompts) {
-        $this->prompts = $prompts;
-      }
+    public static function getFilter($paid, $model){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT prompts.prompt, prompts.date, prompts.userId, prompts.accepted, prompts.id, users.id AS user, users.username FROM prompts LEFT JOIN users ON prompts.userid = users.id WHERE prompts.accepted = :paid AND prompts.userId = :model");
+        $statement->bindValue(":paid", $paid);
+        $statement->bindValue(":model", $model);
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
     
-      public function filterPrompts($paid_free_filter, $model_filter) {
-        $filtered_prompts = array();
-    
-        foreach ($this->prompts as $prompt) {
-          if (($paid_free_filter == '' || $prompt->getPrice() == $paid_free_filter) &&
-              ($model_filter == '' || $prompt->getModel() == $model_filter)) {
-            $filtered_prompts[] = $prompt;
-          }
-        }
-    
-        return $filtered_prompts;
-      }
   }

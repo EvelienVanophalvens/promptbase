@@ -67,6 +67,21 @@ if(isset($_POST['promptId'])) {
     $insert = $db->query("INSERT into prompt_categories (promptId) VALUES ('".$promptId."')");
 }
 
+//getting the paid/free, model and description in the database prompts
+if(isset($_POST['paid_free'])) {
+    $paid_free = $_POST['paid_free'];
+    $model_choice = $_POST['model_choice'];
+    $message = $_POST['message'];
+    $insert = $db->query("INSERT into prompts (paid, model, description) VALUES ('".$paid_free."', '".$model_choice."', '".$message."')");
+    if($insert){
+        $statusMsg = "The prompt ".$message. " has been uploaded successfully.";
+    }else{
+        $statusMsg = "File upload failed, please try again.";
+    }
+}
+
+
+
 
 
 ?>
@@ -92,10 +107,26 @@ if(isset($_POST['promptId'])) {
     <label for="title">Title:</label>
     <input type="text" id="title" name="title" >
     <br>
+    <br>
     <input type="radio" id="private" name="private" value="PRIVATE">
     <label for="private">Private</label>
     <input type="radio" id="public" name="public" value="PUBLIC">
     <label for="public">Public</label>
+    <br>
+    <br>
+    <input type="radio" id="paid" name="paid_free" value="paid">
+    <label for="paid">Paid</label>
+    <input type="radio" id="free" name="paid_free" value="free">
+    <label for="free">Free</label>
+    <br>
+    <br>
+    <label for="model_choice">Model Choice:</label>
+    <select id="model_choice" name="model_choice">
+    <option value="">All</option>
+    <option value="stable diffusion">stable diffusion</option>
+    <option value="dall-e">dall-e</option>
+    <option value="midjourney">midjourney</option>
+    </select>
     <br>
     <label for="price">Credits:</label>
     <input type="number" id="price" name="price">
