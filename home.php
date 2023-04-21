@@ -52,6 +52,7 @@
             </div>
         </div>
     </div>
+    <div id="filter">
     <form method="GET" action="prompts.php">
   <label for="paid_free">Paid/Free:</label>
   <select id="paid_free" name="paid_free">
@@ -70,7 +71,7 @@
 
   <button type="submit">Filter</button>
 </form>
-
+</div>
     <div class="content">
         <div class="newestPrompts">
             <h3>Newest prompts</h3>
