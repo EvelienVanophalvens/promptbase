@@ -8,6 +8,23 @@
     //get the prompts from the database
     $prompts = Prompts::getAll();
     
+    $prompts = array(
+        new Prompt('Prompt 1', 'Author 1', 'GPT-2', 'paid'),
+        new Prompt('Prompt 2', 'Author 2', 'GPT-3', 'free'),
+        new Prompt('Prompt 3', 'Author 3', 'GPT-2', 'free'),
+        // add more prompts as needed
+      );
+      
+      $prompts_collection = new Prompts($prompts);
+      
+      $paid_free_filter = isset($_GET['paid_free']) ? $_GET['paid_free'] : '';
+      $model_filter = isset($_GET['model_choice']) ? $_GET['model_choice'] : '';
+      
+      $filtered_prompts = $prompts_collection->filterPrompts($paid_free_filter, $model_filter);
+      
+      foreach ($filtered_prompts as $prompt) {
+        // display the prompt
+      }
 
     
 ?>
@@ -35,6 +52,25 @@
             </div>
         </div>
     </div>
+    <form method="GET" action="prompts.php">
+  <label for="paid_free">Paid/Free:</label>
+  <select id="paid_free" name="paid_free">
+    <option value="">All</option>
+    <option value="paid">Paid</option>
+    <option value="free">Free</option>
+  </select>
+
+  <label for="model_choice">Model:</label>
+  <select id="model_choice" name="model_choice">
+    <option value="">All</option>
+    <option value="stable diffusion">stable diffusion</option>
+    <option value="dall-e">dall-e</option>
+    <option value="midjourney">midjourney</option>
+  </select>
+
+  <button type="submit">Filter</button>
+</form>
+
     <div class="content">
         <div class="newestPrompts">
             <h3>Newest prompts</h3>

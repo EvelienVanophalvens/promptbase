@@ -5,6 +5,7 @@
         private string $author;
         private string $date;
         private array $categories;
+        private $prompts;
    
         /**
          * Get the value of prompt
@@ -174,5 +175,20 @@
     }
 
 
-
+    public function __construct($prompts) {
+        $this->prompts = $prompts;
+      }
+    
+      public function filterPrompts($paid_free_filter, $model_filter) {
+        $filtered_prompts = array();
+    
+        foreach ($this->prompts as $prompt) {
+          if (($paid_free_filter == '' || $prompt->getPrice() == $paid_free_filter) &&
+              ($model_filter == '' || $prompt->getModel() == $model_filter)) {
+            $filtered_prompts[] = $prompt;
+          }
+        }
+    
+        return $filtered_prompts;
+      }
   }
