@@ -86,41 +86,25 @@ if(isset($_POST['promptId'])) {
             <p class="statusMsg"> <?php echo $statusMsg; ?> </p> 
             <?php } ?>
     <form  action="upload.php" method="POST" enctype="multipart/form-data">
-
     <label for="file">Upload afbeelding:</label>
-    <br>
     <input type="file" name="file" >
     <br>
-    <br>
     <label for="title">Title:</label>
-    <br>
     <input type="text" id="title" name="title" >
-    <br>
     <br>
     <input type="radio" id="private" name="private" value="PRIVATE">
     <label for="private">Private</label>
     <input type="radio" id="public" name="public" value="PUBLIC">
     <label for="public">Public</label>
     <br>
-    <br>
-    <label for="price">Price:</label>
-    <br>    
-    free
-  <input type="range" id="price" name="price" value="50">
-  10 credits
-    <br>
+    <label for="price">Credits:</label>
+    <input type="number" id="price" name="price">
     <br>
     <label for="beschrijving">Beschrijving:</label>
-    <br>
-    <input type="text" id="beschrijving" name="beschrijving" v>
-    <br>
+    <textarea name="message" rows="10" cols="30"></textarea>
     <br>
     <label for="category">Category:</label>
-    <br>
     <input type="text" name="category">
-    <br>
-    <br>
-    
     <input type="submit" name="submit" value="Upload prompt">
 </form>
 </div>
