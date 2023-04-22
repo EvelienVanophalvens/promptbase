@@ -336,15 +336,21 @@
         $statement->execute();
     }
 
-    public static function getFilter($paid, $model){
-        $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT prompts.prompt, prompts.date, prompts.userId, prompts.accepted, prompts.id, users.id AS user, users.username FROM prompts LEFT JOIN users ON prompts.userid = users.id WHERE prompts.accepted = :paid AND prompts.userId = :model");
-        $statement->bindValue(":paid", $paid);
-        $statement->bindValue(":model", $model);
-        $statement->execute();
-        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-        return $result;
-    }
+    //retrieve the data from mysql using drop down
+        public static function filter($paid_free, $model_choice){
+                $conn = Db::getInstance();
+                $statement = $conn->prepare("SELECT paid FROM prompts WHERE paid = :paid_free");
+                $statement->bindValue(":paid_free", $paid_free);
+                $statement->execute();
+                $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+                return $result;
+        
+                $statement2 = $conn->prepare("SELECT name FROM model WHERE name = :model_choice");
+                $statement2->bindValue(":model_choice", $model_choice);
+                $statement2->execute();
+                $result2 = $statement2->fetchAll(PDO::FETCH_ASSOC);
+                return $result2;
+                }
+        
     
-
   }

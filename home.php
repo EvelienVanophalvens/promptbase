@@ -7,22 +7,14 @@
 
     //get the prompts from the database
     $prompts = Prompts::getAll();
-    
-  
-    //get the paid from the filter
-$paid = isset($_POST['paid_free']) ? $_POST['paid_free'] : null;
-//get the model from the filter
-$model = isset($_POST['model_choice']) ? $_POST['model_choice'] : null;
-//get the filter
-if ($paid || $model) {
-    $prompts = Prompts::getFilter($paid, $model);
-} else {
-    $prompts = Prompts::getAll();
-}
 
-
+    //retrieve the data from mysql using drop down
+    if(isset($_POST['paid_free']) && isset($_POST['model_choice'])){
+        $paid_free = $_POST['paid_free'];
+        $model_choice = $_POST['model_choice'];
+        $accepted = Prompts::filter($paid_free, $model_choice);
+    }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -73,16 +65,16 @@ if ($paid || $model) {
             <div class="chartContainer">
                 <?php if(!empty($accepted)){ foreach($accepted as $prompt):?>
                     <div class="chart">
-                        <a href="promptDetail.php?prompt=<?php echo $prompt["id"]?>">
+                     <a href="promptDetail.php?prompt=<?php echo $prompt["id"]?>"> 
                             <div class="coverImage">
                                 <?php if(!empty($prompt["example"])){?>
                                     <img src="<?php echo $prompt["example"]?>" alt="coverImage">
                                 <?php ;}else{?>
-                                    <img src="uploads/<?= $prompt['prompt']; ?>" alt="prompt">
+                           <img src="uploads/<?= $prompt['prompt']; ?>" alt="prompt"> 
                                 <?php ;}?>
                             </div>
                             <div class="promptInfo">
-                                <?php echo htmlspecialchars($prompt["prompt"])?>
+                              <?php echo htmlspecialchars($prompt["prompt"])?> 
                                 <div class="categoryLabel"><?php echo $prompt["name"]?></div>
                             </div>
                         </a>
