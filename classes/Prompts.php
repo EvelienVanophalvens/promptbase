@@ -293,6 +293,8 @@
         //beide resultaten worden doorgestuurd
         return array("prompts" => $results,
                       "examples" => $results2);
+
+                  
     }
     public static function acceptPrompt($id){
         $conn = Dbm::getInstance();

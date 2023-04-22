@@ -7,7 +7,13 @@
     $comment = Prompts::getAllComments($_GET["prompt"]);
     $accepted =  Prompts::accepted();
     $prompts = Prompts::getAll();
-    var_dump($prompt);
+
+    $picture = "";
+
+    foreach($prompt["examples"] as $example){
+        var_dump($example);
+        $picture = "uploads/".$example["example"];
+    }
 ?>
 
 <!DOCTYPE html>
@@ -30,7 +36,7 @@
         <section id="exampleBox">
             <?php foreach($prompt["examples"] as $example):?>
                 <div class="imageExample">
-                    <img src="<?php echo $example["image"]?>" alt="example">
+                    <img src="<?php echo $picture?>" alt="example">
                 </div>
             <?php endforeach; ?>
         </section>
