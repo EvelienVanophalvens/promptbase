@@ -5,6 +5,11 @@
         private string $author;
         private string $date;
         private array $categories;
+        private string $description;
+        private int $status;
+        private int $paid;
+        private int $model; 
+        private int $price;
    
         /**
          * Get the value of prompt
@@ -85,8 +90,164 @@
 
                 return $this;
         }
-    
+
+          /**
+         * Get the value of description
+         */ 
+        public function getDescription()
+        {
+                return $this->description;
+        }
+
+        /**
+         * Set the value of description
+         *
+         * @return  self
+         */ 
+        public function setDescription($description)
+        {
+                $this->description = $description;
+
+                return $this;
+        }
+
+
         
+      
+
+        /**
+         * Get the value of status
+         */ 
+        public function getStatus()
+        {
+                return $this->status;
+        }
+
+        /**
+         * Set the value of status
+         *
+         * @return  self
+         */ 
+        public function setStatus($status)
+        {
+                $this->status = $status;
+
+                return $this;
+        }
+
+        /**
+         * Get the value of paid
+         */ 
+        public function getPaid()
+        {
+                return $this->paid;
+        }
+
+        /**
+         * Set the value of paid
+         *
+         * @return  self
+         */ 
+        public function setPaid($paid)
+        {
+                $this->paid = $paid;
+
+                return $this;
+        }
+
+        /**
+         * Get the value of model
+         */ 
+        public function getModel()
+        {
+                return $this->model;
+        }
+
+        /**
+         * Set the value of model
+         *
+         * @return  self
+         */ 
+        public function setModel($model)
+        {
+                $this->model = $model;
+
+                return $this;
+        }
+
+   
+
+        /**
+         * Get the value of price
+         */ 
+        public function getPrice()
+        {
+                return $this->price;
+        }
+
+        /**
+         * Set the value of price
+         *
+         * @return  self
+         */ 
+        public function setPrice($price)
+        {
+                $this->price = $price;
+
+                return $this;
+        }
+    
+
+    public function save(){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("INSERT INTO prompts (prompt, userId, date, accepted, description, status, paid, price, modelId) VALUES (:prompt, :userId, :date, :accepted, :discription, :status, :paid, :price, :model )");
+        $statement->bindValue(":prompt", $this->getPrompt());
+        $statement->bindValue(":userId", $this->getAuthor());
+        $statement->bindValue(":date", $this->getDate());
+        $statement->bindValue(":accepted", 0);
+        $statement->bindValue(":discription", $this->getDescription());
+        $statement->bindValue(":status", $this->getStatus());
+        $statement->bindValue(":paid", $this->getPaid());
+        $statement->bindValue(":price", $this->getPrice());
+        $statement->bindValue(":model", $this->getModel());
+        $statement->execute();
+
+        $lastId = $conn->lastInsertId();
+        return $lastId;
+
+        foreach($this->getCategories() as $category){
+            $statement3 = $conn->prepare("INSERT INTO prompt_categories (promptId, categoryId) VALUES (:promptId, :categoryId)");
+            $statement3->bindValue(":promptId", $lastId);
+            $statement3->bindValue(":categoryId", $category);
+            $statement3->execute();
+        }
+        }
+
+        public static function addExample($id, $example){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("INSERT INTO prompt_examples (promptId, example) VALUES (:promptId, :example)");
+            $statement->bindValue(":promptId", $id);
+            $statement->bindValue(":example", $example);
+            return $statement->execute();
+        }
+
+    
+    public static function getModules(){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT * FROM model");
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    public static function categories(){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT * FROM categories");
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
     public static function notAccepted(){
         $conn = Dbm::getInstance();
         $statement = $conn->prepare("SELECT prompts.prompt, prompts.date, prompts.userId, prompts.accepted, prompts.id, users.id AS user, users.username FROM prompts LEFT JOIN users ON prompts.userid = users.id  WHERE accepted = 0");
@@ -183,4 +344,5 @@
         return $result;
     }
     
+
   }

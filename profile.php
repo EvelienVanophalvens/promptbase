@@ -134,5 +134,5 @@
         <button id="cancelPicture"type="button" id="cancelProfilePicture">Cancel</button>
     </form> 
 </body>
-<script src="./scripts/script.js"></script>
+<script src="./scripts/scriptProfile.js"></script>
 </html>

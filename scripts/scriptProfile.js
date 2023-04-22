@@ -42,5 +42,5 @@ bioInput.addEventListener('keydown', (event) => {
     bioText.textContent = bioInput.value;
     document.querySelector('form').submit();
   }
- 
 });
+ 

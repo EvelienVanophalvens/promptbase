@@ -3,84 +3,87 @@
 include_once(__DIR__."/bootstrap.php");
 include_once (__DIR__."/navbar.php");
 
-//get connection to database
-$db = Db::getInstance();
-
 //get user id
 $user = $_SESSION['userid'];
 
+//get model for prompts
+$models = Prompts::getModules();
+
+$categories = Prompts::categories();
+
+$promptId = "";
+
+if(!empty($_POST) && $_POST['paid'] == 0){
+    var_dump($_POST);
+    $prompt = new Prompts();
+    $prompt->setPrompt($_POST['title']);
+    $prompt->setAuthor($user);
+    $prompt->setDate(date("Y-m-d"));
+    $prompt->setDescription($_POST['description']);
+    $prompt->setStatus($_POST['status']);
+    $prompt->setPaid($_POST['paid']);
+    $prompt->setPrice($_POST['price']);
+    $prompt->setCategories($_POST['categories']);
+    $prompt->setModel($_POST['model_choice']);
+    $promptId = $prompt->save();
+    
+}else if(!empty($_POST) && $_POST['paid'] == 1){
+    $message = "Your price will be set to 0 because you have chosen to make this prompt free";
+    $prompt = new Prompts();
+    $prompt->setPrompt($_POST['title']);
+    $prompt->setAuthor($user);
+    $prompt->setDate(date("Y-m-d"));
+    $prompt->setDescription($_POST['description']);
+    $prompt->setStatus($_POST['status']);
+    $prompt->setPaid($_POST['paid']);
+    $prompt->setPrice(0);
+    $prompt->setCategories($_POST['categories']);
+    $prompt->setModel($_POST['model_choice']);
+    $promptId = $prompt->save();
+}else{
+    $message = "Please fill in all the fields";
+}
 
 
-$statusMsg = '';
 
-// File upload path
+
+$statusMsg = '';;
+
+
 $targetDir = "uploads/";
 
-if(isset($_FILES["file"]) && !empty($_FILES["file"]["name"])){
-    $fileName = basename($_FILES["file"]["name"]);
-    $targetFilePath = $targetDir . $fileName;
-    $fileType = pathinfo($targetFilePath,PATHINFO_EXTENSION);
+if(!empty($_FILES)){
 
-    // Allow certain file formats
-    $allowTypes = array('jpg','png','jpeg','gif','pdf');
-    if(in_array($fileType, $allowTypes)){
-        // Upload file to server
-        if(move_uploaded_file($_FILES["file"]["tmp_name"], $targetFilePath)){
-            // Insert image file name into database
-            $insert = $db->query("INSERT into prompts (prompt, date, userId) VALUES ('".$fileName."', NOW(), $user)");
-            if($insert){
-                $statusMsg = "The file ".$fileName. " has been uploaded successfully.";
+    foreach($_FILES['files']['name'] as $key=>$val){
+        
+        // File upload path
+        $fileName = basename($_FILES['files']['name'][$key]);
+        
+        $targetFilePath = $targetDir . $fileName;
+        
+        // Check whether file type is valid
+        $fileExt = explode(".", $fileName);
+        $fileActualExt = strtolower(end($fileExt));
+        var_dump($fileActualExt);
+        $allowTypes = array('jpg','png','jpeg','gif','pdf');
+        if(in_array($fileActualExt, $allowTypes)){
+            // Upload file to server
+            if(move_uploaded_file($_FILES["files"]["tmp_name"][$key], $targetFilePath)){
+                // Insert image file name into database
+                $insert = Prompts::addExample($promptId,$fileName);
+                if($insert){
+                    $statusMsg = "The file ".$fileName. " has been uploaded successfully.";
+                }else{
+                    $statusMsg = "File upload failed, please try again.";
+                } 
             }else{
-                $statusMsg = "File upload failed, please try again.";
-            } 
+                $statusMsg = "Sorry, there was an error uploading your file.";
+            }
         }else{
-            $statusMsg = "Sorry, there was an error uploading your file.";
+            $statusMsg = 'Sorry, only JPG, JPEG, PNG, GIF, & PDF files are allowed to upload.';
         }
-    }else{
-        $statusMsg = 'Sorry, only JPG, JPEG, PNG, GIF, & PDF files are allowed to upload.';
-    }
-}else{
-    $statusMsg = 'Please select a file to upload.';
-}
-
-//getting the category in the database
-if(isset($_POST['category'])) {
-    $category = $_POST['category'];
-    $insert = $db->query("INSERT into categories (name) VALUES ('".$category."')"); 
-    if($insert){
-        $statusMsg = "The category ".$category. " has been uploaded successfully.";
-    }else{
-        $statusMsg = "File upload failed, please try again.";
-    }
-    
-}
-
-//getting the categoryId in the database prompt_categories
-if(isset($_POST['category'])) {
-    $category = $_POST['category'];
-    $insert = $db->query("INSERT into prompt_categories (categoryId) VALUES ('".$category."')");
-}
-
-//getting the promptId in the database prompt_categories
-if(isset($_POST['promptId'])) {
-    $promptId = $_POST['promptId'];
-    $insert = $db->query("INSERT into prompt_categories (promptId) VALUES ('".$promptId."')");
-}
-
-//getting the paid/free, model and description in the database prompts
-if(isset($_POST['paid_free'])) {
-    $paid_free = $_POST['paid_free'];
-    $model_choice = $_POST['model_choice'];
-    $message = $_POST['message'];
-    $insert = $db->query("INSERT into prompts (paid, model, description) VALUES ('".$paid_free."', '".$model_choice."', '".$message."')");
-    if($insert){
-        $statusMsg = "The prompt ".$message. " has been uploaded successfully.";
-    }else{
-        $statusMsg = "File upload failed, please try again.";
     }
 }
-
-
 
 
 
@@ -101,45 +104,53 @@ if(isset($_POST['paid_free'])) {
             <p class="statusMsg"> <?php echo $statusMsg; ?> </p> 
             <?php } ?>
     <form  action="upload.php" method="POST" enctype="multipart/form-data">
-    <label for="file">Upload afbeelding:</label>
-    <input type="file" name="file" >
+    <label for="file">Upload example:</label>
+    <p>ctr+shift to select multiple picture</p>
+    <input type="file" name="files[]" multiple="multiple">
     <br>
     <label for="title">Title:</label>
     <input type="text" id="title" name="title" >
     <br>
     <br>
-    <input type="radio" id="private" name="private" value="PRIVATE">
+    <input type="radio" id="private" name="status" value=1>
     <label for="private">Private</label>
-    <input type="radio" id="public" name="public" value="PUBLIC">
+    <input type="radio" id="public" name="status" value=0>
     <label for="public">Public</label>
     <br>
     <br>
-    <input type="radio" id="paid" name="paid_free" value="paid">
+    <input type="radio" id="paid" name="paid" value=0>
     <label for="paid">Paid</label>
-    <input type="radio" id="free" name="paid_free" value="free">
+    <input type="radio" id="free" name="paid" value=1>
     <label for="free">Free</label>
     <br>
     <br>
     <label for="model_choice">Model Choice:</label>
     <select id="model_choice" name="model_choice">
-    <option value="">All</option>
-    <option value="stable diffusion">stable diffusion</option>
-    <option value="dall-e">dall-e</option>
-    <option value="midjourney">midjourney</option>
+    <?php foreach($models as $model): ?>
+    <option value="<?php echo $model['id']; ?>"><?php echo $model['name']; ?></option>
+    <?php endforeach; ?>
     </select>
     <br>
     <label for="price">Credits:</label>
     <input type="number" id="price" name="price">
     <br>
-    <label for="beschrijving">Beschrijving:</label>
-    <textarea name="message" rows="10" cols="30"></textarea>
+    <label for="description">description:</label>
+    <textarea name="description" rows="10" cols="30"></textarea>
     <br>
-    <label for="category">Category:</label>
-    <input type="text" name="category">
+    <div id="list1" class="dropdown-check-list" tabindex="100">
+    <span class="anchor">Select categories</span>
+    <ul class="items">
+        <?php foreach($categories as $categorie):?>
+        <li><input name="categories[]" type="checkbox" value="<?php echo $categorie["id"]?>" /> <?php echo $categorie["name"]?> </li>
+        <?php endforeach;?>
+    </ul>
     <input type="submit" name="submit" value="Upload prompt">
+
+
+</div>
 </form>
 </div>
 
-
 </body>
+<script src="./scripts/scriptDropdown.js"></script>
 </html>

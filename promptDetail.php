@@ -3,11 +3,11 @@
     include_once (__DIR__."/navbar.php");
 
     authenticated();
-    
     $prompt =  Prompts::detailPrompt($_GET["prompt"]);
     $comment = Prompts::getAllComments($_GET["prompt"]);
     $accepted =  Prompts::accepted();
     $prompts = Prompts::getAll();
+    var_dump($prompt);
 ?>
 
 <!DOCTYPE html>
@@ -17,6 +17,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>promptdetail</title>
+    
 </head>
 <body>
     <div class="content">
@@ -35,7 +36,7 @@
         </section>
         <div class="promptUserInfo">
             <div class="half">
-                <p><strong>Made by </strong><?php echo $prompt["prompts"]["username"]?> </p>
+                <a><p><strong>Made by </strong><?php echo $prompt["prompts"]["username"]?> </p></a>
                 <p><strong>Date:</strong> <?php echo $prompt["prompts"]["date"]?></p>
             </div>
             <p class="likes">
