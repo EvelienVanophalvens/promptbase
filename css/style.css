@@ -208,7 +208,7 @@ nav ul a{
     width: 300px;
     height: 300px;
 }
-#userProfilePicture img:hover{
+.hover img:hover{
     cursor: pointer;
     opacity: 0.7;
 }
@@ -347,8 +347,6 @@ nav ul a{
     width: 300px;
     background-color: #1f2937;
     border-radius: 3px;
-    display: flex;
-    justify-content: center;
     padding: 12px;
 }
 .chart a{
@@ -356,6 +354,9 @@ nav ul a{
 }
 .coverImage{
     border-radius: 3px;
+    display: flex;
+    flex-wrap: wrap;
+
 }
 .coverImage img{
     max-width: 300px;
@@ -363,12 +364,12 @@ nav ul a{
 }
 .imageExample{
     background-color: #1f2937;
-    height: 200px;
-    width: 200px;
+    height: 50%;
+    width: 50%;
     border-radius: 3px;
 }
 .imageExample img{
-    height: 200px;
+    height: 100%;
 }
 #exampleBox{
     display:flex;

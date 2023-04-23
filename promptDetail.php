@@ -42,7 +42,7 @@
         </section>
         <div class="promptUserInfo">
             <div class="half">
-                <a><p><strong>Made by </strong><?php echo $prompt["prompts"]["username"]?> </p></a>
+                <p><strong>Made by </strong><a href="accountView.php?user=<?php echo $prompt["prompts"]["userId"] ?>"><?php echo $prompt["prompts"]["username"]?></a> </p>
                 <p><strong>Date:</strong> <?php echo $prompt["prompts"]["date"]?></p>
             </div>
             <p class="likes">

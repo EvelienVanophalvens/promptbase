@@ -82,7 +82,7 @@
     <div class="context">
         <p><?php echo $error?></p>
         <div class="userinfo">
-           <div id="userProfilePicture">
+           <div class="hover" id="userProfilePicture">
                 <img src="<?php echo $profilePicturePath?>" alt="profile picture">
                 <div class="hidden" id="profilePictureMenu">
                 <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17.44 20.14" height="20px"><defs><style>.cls-1{fill: #ddd;}</style></defs><polygon class="cls-1" points="0 10.07 17.44 0 17.44 20.14 0 10.07"/></svg>
