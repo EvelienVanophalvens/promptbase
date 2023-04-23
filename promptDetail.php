@@ -29,8 +29,8 @@
     <div class="content">
         <a href="home.php" id="backbtn">< BACK TO OVERVIEW</a>
         <div class="title">
-            <h2><?php echo $prompt["prompts"]["promptName"]?></h2>
-            <p class="categoryLabel dark left"><?php echo $prompt["prompts"]["name"]?></p>
+           <!--- <h2><?php echo $prompt["prompts"]["promptName"]?></h2> --->    
+            <!---<p class="categoryLabel dark left"><?php echo $prompt["prompts"]["name"]?></p> --->
             <br>
         </div>
         <section id="exampleBox">
@@ -42,8 +42,8 @@
         </section>
         <div class="promptUserInfo">
             <div class="half">
-                <a><p><strong>Made by </strong><?php echo $prompt["prompts"]["username"]?> </p></a>
-                <p><strong>Date:</strong> <?php echo $prompt["prompts"]["date"]?></p>
+           <!---     <a><p><strong>Made by </strong><?php echo $prompt["prompts"]["username"]?> </p></a>
+                <p><strong>Date:</strong> <?php echo $prompt["prompts"]["date"]?></p> --->
             </div>
             <p class="likes">
                 Likes 
@@ -54,7 +54,7 @@
             <p class="title">
                 <h3>Description</h3>
             </p>
-            <p class="half"><?php echo $prompt["prompts"]["description"];?></p>
+       <!---     <p class="half"><?php echo $prompt["prompts"]["description"];?></p> --->
             <button class="submit small">Get prompt</button>
         </div> 
         <div class="commentsection">

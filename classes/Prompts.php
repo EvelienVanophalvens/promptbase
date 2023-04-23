@@ -352,5 +352,65 @@
                 return $result2;
                 }
         
-    
+       // getting the search item from the database
+        public static function search($search){
+                $conn = Db::getInstance();
+                $statement = $conn->prepare("SELECT * FROM prompts WHERE prompt LIKE '%$search%'");
+                $statement->execute();
+                $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+                return $result;
+                }
+        
+        // getting the search item from the database
+        public static function search2($search){
+                $conn = Db::getInstance();
+                $statement = $conn->prepare("SELECT * FROM prompts WHERE category LIKE '%$search%'");
+                $statement->execute();
+                $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+                return $result;
+                }
+        
+        // getting the search item from the database
+        public static function search3($search){
+                $conn = Db::getInstance();
+                $statement = $conn->prepare("SELECT * FROM prompts WHERE prompt LIKE '%$search%'");
+                $statement->execute();
+                $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+                return $result;
+                }
+        
+        // getting the search item from the database
+        public static function search4($search){
+                $conn = Db::getInstance();
+                $statement = $conn->prepare("SELECT * FROM prompts WHERE prompt LIKE '%$search%'");
+                $statement->execute();
+                $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+                return $result;
+                }
+        
+        // getting the search item from the database
+        public static function search5($search){
+                $conn = Db::getInstance();
+                $statement = $conn->prepare("SELECT * FROM prompts WHERE prompt LIKE '%$search%'");
+                $statement->execute();
+                $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+                return $result;
+                }
+        
+        // getting the search item from the database
+        public static function search6($search){
+                $conn = Db::getInstance();
+                $statement = $conn->prepare("SELECT * FROM prompts WHERE prompt LIKE '%$search%'");
+                $statement->execute();
+                $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+                return $result;
+                }
+        
+        // getting the search item from the database
+        public static function search7($search){
+                $conn = Db::getInstance();
+                $statement = $conn->prepare("SELECT * FROM prompts WHERE prompt LIKE '%$search%'");
+                $statement->execute();
+                $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        }
   }
