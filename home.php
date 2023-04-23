@@ -13,11 +13,20 @@
             $accepted = Prompts::filter($paid_free, $model_choice);
         }
 
-            // getting the image from the prompt
-            $picture = "";
-            foreach($accepted as $example){
-                $picture = "uploads/".$example["example"];
-            }
+         // getting the image from the prompt
+    $picture = "";
+    foreach($accepted as $example) {
+        if (!empty($example["example"])) {
+            $picture = "uploads/" . $example["example"];
+        } else {
+            // default image path if the 'example' key is not set or is empty
+            $picture = "default_image.jpg";
+        }
+        // display the first image and break the loop
+        break;
+    }
+
+
 
     
         
@@ -72,17 +81,23 @@
                 <div class="chartContainer">
                     <?php if(!empty($accepted)){ foreach($accepted as $prompt):?>
                         <div class="chart">
-                 <!---      <a href="promptDetail.php?prompt=<?php echo $prompt["id"]?>">   -->
+                        
+
+                  <a href="promptDetail.php?prompt=<?php echo $prompt["id"]?>"> 
                                 <div class="coverImage">
-                                    <?php if(!empty($prompt["example"])){?>
-                                        <img src="<?php echo $picture?>" alt="coverImage">
-                                    <?php ;}else{?>
-                      <!---                  <img src="<?php echo $prompt["example"]?>" alt="example"> -->
-                                    <?php ;}?>
+                                <?php if(!empty($prompt["example"])){?>
+                                <img src="<?php echo "uploads/".$prompt["example"]?>" alt="coverImage">
+                                <?php ;}else if (!empty($prompt["image"])){?>
+                                <img src="<?php echo $prompt["image"]?>" alt="example">
+                            <?php ;}?>
+
                                 </div>
                                 <div class="promptInfo">
-                             <!---   <?php echo htmlspecialchars($picture)?>  --> 
-                                    <div class="categoryLabel"><?php echo $picture?></div>
+                               <?php if(isset($prompt["prompt"])){
+    echo htmlspecialchars($prompt["prompt"]);
+}
+?>  
+                                    <div class="categoryLabel"></div>
                                 </div>
                             </a>
                         </div>
