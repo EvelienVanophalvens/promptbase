@@ -45,11 +45,11 @@
         <h3>Newest prompts</h3>
         <hr>
             <div class="chartContainer">
-                <?php if(!empty($prompts)){ foreach($prompts as $prompt): ?>
+                <?php if(!empty($prompts)){ foreach($prompts as $prompt):?>
                     <div class="chart">
                         <div class="promptInfo">
                             <a href="promptDetail.php?prompt=<?php echo $prompt["id"]?>">
-                            <p><?php echo htmlspecialchars($prompt["prompt"])?></p>
+                            <p><?php echo htmlspecialchars($prompt["promptName"])?></p>
                             </a>
                             <div class="categoryLabel"><?php echo $prompt["name"]?></div>
                         </div>

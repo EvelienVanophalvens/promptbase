@@ -8,6 +8,8 @@
     $accepted =  Prompts::accepted();
     $prompts = Prompts::getAll();
 
+    var_dump($prompt);
+
     $picture = "";
 
     foreach($prompt["examples"] as $example){
@@ -42,7 +44,7 @@
         </section>
         <div class="promptUserInfo">
             <div class="half">
-                <a><p><strong>Made by </strong><?php echo $prompt["prompts"]["username"]?> </p></a>
+                <a href="accountView.php?user=<?php echo $prompt["prompts"]["user"]?>" ><p><strong>Made by </strong><?php echo $prompt["prompts"]["username"]?> </p></a>
                 <p><strong>Date:</strong> <?php echo $prompt["prompts"]["date"]?></p>
             </div>
             <p class="likes">

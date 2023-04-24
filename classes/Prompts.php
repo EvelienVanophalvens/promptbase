@@ -281,7 +281,7 @@
     }
     public static function detailPrompt($id){
         $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT prompts.prompt AS promptName, prompts.date, prompts.userId, prompts.accepted, prompts.id, prompts.description, users.id AS user, users.username, prompt_categories.promptId, prompt_categories.categoryId,categories.name, prompt_examples.example FROM prompts LEFT JOIN users ON prompts.userid = users.id  LEFT JOIN prompt_categories ON prompts.id = prompt_categories.promptId LEFT JOIN categories ON prompt_categories.categoryId = categories.id LEFT JOIN prompt_examples ON prompts.id = prompt_examples.promptId WHERE accepted = 1 AND prompts.id = :id LIMIT 1;");
+        $statement = $conn->prepare("SELECT prompts.prompt AS promptName, prompts.date, prompts.userId, prompts.accepted, prompts.id, prompts.description, users.id AS user, users.username, prompt_categories.promptId, prompt_categories.categoryId,categories.name FROM prompts LEFT JOIN users ON prompts.userid = users.id  LEFT JOIN prompt_categories ON prompts.id = prompt_categories.promptId LEFT JOIN categories ON prompt_categories.categoryId = categories.id WHERE accepted = 1 AND prompts.id = :id LIMIT 1;");
         $statement->bindValue(":id", $id);
         $statement->execute();
         $results =$statement->fetch(PDO::FETCH_ASSOC);
@@ -313,7 +313,7 @@
 
     public static function getAll(){
         $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT prompts.prompt, prompts.date, prompts.userId, prompts.accepted, prompts.id, users.id AS user, users.username FROM prompts LEFT JOIN users ON prompts.userid = users.id");
+        $statement = $conn->prepare("SELECT prompts.prompt, prompts.date, prompts.userId, prompts.accepted, prompts.id, users.id, name AS user, users.username FROM prompts LEFT JOIN users ON prompts.userid = users.id LEFT JOIN prompt_categories ON prompts.id = prompt_categories.promptId LEFT JOIN categories ON prompt_categories.categoryId");
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $result;
@@ -336,15 +336,99 @@
         $statement->execute();
     }
 
-    public static function getFilter($paid, $model){
+    public static function filter($paid_free, $model_choice){
         $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT prompts.prompt, prompts.date, prompts.userId, prompts.accepted, prompts.id, users.id AS user, users.username FROM prompts LEFT JOIN users ON prompts.userid = users.id WHERE prompts.accepted = :paid AND prompts.userId = :model");
-        $statement->bindValue(":paid", $paid);
-        $statement->bindValue(":model", $model);
+        $statement = $conn->prepare("SELECT paid FROM prompts WHERE paid = :paid_free");
+        $statement->bindValue(":paid_free", $paid_free);
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $result;
+
+        $statement2 = $conn->prepare("SELECT name FROM model WHERE name = :model_choice");
+        $statement2->bindValue(":model_choice", $model_choice);
+        $statement2->execute();
+        $result2 = $statement2->fetchAll(PDO::FETCH_ASSOC);
+        return $result2;
     }
-    
+
+    // getting the search item from the database
+    public static function search($search){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT * FROM prompts WHERE prompt LIKE '%$search%'");
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+        }
+
+// getting the search item from the database
+public static function search2($search){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT * FROM prompts WHERE category LIKE '%$search%'");
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+        }
+
+// getting the search item from the database
+public static function search3($search){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT * FROM prompts WHERE prompt LIKE '%$search%'");
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+        }
+// getting the search item from the database
+public static function search4($search){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT * FROM prompts WHERE prompt LIKE '%$search%'");
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+        }
+
+// getting the search item from the database
+public static function search5($search){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT * FROM prompts WHERE prompt LIKE '%$search%'");
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+        }
+
+// getting the search item from the database
+public static function search6($search){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT * FROM prompts WHERE prompt LIKE '%$search%'");
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+        }
+
+// getting the search item from the database
+        public static function search7($search){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT * FROM prompts WHERE prompt LIKE '%$search%'");
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        public static function getUserPrompts($id){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT prompts.prompt AS promptName, prompts.date, prompts.userId, prompts.accepted, prompts.id, users.id AS user, users.username, prompt_categories.promptId, prompt_categories.categoryId,categories.name FROM prompts LEFT JOIN users ON prompts.userid = users.id  LEFT JOIN prompt_categories ON prompts.id = prompt_categories.promptId LEFT JOIN categories ON prompt_categories.categoryId = categories.id WHERE accepted = 1 AND users.id = :id;");
+        $statement->bindValue(":id", $id);
+        $statement->execute();
+        $results = $statement->fetchALL(PDO::FETCH_ASSOC);
+        return $results;
+        }
+
+        public static function getPromptsExamples($id){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT  prompt_examples.example FROM prompts LEFT JOIN prompt_examples ON prompts.id = prompt_examples.promptId WHERE prompts.id= :id;");
+        $statement->bindValue(":id", $id);
+        $statement->execute();
+        $results = $statement->fetchALL(PDO::FETCH_ASSOC);
+        //beide resultaten worden doorgestuurd
+        return $results;
+        }
 
   }
