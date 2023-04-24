@@ -20,12 +20,12 @@
                 $host = $config['host'];
                 $database = $config['database'];
                 $user = $config['user'];
-                $password = $config['password'];
+                  $password = $config['password'];
                 
                 //echo "hallo";
                 //self -> vervanging voor $this, $this kan niet gebruikt worden want er is geen object
-                self::$db = new PDO("mysql:host=$host;dbname=".$database, $user, $password);
-                return self::$db;
+               self::$db = new PDO("mysql:host=$host;dbname=".$database, $user, $password);
+               return self::$db;
             } 
  
         }

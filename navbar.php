@@ -16,10 +16,10 @@
                 <a href="home.php">Home</a>
             </li>
             <li>
-                <form action="filteredByCategory.php" method="POST">
-                    <input type="text" name="search" id="search" value="search">
+                <form action="filteredByCategory.php" method="get">
+                    <input type="text" name="search" id="search" value="<?php if(isset($_GET['search'])){echo $_GET['search']; } ?>">
                 </form>
-            </li>
+            </li>   
             <li>
                 <a href="upload.php">Upload</a>
             </li>

@@ -145,6 +145,24 @@ nav ul a{
 .dropbtn i{
     background-color: white;
 }
+
+.dropbtn_2{
+    background-color: #1f2937;
+    margin: 16px;
+    
+    padding: 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    width: 75%;
+}
+
+.NewestPrompts{
+    margin-left: 5%;
+}
+
+
+
 .navbar a {
   float: left;
   font-size: 16px;

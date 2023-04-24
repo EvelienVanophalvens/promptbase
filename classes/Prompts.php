@@ -346,22 +346,5 @@
         return $result;
     }
     
-    public static function getUserPrompts($userId){
-        $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT prompts.prompt, prompts.date, prompts.userId, prompts.accepted, prompts.id, users.id AS user, users.username, name FROM prompts LEFT JOIN users ON prompts.userid = users.id LEFT JOIN prompt_categories ON prompts.id = prompt_categories.promptId LEFT JOIN categories ON prompt_categories.categoryId = categories.id WHERE prompts.userId = :userId && prompts.accepted = 1");
-        $statement->bindValue(":userId", $userId);
-        $statement->execute();
-        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-        return $result;
-    }
-
-    public static function getPromptsExamples($id){
-        $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT prompt_examples.example FROM prompts LEFT JOIN prompt_examples ON prompts.id = prompt_examples.promptId WHERE prompts.id= :id");
-        $statement->bindValue(":id", $id);
-        $statement->execute();
-        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-        return $result;
-    }
 
   }
