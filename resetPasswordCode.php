@@ -34,7 +34,7 @@ function send_password_reset($get_name, $get_email,$token)
     $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
     $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
     $mail->Username   = 'lindsay.prompt@gmail.com';                     //SMTP username
-    $mail->Password   = 'xenfawrsbprsfzta';                              //SMTP password
+    $mail->Password   = 'apjlogqclgpdlpzb';                              //SMTP password
     
     //$mail->SMTPSecure = 'tls';            //Enable implicit TLS encryption
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
