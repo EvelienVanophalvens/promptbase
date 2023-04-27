@@ -7,6 +7,7 @@ class User{
     private string $bio;
     private array $errors;
     public int $userId;
+    public string $verified;
 
 
     /**
@@ -159,14 +160,37 @@ class User{
         return $this;
     }
 
+
+        /**
+     * Get the value of verified
+     */ 
+    public function getVerified()
+    {
+        return $this->verified;
+    }
+
+    /**
+     * Set the value of verified
+     *
+     * @return  self
+     */ 
+    public function setVerified($verified)
+    {
+
+        $this->verified = $verified;
+
+        return $this;
+    }
+
     //FUNCTIES
     public function save(){
         $conn = Db::getInstance();
         //query voorbereiden voor beveiligd te worden = statement
-        $statement = $conn->prepare("INSERT INTO users (username, email, password, active, moderator, credits, verified) VALUES (:username, :email, :password, 0, 0, 0, 0);");
+        $statement = $conn->prepare("INSERT INTO users (username, email, password, active, moderator, credits, verified, verify_token) VALUES (:username, :email, :password, 0, 0, 0, 0, :verify);");
         $statement->bindValue(":username", $this -> username); // beveiliging sql injection
         $statement->bindValue(":email", $this -> email);
         $statement->bindValue(":password", $this -> password);
+        $statement->bindValue(":verify", $this -> verified);
         $statement->execute();
     }
 
@@ -332,27 +356,6 @@ class User{
 
     }
 
-
-    public static function signUp($username, $hashed_password, $email, $verified){
-        $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT email FROM users WHERE email= :email");
-        $statement->bindValue(":email", $email);
-        $statement->execute();
-        $user = $statement->fetch(PDO::FETCH_ASSOC);
-
-        if($user){
-            //als er een user te vinden is zal het true weergeven anders false
-            return false;
-        }else{
-            $statement = $conn->prepare("INSERT INTO users (username, password, email, verified) VALUES (:username, :password, :email, :verified)");
-            $statement->bindValue(":username", $username);
-            $statement->bindValue(":password", $hashed_password);
-            $statement->bindValue(":email", $email);
-            $statement->bindValue(":verified", $verified);
-            $statement->execute();
-            return true;
-        }
-    }
 
 
 }

@@ -48,6 +48,7 @@
                     $user->setUsername($_POST['username']);
                     $user->setEmail($_POST['email']);
                     $user->setPassword($_POST['password']);
+                    $user->setVerified($verified);
                     //save database -> de gebruiker op te slaan
                     $res = $user->save();
                     //de data zit in onze database en we worden doorgestuurd naar de login pagina
