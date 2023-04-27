@@ -10,7 +10,10 @@
 
     var_dump($prompt);
 
+
+    
     $picture = "";
+    
 
     foreach($prompt["examples"] as $example){
         var_dump($example);

@@ -53,13 +53,14 @@
                 <?php if(!empty($results)){ foreach($results as $prompt):?>
                     <div class="chart">
                         <a href="promptDetail.php?prompt=<?php echo $prompt["id"]?>">
-                            <div class="coverImage">
+                        <div class="coverImage">
                                 <?php if(!empty($prompt["example"])){?>
-                                    <img src="<?php echo htmlspecialchars($picture)?>" alt="coverImage">
-                                <?php ;}else{?>
-                                    <img src="https://image-placeholder.com/images/actual-size/200x200.png" alt="coverImage">
-                                <?php ;}?>
-                            </div>
+                                <img src="<?php echo "uploads/".htmlspecialchars($prompt["example"])?>" alt="coverImage">
+                                <?php ;}else if (!empty($prompt["image"])){?>
+                                <img src="<?php echo htmlspecialchars($prompt["image"])?>" alt="example">
+                            <?php ;}?>
+
+                                </div>
                             <div class="promptInfo">
                                 <?php echo htmlspecialchars($prompt["promptName"])?>
                                 <div class="categoryLabel"><?php echo $prompt["name"]?></div>

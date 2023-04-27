@@ -375,17 +375,12 @@
 
     public static function filter($paid_free, $model_choice){
         $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT paid FROM prompts WHERE paid = :paid_free");
+        $statement = $conn->prepare("SELECT * FROM prompts JOIN model ON prompts.modelId = model.id WHERE paid = :paid_free AND name = :model_choice");
         $statement->bindValue(":paid_free", $paid_free);
+        $statement->bindValue(":model_choice", $model_choice);
         $statement->execute();
-        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-        return $result;
-
-        $statement2 = $conn->prepare("SELECT name FROM model WHERE name = :model_choice");
-        $statement2->bindValue(":model_choice", $model_choice);
-        $statement2->execute();
-        $result2 = $statement2->fetchAll(PDO::FETCH_ASSOC);
-        return $result2;
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $results;
     }
 
     // getting the search item from the database

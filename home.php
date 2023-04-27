@@ -6,12 +6,36 @@
         $accepted =  Prompts::accepted();
         $prompts = Prompts::getAll();
 
-        //retrieve the data from mysql using drop down
-        if(isset($_POST['paid_free']) && isset($_POST['model_choice'])){
-            $paid_free = $_POST['paid_free'];
-            $model_choice = $_POST['model_choice'];
+        //retrieve the data from mysql using drop down     
+     /*   $paid_free = "";
+        $model_choice = "";             
+      if(!empty($_GET['paid_free']) && !empty($_GET['model_choice'])){
+            $model_choice = $_GET['model_choice'];
             $accepted = Prompts::filter($paid_free, $model_choice);
+        }else if(!empty($_GET['paid_free'])){
+            $paid_free = $_GET['paid_free'];
+            $accepted = Prompts::filter($paid_free, null);
+        }else if(!empty($_GET['model_choice'])){
+            $model_choice = $_GET['model_choice'];
+            $accepted = Prompts::filter(null, $model_choice);
+        }*/
+
+        //getting the result of the filter using drop down
+        $paid_free = "";
+        $model_choice = "";
+        if(!empty($_GET['paid_free']) && !empty($_GET['model_choice'])){
+            $model_choice = $_GET['model_choice'];
+            $accepted = Prompts::filter($paid_free, $model_choice);
+        }else if(!empty($_GET['paid_free'])){
+            $paid_free = $_GET['paid_free'];
+            $accepted = Prompts::filter($paid_free, null);
+        }else if(!empty($_GET['model_choice'])){
+            $model_choice = $_GET['model_choice'];
+            $accepted = Prompts::filter(null, $model_choice);
         }
+        
+
+
 
          // getting the image from the prompt
     $picture = "";
@@ -26,10 +50,6 @@
         break;
     }
 
-
-
-    
-        
     ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -55,7 +75,7 @@
             </div>
         </div>
         <div id="filter">
-        <form method="POST" action="home.php">
+        <form method="GET" action="home.php">
     <label for="paid_free">Paid/Free:</label>
     <select id="paid_free" name="paid_free">
         <option value="">All</option>
@@ -70,7 +90,6 @@
         <option value="dall-e">Dall-e</option>
         <option value="midjourney">Midjourney</option>
     </select>
-
     <button type="submit">Filter</button>
     </form>
     </div>
@@ -84,13 +103,7 @@
                         
 
                   <a href="promptDetail.php?prompt=<?php echo $prompt["id"];?>"> 
-                  <!---<?php if(isset($prompt["example"])){
-                    // code to display the image 
-                    echo htmlspecialchars($prompt["example"]);
-                    } else {
-                    // code to handle the case where there is no image
-                    echo "default_image.jpg";
-                    };?> --->
+                  
                                 <div class="coverImage">
                                 <?php if(!empty($prompt["example"])){?>
                                 <img src="<?php echo "uploads/".htmlspecialchars($prompt["example"])?>" alt="coverImage">
