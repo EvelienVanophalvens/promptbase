@@ -497,7 +497,7 @@ nav ul a{
           resize: none;
         }
   
-        input[type=text] {
+    .upload   input[type=text] {
           width: 100%;
           padding: 12px 16px;
           margin: 8px 0;
