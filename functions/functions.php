@@ -47,6 +47,7 @@ use PHPMailer\PHPMailer\Exception;
     }
 
     function authenticated(){
+
         if(!isset($_SESSION['authenticated']))
 {
     $_SESSION['status'] = "Please Login to Access User Home!";

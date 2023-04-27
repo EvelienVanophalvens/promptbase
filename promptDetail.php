@@ -31,14 +31,14 @@
     <div class="content">
         <a href="home.php" id="backbtn">< BACK TO OVERVIEW</a>
         <div class="title">
-           <!--- <h2><?php echo $prompt["prompts"]["promptName"]?></h2> --->    
-            <!---<p class="categoryLabel dark left"><?php echo $prompt["prompts"]["name"]?></p> --->
+           <!--- <h2><?php echo htmlspecialchars($prompt["prompts"]["promptName"])?></h2> --->    
+            <!---<p class="categoryLabel dark left"><?php echo htmlspecialchars($prompt["prompts"]["name"])?></p> --->
             <br>
         </div>
         <section id="exampleBox">
             <?php foreach($prompt["examples"] as $example):?>
                 <div class="imageExample">
-                    <img src="<?php echo $picture?>" alt="example">
+                    <img src="<?php echo htmlspecialchars($picture)?>" alt="example">
                 </div>
             <?php endforeach; ?>
         </section>

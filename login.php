@@ -35,6 +35,8 @@ if(!empty($_POST) ){
                 session_start();
                 $_SESSION['loggedin'] = true;
                 $_SESSION['userid'] = $userid ;
+                $_SESSION['authenticated'] = TRUE;
+ 
             }else{
                 $loginError = "Username or password is incorrect";
             };

@@ -1,11 +1,17 @@
 <?php 
     include_once(__DIR__."/../bootstrap.php");
     include_once(__DIR__."/navbarM.php");
-    authenticated();
+    if( User::isAdmin() === false){
+        header("Location: ../error.php");
+        echo "you are not a moderator";
+    }
 
     $prompt = Prompts::detailPromptM($_GET["prompt"]);
-    if(!empty($_POST)){
+    if(!empty($_POST) && isset($_POST["accept"])){
         Prompts::acceptPrompt($_POST["id"]);
+        header("Location: promptsM.php");
+    }elseif(!empty($_POST) && isset($_POST["reject"])){
+        Prompts::rejectPrompt($_POST["id"]);
         header("Location: promptsM.php");
     }
 ?>
@@ -37,13 +43,17 @@
             <p class="title">examples</p>
             <div class="img">
             <?php foreach($prompt["examples"] as $example):?>
-            <img scr = "<?php echo htmlspecialchars($example["example"])?>" >
+            <img src = "<?php echo "../uploads/".htmlspecialchars($example["example"])?>" >
+
             <?php endforeach; ?>
         </div>
         </div>
         
         <input type="hidden" name="id" value="<?php echo htmlspecialchars($prompt["prompts"]["id"])?>">
-        <input type="submit" value="accept">
+        <div>
+        <input type="submit" name="accept" value="accept">
+        <input type="submit" name="reject"value="don't accept">
+        </div>
     </form>
 </body>
 </html>

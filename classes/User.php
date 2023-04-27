@@ -191,11 +191,26 @@ class User{
     //kijken of gebruiker een moderator is
     public static function isModerator(){
         $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT * FROM users WHERE id = :id");
+        $statement = $conn->prepare("SELECT * FROM users WHERE id = :id AND moderator = 1");
         $statement->bindValue(":id", $_SESSION['userid']);
         $statement->execute();
         $user = $statement->fetch(PDO::FETCH_ASSOC);
-        if($user['moderator'] == 1){
+        if($user){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+
+    //kijken of gebruiker een admin is
+    public static function isAdmin(){
+        $conn = Dbm::getInstance();
+        $statement = $conn->prepare("SELECT * FROM users WHERE id = :id AND moderator = 1");
+        $statement->bindValue(":id", $_SESSION['userid']);
+        $statement->execute();
+        $user = $statement->fetch(PDO::FETCH_ASSOC);
+        if($user){
             return true;
         }else{
             return false;
