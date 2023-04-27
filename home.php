@@ -22,7 +22,10 @@
 
         //getting the result of the filter using drop down
         $paid_free = "";
-        $model_choice = "";
+        $model_choice = "";             
+        $paid_free_selected = isset($_GET['paid_free']) ? $_GET['paid_free'] : "";
+        $model_choice_selected = isset($_GET['model_choice']) ? $_GET['model_choice'] : "";
+        
         if(!empty($_GET['paid_free']) && !empty($_GET['model_choice'])){
             $model_choice = $_GET['model_choice'];
             $accepted = Prompts::filter($paid_free, $model_choice);
@@ -35,6 +38,11 @@
         }
         
 
+        //getting the result of the search
+        if(!empty($_GET['search'])) {
+        $search = $_GET['search'];
+        $accepted = Prompts::search($search);
+        }
 
 
          // getting the image from the prompt
@@ -78,20 +86,23 @@
         <form method="GET" action="home.php">
     <label for="paid_free">Paid/Free:</label>
     <select id="paid_free" name="paid_free">
-        <option value="">All</option>
-        <option value="paid">Paid</option>
-        <option value="free">Free</option>
+        <option value=""<?php if ($paid_free_selected == "") echo "selected"; ?>>All</option>
+        <option value="paid"<?php if ($paid_free_selected == "paid") echo "selected"; ?>>Paid</option>
+        <option value="free"<?php if ($paid_free_selected == "free") echo "selected"; ?>>Free</option>
     </select>
 
     <label for="model_choice">Model:</label>
     <select name="model_choice">
-        <option value="">All</option>
-        <option value="stable diffusion">Stable Diffusion</option>
-        <option value="dall-e">Dall-e</option>
-        <option value="midjourney">Midjourney</option>
+        <option value=""<?php if ($model_choice_selected == "") echo "selected"; ?>>All</option>
+        <option value="stable diffusion"<?php if ($model_choice_selected == "stable diffusion") echo "selected"; ?>>Stable Diffusion</option>
+        <option value="dall-e"<?php if ($model_choice_selected == "dall-e") echo "selected"; ?>>Dall-e</option>
+        <option value="midjourney"<?php if ($model_choice_selected == "midjourney") echo "selected"; ?>>Midjourney</option>
     </select>
     <button type="submit">Filter</button>
-    </form>
+   <input type="text" class="search" name="search" placeholder="Search.." value="<?php if(isset($_GET['search'])){echo htmlspecialchars($_GET['search']); } ?>">
+    <button type="submit">Search</button>
+</form>
+    
     </div>
         <div class="content">
             <div class="newestPrompts">

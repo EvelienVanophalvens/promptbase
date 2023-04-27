@@ -615,5 +615,12 @@ nav ul a{
             display: block;
           }
 
-          
+          .search{
+            width: 15%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            background-color: #f8f8f8;
+          }
 

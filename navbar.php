@@ -19,7 +19,7 @@
             </li>
             <li>
                 <form action="filteredByCategory.php" method="get">
-                    <input type="text" name="search" id="search" value="<?php if(isset($_GET['search'])){echo htmlspecialchars($_GET['search']); } ?>">
+                    <input type="text" name="search" id="search" placeholder="Search" value="<?php if(isset($_GET['search'])){echo htmlspecialchars($_GET['search']); } ?>">
                 </form>
             </li>   
             <li>
