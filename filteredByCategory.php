@@ -36,7 +36,7 @@
             <hr>
             <div class="chart2">
                     <div class="chart__title">
-                        <h1><?php if(isset($_GET['search'])){echo $_GET['search']; } ?></h1>
+                        <h1><?php if(isset($_GET['search'])){echo htmlspecialchars($_GET['search']); } ?></h1>
                     </div>
                     <div class="chart__content">
                         <div class="chart__content__item">  
@@ -55,7 +55,7 @@
                         <a href="promptDetail.php?prompt=<?php echo $prompt["id"]?>">
                             <div class="coverImage">
                                 <?php if(!empty($prompt["example"])){?>
-                                    <img src="<?php echo $picture?>" alt="coverImage">
+                                    <img src="<?php echo htmlspecialchars($picture)?>" alt="coverImage">
                                 <?php ;}else{?>
                                     <img src="https://image-placeholder.com/images/actual-size/200x200.png" alt="coverImage">
                                 <?php ;}?>

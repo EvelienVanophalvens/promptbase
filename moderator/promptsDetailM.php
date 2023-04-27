@@ -23,26 +23,26 @@
     <form class="promptDetails" method="POST">
         <div>
             <p class="title">prompt</p>
-            <p><?php echo $prompt["prompts"]["prompt"]?></p>
+            <p><?php echo htmlspecialchars($prompt["prompts"]["prompt"])?></p>
         </div>
         <div>
             <p class="title">user</p>
-            <p><?php echo $prompt["prompts"]["username"]?></p>
+            <p><?php echo htmlspecialchars($prompt["prompts"]["username"])?></p>
         </div>
         <div>
             <p class="title">date</p>
-            <p><?php echo $prompt["prompts"]["date"]?></p>
+            <p><?php echo htmlspecialchars($prompt["prompts"]["date"])?></p>
         </div>
         <div>
             <p class="title">examples</p>
             <div class="img">
             <?php foreach($prompt["examples"] as $example):?>
-            <img scr = "<?php echo $example["example"]?>" >
+            <img scr = "<?php echo htmlspecialchars($example["example"])?>" >
             <?php endforeach; ?>
         </div>
         </div>
         
-        <input type="hidden" name="id" value="<?php echo $prompt["prompts"]["id"]?>">
+        <input type="hidden" name="id" value="<?php echo htmlspecialchars($prompt["prompts"]["id"])?>">
         <input type="submit" value="accept">
     </form>
 </body>

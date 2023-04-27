@@ -36,10 +36,10 @@
 <div class="context">
         <div class="userinfo">
            <div id="userProfilePicture">
-                <img src="<?php echo $profilePicturePath?>" alt="profile picture">
+                <img src="<?php echo htmlspecialchars($profilePicturePath)?>" alt="profile picture">
             </div>
-            <h2 class="username"><?php echo $_SESSION['auth_user']['username']?></h2>
-                <p id="bio-text"><?php echo $user["bio"]; ?></p>
+            <h2 class="username"><?php echo htmlspecialchars($_SESSION['auth_user']['username'])?></h2>
+                <p id="bio-text"><?php echo htmlspecialchars($user["bio"]); ?></p>
         </div>  
         <div class="userPrompts">Hier komen de gemaakte prompts
         <h3>Newest prompts</h3>
@@ -51,15 +51,15 @@
                             <a href="promptDetail.php?prompt=<?php echo $prompt["id"]?>">
                             <p><?php echo htmlspecialchars($prompt["promptName"])?></p>
                             </a>
-                            <div class="categoryLabel"><?php echo $prompt["name"]?></div>
+                            <div class="categoryLabel"><?php echo htmlspecialchars($prompt["name"])?></div>
                         </div>
                         <div class="coverImage">
                             <?php if(!empty($allExamples)){?>
                                 <?php foreach($allExamples[$prompt["id"]] as $example):?>
-                                        <img class="imageExample" src="<?php echo "uploads/".$example["example"]?>" alt="coverImage">
+                                        <img class="imageExample" src="<?php echo "uploads/".htmlspecialchars($example["example"])?>" alt="coverImage">
                                 <?php endforeach; ?>
                             <?php ;}else{?>
-                                <img src="uploads/<?= $prompt['prompt']; ?>" alt="prompt">
+                                <img src="uploads/<?= htmlspecialchars($prompt['prompt']); ?>" alt="prompt">
                             <?php ;}?>
                     </div>
                 </div>

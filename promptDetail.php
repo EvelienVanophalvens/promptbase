@@ -44,8 +44,8 @@
         </section>
         <div class="promptUserInfo">
             <div class="half">
-                <a href="accountView.php?user=<?php echo $prompt["prompts"]["user"]?>" ><p><strong>Made by </strong><?php echo $prompt["prompts"]["username"]?> </p></a>
-                <p><strong>Date:</strong> <?php echo $prompt["prompts"]["date"]?></p>
+                <a href="accountView.php?user=<?php echo htmlspecialchars($prompt["prompts"]["user"])?>" ><p><strong>Made by </strong><?php echo $prompt["prompts"]["username"]?> </p></a>
+                <p><strong>Date:</strong> <?php echo htmlspecialchars($prompt["prompts"]["date"])?></p>
             </div>
             <p class="likes">
                 Likes 
@@ -56,7 +56,7 @@
             <p class="title">
                 <h3>Description</h3>
             </p>
-       <!---     <p class="half"><?php echo $prompt["prompts"]["description"];?></p> --->
+       <!---     <p class="half"><?php echo htmlspecialchars($prompt["prompts"]["description"]);?></p> --->
             <button class="submit small">Get prompt</button>
         </div> 
         <div class="commentsection">
@@ -65,15 +65,15 @@
             </p>
             <?php foreach($comment as $comment):?>
                 <div class="comment half">
-                    <p><strong><?php echo $comment["username"];?></strong></p>
-                    <p><?php echo $comment["comment"];?></p>
+                    <p><strong><?php echo htmlspecialchars($comment["username"]);?></strong></p>
+                    <p><?php echo htmlspecialchars($comment["comment"]);?></p>
                 </div>
                 <br>
             <?php endforeach; ?>
         </div>
             <form id="comment-form" method="POST">
                 <div class="title">
-                    <h4>Hi <?= $_SESSION['auth_user']['username']; ?>, what do you think?</h4>
+                    <h4>Hi <?= htmlspecialchars($_SESSION['auth_user']['username']); ?>, what do you think?</h4>
                 </div>
                 <div class="form-element">
                     <input id="comment" name="comment" type="text" autocomplete="comment" placeholder="Comment here"></input>

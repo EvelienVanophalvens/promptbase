@@ -50,7 +50,7 @@
                     <?php unset($_SESSION['status']); ?>
                 <?php } ?>
                 <div class="context">
-                    <h2>Hello! Welcome to the home page <?= $_SESSION['auth_user']['username']; ?>.</h2>
+                    <h2>Hello! Welcome to the home page <?= htmlspecialchars($_SESSION['auth_user']['username']); ?>.</h2>
                 </div>
             </div>
         </div>
@@ -93,9 +93,9 @@
                     };?>
                                 <div class="coverImage">
                                 <?php if(!empty($prompt["example"])){?>
-                                <img src="<?php echo "uploads/".$prompt["example"]?>" alt="coverImage">
+                                <img src="<?php echo "uploads/".htmlspecialchars($prompt["example"])?>" alt="coverImage">
                                 <?php ;}else if (!empty($prompt["image"])){?>
-                                <img src="<?php echo $prompt["image"]?>" alt="example">
+                                <img src="<?php echo htmlspecialchars($prompt["image"])?>" alt="example">
                             <?php ;}?>
 
                                 </div>
