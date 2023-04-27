@@ -26,7 +26,11 @@
          */ 
         public function setPrompt($prompt)
         {
-                $this->prompt = $prompt;
+                if(empty($prompt)){
+                    throw new Exception("Please fill in a title");
+                }else {
+                        $this->prompt = $prompt;
+                }
 
                 return $this;
         }
@@ -46,8 +50,12 @@
          */ 
         public function setAuthor($author)
         {
-                $this->author = $author;
-
+                if(empty($author)){
+                    throw new Exception("Please fill in a author");
+                }else {
+                        $this->author = $author;
+                }
+        
                 return $this;
         }
 
@@ -66,6 +74,11 @@
          */ 
         public function setDate($date)
         {
+                if(empty($date)){
+                    throw new Exception("Please fill in a date");
+                }else {
+                        $this->date = $date;
+                }
                 $this->date = $date;
 
                 return $this;
@@ -86,7 +99,11 @@
          */ 
         public function setCategories($categories)
         {
-                $this->categories = $categories;
+                if(empty($categories)){
+                    throw new Exception("Please fill in a category");
+                }else {
+                        $this->categories = $categories;
+                }
 
                 return $this;
         }
@@ -106,7 +123,11 @@
          */ 
         public function setDescription($description)
         {
-                $this->description = $description;
+                if(empty($description)){
+                    throw new Exception("Please fill in a description");
+                }else {
+                        $this->description = $description;
+                }
 
                 return $this;
         }
@@ -130,7 +151,12 @@
          */ 
         public function setStatus($status)
         {
-                $this->status = $status;
+                if(empty($status)){
+                    throw new Exception("Please fill in a status");
+                }else {
+                        $this->status = $status;
+                }
+
 
                 return $this;
         }
@@ -150,7 +176,12 @@
          */ 
         public function setPaid($paid)
         {
-                $this->paid = $paid;
+                if(empty($paid)){
+                    throw new Exception("Please fill in a paid form");
+                }else {
+                        $this->paid = $paid;
+                }
+
 
                 return $this;
         }
@@ -170,7 +201,11 @@
          */ 
         public function setModel($model)
         {
-                $this->model = $model;
+                if(empty($model)){
+                    throw new Exception("Please fill in a model");
+                }else {
+                        $this->model = $model;
+                }
 
                 return $this;
         }
@@ -192,9 +227,11 @@
          */ 
         public function setPrice($price)
         {
-                $this->price = $price;
-
-                return $this;
+                if(empty($price)){
+                    throw new Exception("Please fill in a price");
+                }else {
+                        $this->price = $price;
+                }
         }
     
 
@@ -258,7 +295,7 @@
 
     public static function accepted(){
         $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT prompts.prompt, prompts.date, prompts.userId, prompts.accepted, prompts.id, users.id AS user, users.username, prompt_categories.promptId, prompt_categories.categoryId,categories.name, prompt_examples.example FROM prompts LEFT JOIN users ON prompts.userid = users.id  LEFT JOIN prompt_categories ON prompts.id = prompt_categories.promptId LEFT JOIN categories ON prompt_categories.categoryId = categories.id LEFT JOIN prompt_examples ON prompts.id = prompt_examples.promptId WHERE accepted = 1 ORDER BY prompts.date ASC;");
+        $statement = $conn->prepare("SELECT prompts.prompt, prompts.date, prompts.userId, prompts.accepted, prompts.id, users.id AS user, users.username, prompt_categories.promptId, prompt_categories.categoryId,categories.name, prompt_examples.example FROM prompts LEFT JOIN users ON prompts.userid = users.id  LEFT JOIN prompt_categories ON prompts.id = prompt_categories.promptId LEFT JOIN categories ON prompt_categories.categoryId = categories.id LEFT JOIN prompt_examples ON prompts.id = prompt_examples.promptId WHERE accepted = 1 ORDER BY prompts.date DESC;");
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $result;
@@ -313,7 +350,7 @@
 
     public static function getAll(){
         $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT prompts.prompt, prompts.date, prompts.userId, prompts.accepted, prompts.id, users.id, name AS user, users.username FROM prompts LEFT JOIN users ON prompts.userid = users.id LEFT JOIN prompt_categories ON prompts.id = prompt_categories.promptId LEFT JOIN categories ON prompt_categories.categoryId");
+        $statement = $conn->prepare("SELECT prompts.prompt, prompts.date, prompts.userId, prompts.accepted, prompts.id, users.id, name AS user, users.username FROM prompts LEFT JOIN users ON prompts.userid = users.id LEFT JOIN prompt_categories ON prompts.id = prompt_categories.promptId LEFT JOIN categories ON prompt_categories.categoryId ORDER BY prompts.date DESC;");
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $result;
@@ -429,6 +466,13 @@ public static function search6($search){
         $results = $statement->fetchALL(PDO::FETCH_ASSOC);
         //beide resultaten worden doorgestuurd
         return $results;
+        }
+
+        public static function rejectPrompt($id){
+        $conn = Dbm::getInstance();
+        $statement = $conn->prepare("DELETE FROM prompts WHERE id = :id;");
+        $statement->bindValue(":id", $id);
+        $statement->execute();
         }
 
   }

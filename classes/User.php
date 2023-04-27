@@ -15,6 +15,7 @@ class User{
     public function getUsername()
     {
         return $this->username;
+
     }
 
     /**
@@ -24,7 +25,12 @@ class User{
      */ 
     public function setUsername($username)
     {
-        $this->username = $username;
+        if(empty($username)){
+            throw new Exception("Please, don't forget your username!");
+        }
+        else{
+            $this->username = $username;
+        }
 
         return $this;
     }
@@ -44,6 +50,15 @@ class User{
      */ 
     public function setEmail($email)
     {
+        if(empty($email)){
+            throw new Exception("Please, don't forget your email!");
+        }
+        else if(!filter_var($email,FILTER_VALIDATE_EMAIL)){
+            throw new Exception("Sorry, this is a invalid email.");
+        }
+        else{
+            $this->email = $email;
+        }
         $this->email = $email;
 
         return $this;
@@ -64,12 +79,18 @@ class User{
      */ 
     public function setPassword($password)
     {
-        $options = [
-            'cost' => 14,
-        ];
-        $this->password = password_hash($password, PASSWORD_DEFAULT, $options);
-
-        return $this;
+        if(empty($password)){
+            throw new Exception("Please, don't forget your password!");
+        }
+        else{
+            $options = [
+                'cost' => 14,
+            ];
+            $this->password = password_hash($password, PASSWORD_DEFAULT, $options);
+    
+            return $this;;
+        }
+       
     }
 
     /**
@@ -87,6 +108,7 @@ class User{
      */ 
     public function setErrors($errors)
     {
+
         $this->errors = $errors;
 
         return $this;
@@ -107,7 +129,12 @@ class User{
      */ 
     public function setBio($bio)
     {
-        $this->bio = $bio;
+        if(empty($bio)){
+            throw new Exception("Please, don't forget your bio!");
+        }
+        else{
+            $this->bio = $bio;
+        }
 
         return $this;
     }
@@ -126,7 +153,7 @@ class User{
      * @return  self
      */ 
     public function setUserId($userId)
-    {
+    {        
         $this->userId = $userId;
 
         return $this;

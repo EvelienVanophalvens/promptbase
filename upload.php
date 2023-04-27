@@ -14,7 +14,7 @@ $categories = Prompts::categories();
 $promptId = "";
 
 if(!empty($_POST) && $_POST['paid'] == 0){
-    var_dump($_POST);
+    try{
     $prompt = new Prompts();
     $prompt->setPrompt($_POST['title']);
     $prompt->setAuthor($user);
@@ -26,6 +26,10 @@ if(!empty($_POST) && $_POST['paid'] == 0){
     $prompt->setCategories($_POST['categories']);
     $prompt->setModel($_POST['model_choice']);
     $promptId = $prompt->save();
+    }catch(Throwable $e){
+        $message = $e->getMessage();
+    }
+
     
 }else if(!empty($_POST) && $_POST['paid'] == 1){
     $message = "Your price will be set to 0 because you have chosen to make this prompt free";
@@ -52,7 +56,7 @@ $statusMsg = '';;
 
 $targetDir = "uploads/";
 
-if(!empty($_FILES)){
+if(!empty($_FILES) && empty($message)){
 
     foreach($_FILES['files']['name'] as $key=>$val){
         
@@ -103,6 +107,10 @@ if(!empty($_FILES)){
         <?php if(!empty($statusMsg)){ ?>
             <p class="statusMsg"> <?php echo $statusMsg; ?> </p> 
             <?php } ?>
+        <?php if(!empty($message)){ ?>
+            <p class="statusMsg"> <?php echo $message; ?> </p> 
+            <?php } ?>
+    <h1>Upload your prompt</h1>
     <form  action="upload.php" method="POST" enctype="multipart/form-data">
     <label for="file">Upload example:</label>
     <p>ctr+shift to select multiple picture</p>
