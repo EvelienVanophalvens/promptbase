@@ -1,7 +1,17 @@
 <?php 
     include_once(__DIR__."/bootstrap.php");
 
+
+
     if(!empty($_POST)){
+        $username = $_POST['username'];
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+        $verified = md5(rand());
+
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+        
 		//gesubmit        
         //inputs uitlezen
         //USERNAME VALIDATIE
@@ -36,6 +46,7 @@
                     //save database -> de gebruiker op te slaan
                     $res = $user->save();
                     //de data zit in onze database en we worden doorgestuurd naar de login pagina
+                    sendemail_verify($username, $email, $verified);
                     header("Location: login.php");
                 }
                 catch(Throwable $e){
@@ -71,7 +82,7 @@
                 }
             ?>
         </div>
-        <form class="" action="code.php" method="POST">
+        <form class="" action="" method="POST">
         <input type="hidden" name="remember" value="true">
         <div class="form-element">
         <div class="login-input">

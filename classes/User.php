@@ -164,10 +164,24 @@ class User{
         if($user){
 			$hash = $user['password'];
 			if(password_verify($password, $hash)){
-				return $user['id'];
-			}else{
-                return var_dump("wrong password");
-			}
+				
+                if($user['verified'] == 1) {
+                    $_SESSION['authenticated'] = TRUE;
+                    $_SESSION['auth_user'] = [
+                        'username' => $user['username'],
+                        
+                    ];
+                    $_SESSION['userid'] = $user['id'] ;
+                    $_SESSION['status'] = "Login Successfull";
+                    header("Location: home.php");
+                } else {
+                    $_SESSION['status'] = "Please Verify your Email Address to Login.";
+                    header("Location: login.php");
+                }
+            } else {
+                $_SESSION['status'] = "Invalid Username or Password";
+                header("Location: login.php");
+            }
 		}else{
 			return false;
             
@@ -256,6 +270,46 @@ class User{
         $statement->execute();
         $user = $statement->fetch(PDO::FETCH_ASSOC);
         return $user;
+    }
+
+    public static function verifiedEmail($token){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT verify_token, verified FROM users WHERE verify_token = :token LIMIT 1");
+        $statement->bindValue(":token", $token);
+        $statement->execute();
+        $user = $statement->fetch(PDO::FETCH_ASSOC);
+        if($user['verified'] == 0){
+            $statement = $conn->prepare("UPDATE users SET verified = 1 WHERE verify_token = :token");
+            $statement->bindValue(":token", $token);
+            $statement->execute();
+            return true;
+        }else{
+            return false;
+        }
+
+
+    }
+
+
+    public static function signUp($username, $hashed_password, $email, $verified){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT email FROM users WHERE email= :email");
+        $statement->bindValue(":email", $email);
+        $statement->execute();
+        $user = $statement->fetch(PDO::FETCH_ASSOC);
+
+        if($user){
+            //als er een user te vinden is zal het true weergeven anders false
+            return false;
+        }else{
+            $statement = $conn->prepare("INSERT INTO users (username, password, email, verified) VALUES (:username, :password, :email, :verified)");
+            $statement->bindValue(":username", $username);
+            $statement->bindValue(":password", $hashed_password);
+            $statement->bindValue(":email", $email);
+            $statement->bindValue(":verified", $verified);
+            $statement->execute();
+            return true;
+        }
     }
 
 

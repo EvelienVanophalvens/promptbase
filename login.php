@@ -77,7 +77,7 @@ if(!empty($_POST) ){
     <?php unset($_SESSION['status']); ?>
 <?php } ?>
         </div>
-        <form class="" action="logincode.php" method="POST">
+        <form class="" action="" method="POST">
         <input type="hidden" name="remember" value="true">
         <div class="form-element">
             <?php if(!empty($loginError)){  ?>
