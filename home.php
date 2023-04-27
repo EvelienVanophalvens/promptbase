@@ -84,13 +84,13 @@
                         
 
                   <a href="promptDetail.php?prompt=<?php echo $prompt["id"];?>"> 
-                  <?php if(isset($prompt["example"])){
+                  <!---<?php if(isset($prompt["example"])){
                     // code to display the image 
                     echo htmlspecialchars($prompt["example"]);
                     } else {
                     // code to handle the case where there is no image
                     echo "default_image.jpg";
-                    };?>
+                    };?> --->
                                 <div class="coverImage">
                                 <?php if(!empty($prompt["example"])){?>
                                 <img src="<?php echo "uploads/".$prompt["example"]?>" alt="coverImage">
