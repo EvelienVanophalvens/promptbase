@@ -19,8 +19,7 @@
                 <a href="usersM.php">users</a>
             </li>
             <li>
-                <a href="profile.php">
-                </a>
+                <a href="../home.php">home</a>
             </li>
         </ul>
     </nav>
