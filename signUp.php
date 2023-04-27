@@ -9,7 +9,12 @@
         $password = $_POST['password'];
         $verified = md5(rand());
 
-        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+        
+        $options = [
+            'cost' => 14,
+        ];
+
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT, $options);
 
         
 		//gesubmit        
