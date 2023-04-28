@@ -7,7 +7,11 @@
     $comment = Prompts::getAllComments($_GET["prompt"]);
     $picture = "";
     foreach($prompt["examples"] as $example){
-        $picture = "uploads/".$example["example"];
+        if(!empty($example)){
+            $picture = "uploads/".$example["example"];
+        }else{
+            $picture = "https://image-placeholder.com/images/actual-size/200x200.png";
+        }
     }
 ?>
 
@@ -24,14 +28,14 @@
     <div class="content">
         <a href="home.php" id="backbtn">< BACK TO OVERVIEW</a>
         <div class="title">
-           <!--- <h2><?php echo htmlspecialchars($prompt["prompts"]["promptName"])?></h2> --->    
-            <!---<p class="categoryLabel dark left"><?php echo htmlspecialchars($prompt["prompts"]["name"])?></p> --->
+            <h2><?php echo htmlspecialchars($prompt["prompts"]["promptName"])?></h2>  
+            <p class="categoryLabel dark left"><?php echo htmlspecialchars($prompt["prompts"]["name"])?></p>
             <br>
         </div>
         <section id="exampleBox">
             <?php foreach($prompt["examples"] as $example):?>
                 <div class="imageExample">
-                    <img src="<?php echo htmlspecialchars($picture)?>" alt="example">
+                    <img src="<?php echo htmlspecialchars($picture)?>" alt="example">           
                 </div>
             <?php endforeach; ?>
         </section>
@@ -49,7 +53,7 @@
             <p class="title">
                 <h3>Description</h3>
             </p>
-       <!---     <p class="half"><?php echo htmlspecialchars($prompt["prompts"]["description"]);?></p> --->
+            <p class="half"><?php echo htmlspecialchars($prompt["prompts"]["description"]);?></p>
             <button class="submit small">Get prompt</button>
         </div> 
         <div class="commentsection">
