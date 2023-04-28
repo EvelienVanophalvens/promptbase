@@ -46,7 +46,11 @@ if(!empty($_FILES)) {
 }
 //get the profile picture from the database
 $profilePicture = User::getProfilePicture();
-$profilePicturePath = "uploads/".$profilePicture;
+if(!empty($profilePicture)) {
+    $profilePicturePath = "uploads/".$profilePicture;
+} else {
+    $profilePicturePath = "uploads/default_profile.png";
+}
 //get the bio from the database
 if(!empty($_POST)) {
     $bio = $_POST['new_bio'];
@@ -97,7 +101,7 @@ $personalPrompts =  Prompts::getPersonalPrompts($_SESSION['userid']);
         </div>  
         </div>
 
-<div class="content-profile">
+    <div class="content-profile">
         <h3 class="NewestPrompts">My prompts</h3>
         <hr>
         <div class="chartContainer">
