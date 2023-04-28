@@ -4,7 +4,6 @@
 
     authenticated();
     $accepted =  Prompts::accepted();
-    $prompts = Prompts::getAll();
     
 
     if(!empty($_GET)){

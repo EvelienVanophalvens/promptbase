@@ -14,13 +14,7 @@
         $examples = Prompts::getPromptsExamples($prompt["id"]);
         $allExamples[$prompt["id"]] = $examples;
     }
-
-
     $profilePicturePath = "uploads/".$user["profilePicture"];
-
-
-
- 
 
 ?>
 
@@ -41,8 +35,8 @@
             <h2 class="username"><?php echo htmlspecialchars($_SESSION['auth_user']['username'])?></h2>
                 <p id="bio-text"><?php echo htmlspecialchars($user["bio"]); ?></p>
         </div>  
-        <div class="userPrompts">Hier komen de gemaakte prompts
-        <h3>Newest prompts</h3>
+        <div class="userPrompts"><!--Hier komen de gemaakte prompts-->
+        <h3>Made prompts</h3>
         <hr>
             <div class="chartContainer">
                 <?php if(!empty($prompts)){ foreach($prompts as $prompt):?>
