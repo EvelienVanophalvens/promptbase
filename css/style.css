@@ -40,6 +40,15 @@ body{
 .content{
     margin: 24px;
 }
+.profileContext{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    height: 100%;
+}
+.profileContext .userPrompts{
+    grid-column: span 2;
+    max-width: fit-content;
+}
 .form-element{
     margin-bottom: 16px;
 }
@@ -285,16 +294,11 @@ nav ul a{
 
 
 .userinfo{
-    position:absolute ;
-    bottom: 0;
-    left: 10;
-    top: 10;
-    height: 81.7%;
+    height: 100%;
+    margin-bottom: 50%;
     width: 350px;
     padding: 24px;
-    margin-left: -24px;
     background-color:#fafafa;
-    z-index: 1;
     overflow-x: hidden;
 }
 
@@ -651,4 +655,5 @@ nav ul a{
             border-radius: 4px;
             background-color: #f8f8f8;
           }
+
 

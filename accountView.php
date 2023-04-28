@@ -31,17 +31,17 @@ if(!empty($user["profilePicture"])) {
     <title>hello</title>
 </head>
 <body>
-<div class="context">
+<div class="profileContext">
         <div class="userinfo">
            <div id="userProfilePicture">
                 <img src="<?php echo htmlspecialchars($profilePicturePath)?>" alt="profile picture">
             </div>
-            <h2 class="username"><?php echo htmlspecialchars($_SESSION['auth_user']['username'])?></h2>
+            <h2 class="username"><?php echo htmlspecialchars($user['username'])?></h2>
                 <p id="bio-text"><?php echo htmlspecialchars($user["bio"]); ?></p>
         </div>  
         <div class="userPrompts"><!--Hier komen de gemaakte prompts-->
-        <h3>Made prompts</h3>
-        <hr>
+            <h3>Made prompts</h3>
+            <hr>
             <div class="chartContainer">
                 <?php if(!empty($prompts)) {
                     foreach($prompts as $prompt):?>
@@ -62,11 +62,10 @@ if(!empty($user["profilePicture"])) {
                                 <img src="uploads/<?= htmlspecialchars($prompt['prompt']); ?>" alt="prompt">
                             <?php ;
                             }?>
+                        </div>
                     </div>
-                </div>
-                <?php endforeach;
+                    <?php endforeach;
                 }  ?>
-
-        </div>
+            </div>
 </body>
 </html>

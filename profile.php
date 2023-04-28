@@ -75,10 +75,9 @@ $personalPrompts =  Prompts::getPersonalPrompts($_SESSION['userid']);
 
 </head>
 <body>
-    <div class="context">
-       <p><?php echo $error?></p>
-        <div class="userinfo-side">
+    <div class="profileContext">
         <div class="userinfo">
+            <p><?php echo $error?></p>
            <div class="hover" id="userProfilePicture">
                 <img src="<?php echo htmlspecialchars($profilePicturePath)?>" alt="profile picture">
                 <div class="hidden" id="profilePictureMenu">
@@ -99,14 +98,12 @@ $personalPrompts =  Prompts::getPersonalPrompts($_SESSION['userid']);
             </form>
             <button class="submit small"><a href="profileSettings.php">Profiel bewerken</a></button>
         </div>  
-        </div>
-
-    <div class="content-profile">
-        <h3 class="NewestPrompts">My prompts</h3>
-        <hr>
-        <div class="chartContainer">
-                    <?php if(!empty($personalPrompts)) {
-                        foreach($personalPrompts as $prompt):?>
+        <div class="userPrompts">
+            <h3>My prompts</h3>
+            <hr>
+            <div class="chartContainer">
+                <?php if(!empty($personalPrompts)) {
+                    foreach($personalPrompts as $prompt):?>
                         <div class="chart">
                             <a href="promptDetail.php?prompt=<?php echo $prompt["id"];?>">
                                 <div class="coverImage">
@@ -119,19 +116,20 @@ $personalPrompts =  Prompts::getPersonalPrompts($_SESSION['userid']);
                                     }?>
                                 </div>
                                 <div class="promptInfo">
-                                <?php if(isset($prompt["prompt"])) {
-                                    echo htmlspecialchars($prompt["prompt"]);
-                                }?>  
-                                <div class="categoryLabel"><?php if(isset($prompt["name"])) {
-                                    echo htmlspecialchars($prompt["name"]);
-                                }?></div>
+                                    <?php if(isset($prompt["prompt"])) {
+                                        echo htmlspecialchars($prompt["prompt"]);
+                                    }?>  
+                                    <div class="categoryLabel"><?php if(isset($prompt["name"])) {
+                                        echo htmlspecialchars($prompt["name"]);
+                                    }?>
                                     </div>
-                                
+                                </div>    
                             </a>
-                        </div>
+                            </div>
                     <?php endforeach;
-                    }?>
-                </div>    
+                }?>
+            </div>    
+        </div>
     </div>
     <form class="" id="profilePictureForm" method="POST" enctype="multipart/form-data">
         <input type="file" name="profilePicture" id="profilePicture" accept=".jpg, .jpeg, .png">
