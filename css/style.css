@@ -145,7 +145,6 @@ nav ul a{
 .dropbtn i{
     background-color: white;
 }
-
 .navbar a {
   float: left;
   font-size: 16px;
@@ -154,7 +153,16 @@ nav ul a{
   padding: 14px 16px;
   text-decoration: none;
 }
-
+.navigation li a svg{
+    width: 20px;
+}
+.logo{
+    justify-content: flex-start;
+    padding-left: 80px;
+}
+.logo li a img{
+    height: 20px;
+}
 .dropdown {
   float: left;
   overflow: hidden;
