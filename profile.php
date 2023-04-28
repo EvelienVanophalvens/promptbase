@@ -1,65 +1,62 @@
 <?php
-    include_once(__DIR__."/bootstrap.php");    
-    include_once (__DIR__."/navbar.php");
-    authenticated();
-    $error = "";
-    if(!empty($_FILES)){
-        //data van de file
-        $file = $_FILES["profilePicture"];
-        $fileName = $file["name"];
-        $fileTmpName = $file["tmp_name"];
-        $fileSize = $file["size"];
-        $fileError = $file["error"];
-        $fileType = $file["type"];
+include_once(__DIR__."/bootstrap.php");
+include_once(__DIR__."/navbar.php");
+authenticated();
+$error = "";
+if(!empty($_FILES)) {
+    //data van de file
+    $file = $_FILES["profilePicture"];
+    $fileName = $file["name"];
+    $fileTmpName = $file["tmp_name"];
+    $fileSize = $file["size"];
+    $fileError = $file["error"];
+    $fileType = $file["type"];
 
-        //everything after the dot needs to be lowercase
-        $fileExt = explode(".", $fileName);
-        $fileActualExt = strtolower(end($fileExt));
+    //everything after the dot needs to be lowercase
+    $fileExt = explode(".", $fileName);
+    $fileActualExt = strtolower(end($fileExt));
 
-        //wich filetypes are allowed
-        $allowed = array("jpg", "jpeg", "png", "svg");
+    //wich filetypes are allowed
+    $allowed = array("jpg", "jpeg", "png", "svg");
 
-        if(in_array($fileActualExt, $allowed)){
-            //check errors in file
-            if($fileError === 0){
-                //check the size of the file (in bytes) 1mb = 1000000 bytes
-                if($fileSize < 1000000){
-                    //give the file a unique name
-                    $fileNameNew = "profile".$_SESSION['userid'].".".$fileActualExt;
-                    //where the file needs to go
-                    $fileDestination = "uploads/".$fileNameNew;
-                    //move the file to the destination
-                    move_uploaded_file($fileTmpName, $fileDestination);
-                    //update the profile picture in the database
-                    User::updateProfilePicture($fileNameNew);
-                    
-                }else{
-                    $error = "Your file is too big";
-                }
-            }else{
-                $error = "There was an error uploading your file";
+    if(in_array($fileActualExt, $allowed)) {
+        //check errors in file
+        if($fileError === 0) {
+            //check the size of the file (in bytes) 1mb = 1000000 bytes
+            if($fileSize < 1000000) {
+                //give the file a unique name
+                $fileNameNew = "profile".$_SESSION['userid'].".".$fileActualExt;
+                //where the file needs to go
+                $fileDestination = "uploads/".$fileNameNew;
+                //move the file to the destination
+                move_uploaded_file($fileTmpName, $fileDestination);
+                //update the profile picture in the database
+                User::updateProfilePicture($fileNameNew);
+
+            } else {
+                $error = "Your file is too big";
             }
+        } else {
+            $error = "There was an error uploading your file";
         }
-        else{
-            $error = "You cannot upload files of this type";
-        }
-
+    } else {
+        $error = "You cannot upload files of this type";
     }
-    //get the profile picture from the database
-    $profilePicture = User::getProfilePicture();
-    $profilePicturePath = "uploads/".$profilePicture;
-    //get the bio from the database
+
+}
+//get the profile picture from the database
+$profilePicture = User::getProfilePicture();
+$profilePicturePath = "uploads/".$profilePicture;
+//get the bio from the database
+if(!empty($_POST)) {
+    $bio = $_POST['new_bio'];
+    $update = User::update($bio);
+} else {
     $bio = User::getRecentBio();
-    if(!empty($_POST)){
-        $bio = $_POST['new_bio'];
-        $update = User::update($bio);
-    }else{
-        //echo "het is niet gelukt";
-    }
-
-    authenticated();
-    //get the prompts from the database
-    $personalPrompts =  Prompts::getPersonalPrompts($_SESSION['userid']);
+}
+authenticated();
+//get the prompts from the database
+$personalPrompts =  Prompts::getPersonalPrompts($_SESSION['userid']);
 
 ?>
 
@@ -104,31 +101,39 @@
         <h3 class="NewestPrompts">My prompts</h3>
         <hr>
         <div class="chartContainer">
-                    <?php if(!empty($personalPrompts)){ foreach($personalPrompts as $prompt):?>
+                    <?php if(!empty($personalPrompts)) {
+                        foreach($personalPrompts as $prompt):?>
                         <div class="chart">
                             <a href="promptDetail.php?prompt=<?php echo $prompt["id"];?>">
                                 <div class="coverImage">
-                                    <?php if(!empty($prompt["example"])){?>
+                                    <?php if(!empty($prompt["example"])) {?>
                                         <img src="<?php echo "uploads/".$prompt["example"]?>" alt="coverImage">
-                                    <?php ;}else if (!empty($prompt["image"])){?>
+                                    <?php ;
+                                    } elseif (!empty($prompt["image"])) {?>
                                         <img src="<?php echo $prompt["image"]?>" alt="example">
-                                    <?php ;}?>
+                                    <?php ;
+                                    }?>
                                 </div>
                                 <div class="promptInfo">
-                                <?php if(isset($prompt["prompt"])){echo htmlspecialchars($prompt["prompt"]);}?>  
-                                <div class="categoryLabel"><?php if(isset($prompt["name"])){echo htmlspecialchars($prompt["name"]);}?></div>
+                                <?php if(isset($prompt["prompt"])) {
+                                    echo htmlspecialchars($prompt["prompt"]);
+                                }?>  
+                                <div class="categoryLabel"><?php if(isset($prompt["name"])) {
+                                    echo htmlspecialchars($prompt["name"]);
+                                }?></div>
                                     </div>
                                 
                             </a>
                         </div>
-                    <?php endforeach; }?>
+                    <?php endforeach;
+                    }?>
                 </div>    
     </div>
     <form class="" id="profilePictureForm" method="POST" enctype="multipart/form-data">
         <input type="file" name="profilePicture" id="profilePicture" accept=".jpg, .jpeg, .png">
         <button type="submit" id="submitProfilePicture">Upload</button>
         <button id="cancelPicture"type="button" id="cancelProfilePicture">Cancel</button>
-    </form> 
+    </form>
+    <script src="./scripts/scriptProfile.js"></script> 
 </body>
-<script src="./scripts/scriptProfile.js"></script>
 </html>

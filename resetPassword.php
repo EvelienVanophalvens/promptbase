@@ -21,7 +21,9 @@ include_once(__DIR__."/bootstrap.php");
         <div class="title">
             <h2>Forgot your password?</h2>
         </div>
-        <div class="info" <?php if(isset($_SESSION['status'])) {echo 'style="display: none"';} ?>>
+        <div class="info" <?php if(isset($_SESSION['status'])) {
+            echo 'style="display: none"';
+        } ?>>
             <p>Hey, we received a request to reset your password. Let's get you a new one!</p>
                 <form method="POST" action="resetPasswordCode.php">
                     <label for="email">Enter your email address:</label>
@@ -34,8 +36,7 @@ include_once(__DIR__."/bootstrap.php");
         </div>
         <div>
             <?php
-                if(isset($_SESSION['status']))
-                {
+                if(isset($_SESSION['status'])) {
                     ?>
                     <div class="alert-succes">
                         <h5><?php echo $_SESSION['status'];?></h5>
@@ -43,7 +44,7 @@ include_once(__DIR__."/bootstrap.php");
                     <?php
                     unset($_SESSION['status']);
                 }
-            ?>
+?>
         </div>
     </div>
 </div>

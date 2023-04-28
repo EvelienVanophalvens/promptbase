@@ -1,7 +1,7 @@
 <?php
 
 include_once(__DIR__."/bootstrap.php");
-include_once (__DIR__."/navbar.php");
+include_once(__DIR__."/navbar.php");
 
 //get user id
 $user = $_SESSION['userid'];
@@ -13,25 +13,25 @@ $categories = Prompts::categories();
 
 $promptId = "";
 
-if(!empty($_POST) && $_POST['paid'] == 0){
-    try{
-    $prompt = new Prompts();
-    $prompt->setPrompt($_POST['title']);
-    $prompt->setAuthor($user);
-    $prompt->setDate(date("Y-m-d"));
-    $prompt->setDescription($_POST['description']);
-    $prompt->setStatus($_POST['status']);
-    $prompt->setPaid($_POST['paid']);
-    $prompt->setPrice($_POST['price']);
-    $prompt->setCategories($_POST['categories']);
-    $prompt->setModel($_POST['model_choice']);
-    $promptId = $prompt->save();
-    }catch(Throwable $e){
+if(!empty($_POST) && $_POST['paid'] == 0) {
+    try {
+        $prompt = new Prompts();
+        $prompt->setPrompt($_POST['title']);
+        $prompt->setAuthor($user);
+        $prompt->setDate(date("Y-m-d"));
+        $prompt->setDescription($_POST['description']);
+        $prompt->setStatus($_POST['status']);
+        $prompt->setPaid($_POST['paid']);
+        $prompt->setPrice($_POST['price']);
+        $prompt->setCategories($_POST['categories']);
+        $prompt->setModel($_POST['model_choice']);
+        $promptId = $prompt->save();
+    } catch(Throwable $e) {
         $message = $e->getMessage();
     }
 
-    
-}else if(!empty($_POST) && $_POST['paid'] == 1){
+
+} elseif(!empty($_POST) && $_POST['paid'] == 1) {
     $message = "Your price will be set to 0 because you have chosen to make this prompt free";
     $prompt = new Prompts();
     $prompt->setPrompt($_POST['title']);
@@ -44,46 +44,47 @@ if(!empty($_POST) && $_POST['paid'] == 0){
     $prompt->setCategories($_POST['categories']);
     $prompt->setModel($_POST['model_choice']);
     $promptId = $prompt->save();
-}else{
+} else {
     $message = "Please fill in all the fields";
 }
 
 
 
 
-$statusMsg = '';;
+$statusMsg = '';
+;
 
 
 $targetDir = "uploads/";
 
-if(!empty($_FILES) && empty($message)){
+if(!empty($_FILES) && empty($message)) {
 
-    foreach($_FILES['files']['name'] as $key=>$val){
-        
+    foreach($_FILES['files']['name'] as $key=>$val) {
+
         // File upload path
         $fileName = basename($_FILES['files']['name'][$key]);
-        
+
         $targetFilePath = $targetDir . $fileName;
-        
+
         // Check whether file type is valid
         $fileExt = explode(".", $fileName);
         $fileActualExt = strtolower(end($fileExt));
         var_dump($fileActualExt);
         $allowTypes = array('jpg','png','jpeg','gif','pdf');
-        if(in_array($fileActualExt, $allowTypes)){
+        if(in_array($fileActualExt, $allowTypes)) {
             // Upload file to server
-            if(move_uploaded_file($_FILES["files"]["tmp_name"][$key], $targetFilePath)){
+            if(move_uploaded_file($_FILES["files"]["tmp_name"][$key], $targetFilePath)) {
                 // Insert image file name into database
-                $insert = Prompts::addExample($promptId,$fileName);
-                if($insert){
+                $insert = Prompts::addExample($promptId, $fileName);
+                if($insert) {
                     $statusMsg = "The file ".$fileName. " has been uploaded successfully.";
-                }else{
+                } else {
                     $statusMsg = "File upload failed, please try again.";
-                } 
-            }else{
+                }
+            } else {
                 $statusMsg = "Sorry, there was an error uploading your file.";
             }
-        }else{
+        } else {
             $statusMsg = 'Sorry, only JPG, JPEG, PNG, GIF, & PDF files are allowed to upload.';
         }
     }
@@ -104,10 +105,10 @@ if(!empty($_FILES) && empty($message)){
 <body>
     
     <div class="upload">
-        <?php if(!empty($statusMsg)){ ?>
+        <?php if(!empty($statusMsg)) { ?>
             <p class="statusMsg"> <?php echo $statusMsg; ?> </p> 
             <?php } ?>
-        <?php if(!empty($message)){ ?>
+        <?php if(!empty($message)) { ?>
             <p class="statusMsg"> <?php echo $message; ?> </p> 
             <?php } ?>
     <h1>Upload your prompt</h1>

@@ -1,63 +1,63 @@
     <?php
         include_once(__DIR__."/bootstrap.php");
-        include_once (__DIR__."/navbar.php");
+include_once(__DIR__."/navbar.php");
 
-        authenticated();
-        $accepted =  Prompts::accepted();
+authenticated();
+$accepted =  Prompts::accepted();
 
-        //retrieve the data from mysql using drop down     
-     /*   $paid_free = "";
-        $model_choice = "";             
-      if(!empty($_GET['paid_free']) && !empty($_GET['model_choice'])){
-            $model_choice = $_GET['model_choice'];
-            $accepted = Prompts::filter($paid_free, $model_choice);
-        }else if(!empty($_GET['paid_free'])){
-            $paid_free = $_GET['paid_free'];
-            $accepted = Prompts::filter($paid_free, null);
-        }else if(!empty($_GET['model_choice'])){
-            $model_choice = $_GET['model_choice'];
-            $accepted = Prompts::filter(null, $model_choice);
-        }*/
+//retrieve the data from mysql using drop down
+/*   $paid_free = "";
+   $model_choice = "";
+ if(!empty($_GET['paid_free']) && !empty($_GET['model_choice'])){
+       $model_choice = $_GET['model_choice'];
+       $accepted = Prompts::filter($paid_free, $model_choice);
+   }else if(!empty($_GET['paid_free'])){
+       $paid_free = $_GET['paid_free'];
+       $accepted = Prompts::filter($paid_free, null);
+   }else if(!empty($_GET['model_choice'])){
+       $model_choice = $_GET['model_choice'];
+       $accepted = Prompts::filter(null, $model_choice);
+   }*/
 
-        //getting the result of the filter using drop down
-        $paid_free = "";
-        $model_choice = "";             
-        $paid_free_selected = isset($_GET['paid_free']) ? $_GET['paid_free'] : "";
-        $model_choice_selected = isset($_GET['model_choice']) ? $_GET['model_choice'] : "";
-        
-        if(!empty($_GET['paid_free']) && !empty($_GET['model_choice'])){
-            $model_choice = $_GET['model_choice'];
-            $accepted = Prompts::filter($paid_free, $model_choice);
-        }else if(!empty($_GET['paid_free'])){
-            $paid_free = $_GET['paid_free'];
-            $accepted = Prompts::filter($paid_free, null);
-        }else if(!empty($_GET['model_choice'])){
-            $model_choice = $_GET['model_choice'];
-            $accepted = Prompts::filter(null, $model_choice);
-        }
-        
+//getting the result of the filter using drop down
+$paid_free = "";
+$model_choice = "";
+$paid_free_selected = isset($_GET['paid_free']) ? $_GET['paid_free'] : "";
+$model_choice_selected = isset($_GET['model_choice']) ? $_GET['model_choice'] : "";
 
-        //getting the result of the search
-        if(!empty($_GET['search'])) {
-        $search = $_GET['search'];
-        $accepted = Prompts::search($search);
-        }
+if(!empty($_GET['paid_free']) && !empty($_GET['model_choice'])) {
+    $model_choice = $_GET['model_choice'];
+    $accepted = Prompts::filter($paid_free, $model_choice);
+} elseif(!empty($_GET['paid_free'])) {
+    $paid_free = $_GET['paid_free'];
+    $accepted = Prompts::filter($paid_free, null);
+} elseif(!empty($_GET['model_choice'])) {
+    $model_choice = $_GET['model_choice'];
+    $accepted = Prompts::filter(null, $model_choice);
+}
 
 
-         // getting the image from the prompt
-    $picture = "";
-    foreach($accepted as $example) {
-        if (!empty($example["example"])) {
-            $picture = "uploads/" . $example["example"];
-        } else {
-            // default image path if the 'example' key is not set or is empty
-            $picture = "default_image.jpg";
-        }
-        // display the first image and break the loop
-        break;
+//getting the result of the search
+if(!empty($_GET['search'])) {
+    $search = $_GET['search'];
+    $accepted = Prompts::search($search);
+}
+
+
+// getting the image from the prompt
+$picture = "";
+foreach($accepted as $example) {
+    if (!empty($example["example"])) {
+        $picture = "uploads/" . $example["example"];
+    } else {
+        // default image path if the 'example' key is not set or is empty
+        $picture = "default_image.jpg";
     }
+    // display the first image and break the loop
+    break;
+}
 
-    ?>
+?>
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -85,20 +85,36 @@
         <form method="GET" action="home.php">
     <label for="paid_free">Paid/Free:</label>
     <select id="paid_free" name="paid_free">
-        <option value=""<?php if ($paid_free_selected == "") echo "selected"; ?>>All</option>
-        <option value="paid"<?php if ($paid_free_selected == "paid") echo "selected"; ?>>Paid</option>
-        <option value="free"<?php if ($paid_free_selected == "free") echo "selected"; ?>>Free</option>
+        <option value=""<?php if ($paid_free_selected == "") {
+            echo "selected";
+        } ?>>All</option>
+        <option value="paid"<?php if ($paid_free_selected == "paid") {
+            echo "selected";
+        } ?>>Paid</option>
+        <option value="free"<?php if ($paid_free_selected == "free") {
+            echo "selected";
+        } ?>>Free</option>
     </select>
 
     <label for="model_choice">Model:</label>
     <select name="model_choice">
-        <option value=""<?php if ($model_choice_selected == "") echo "selected"; ?>>All</option>
-        <option value="stable diffusion"<?php if ($model_choice_selected == "stable diffusion") echo "selected"; ?>>Stable Diffusion</option>
-        <option value="dall-e"<?php if ($model_choice_selected == "dall-e") echo "selected"; ?>>Dall-e</option>
-        <option value="midjourney"<?php if ($model_choice_selected == "midjourney") echo "selected"; ?>>Midjourney</option>
+        <option value=""<?php if ($model_choice_selected == "") {
+            echo "selected";
+        } ?>>All</option>
+        <option value="stable diffusion"<?php if ($model_choice_selected == "stable diffusion") {
+            echo "selected";
+        } ?>>Stable Diffusion</option>
+        <option value="dall-e"<?php if ($model_choice_selected == "dall-e") {
+            echo "selected";
+        } ?>>Dall-e</option>
+        <option value="midjourney"<?php if ($model_choice_selected == "midjourney") {
+            echo "selected";
+        } ?>>Midjourney</option>
     </select>
     <button type="submit">Filter</button>
-   <input type="text" class="search" name="search" placeholder="Search.." value="<?php if(isset($_GET['search'])){echo htmlspecialchars($_GET['search']); } ?>">
+   <input type="text" class="search" name="search" placeholder="Search.." value="<?php if(isset($_GET['search'])) {
+       echo htmlspecialchars($_GET['search']);
+   } ?>">
     <button type="submit">Search</button>
 </form>
     
@@ -108,26 +124,34 @@
                 <h3>Newest prompts</h3>
                 <hr>
                 <div class="chartContainer">
-                    <?php if(!empty($accepted)){ foreach($accepted as $prompt):?>
+                    <?php if(!empty($accepted)) {
+                        foreach($accepted as $prompt):?>
                         <div class="chart">
                             <a href="promptDetail.php?prompt=<?php echo $prompt["id"];?>"> 
                                 <div class="coverImage">
                                     <!--Displays the example images of the prompt-->
-                                    <?php if(!empty($prompt["example"])){?>
+                                    <?php if(!empty($prompt["example"])) {?>
                                         <img src="<?php echo "uploads/".htmlspecialchars($prompt["example"])?>" alt="coverImage">
-                                    <?php ;}else if (!empty($prompt["image"])){?>
+                                    <?php ;
+                                    } elseif (!empty($prompt["image"])) {?>
                                         <img src="<?php echo htmlspecialchars($prompt["image"])?>" alt="example">
-                                    <?php ;}?>
+                                    <?php ;
+                                    }?>
                                 </div>
                                 <div class="promptInfo">
                                     <!--Displays the name of the prompt-->
-                                    <?php if(isset($prompt["prompt"])){echo htmlspecialchars($prompt["prompt"]);}?>  
+                                    <?php if(isset($prompt["prompt"])) {
+                                        echo htmlspecialchars($prompt["prompt"]);
+                                    }?>  
                                     <!--Displays the category of the prompt-->
-                                    <div class="categoryLabel"><?php if(isset($prompt["name"])){echo htmlspecialchars($prompt["name"]);}?></div>
+                                    <div class="categoryLabel"><?php if(isset($prompt["name"])) {
+                                        echo htmlspecialchars($prompt["name"]);
+                                    }?></div>
                                 </div>
                             </a>
                         </div>
-                    <?php endforeach; }  ?>
+                    <?php endforeach;
+                    }  ?>
                 </div>
             </div>
         </div>

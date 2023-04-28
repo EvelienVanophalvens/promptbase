@@ -21,13 +21,19 @@ include_once(__DIR__."/bootstrap.php");
         <div class="title">
             <h2>Change your password</h2>
         </div>
-        <div class="info" <?php if(isset($_SESSION['status'])) {echo 'style="display: none"';} ?>>
+        <div class="info" <?php if(isset($_SESSION['status'])) {
+            echo 'style="display: none"';
+        } ?>>
                 <form method="POST" action="resetPasswordCode.php">
                     <div class="form-element">
-                        <input type="hidden" id="token" name="token" value="<?php if(isset($_GET['token'])){echo $_GET['token'];} ?>">
+                        <input type="hidden" id="token" name="token" value="<?php if(isset($_GET['token'])) {
+                            echo $_GET['token'];
+                        } ?>">
                         <div class="passwordChange-input">
                             <label for="email">Enter your email address:</label>
-                            <input type="email" id="email" name="email" value="<?php if(isset($_GET['email'])){echo $_GET['email'];} ?>" required>
+                            <input type="email" id="email" name="email" value="<?php if(isset($_GET['email'])) {
+                                echo $_GET['email'];
+                            } ?>" required>
                         </div>
                         <div class="passwordChange-input">
                             <label for="newPassword">Enter your new password:</label>
@@ -48,8 +54,7 @@ include_once(__DIR__."/bootstrap.php");
         </div>
         <div>
             <?php
-                if(isset($_SESSION['status']))
-                {
+                if(isset($_SESSION['status'])) {
                     ?>
                     <div class="alert-succes">
                         <h5><?php echo $_SESSION['status'];?></h5>
@@ -60,7 +65,7 @@ include_once(__DIR__."/bootstrap.php");
                     <?php
                     unset($_SESSION['status']);
                 }
-            ?>
+?>
         </div>
     </div>
 </div>

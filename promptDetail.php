@@ -1,18 +1,18 @@
-<?php 
-    include_once(__DIR__."/bootstrap.php");
-    include_once (__DIR__."/navbar.php");
+<?php
+include_once(__DIR__."/bootstrap.php");
+include_once(__DIR__."/navbar.php");
 
-    authenticated();
-    $prompt =  Prompts::detailPrompt($_GET["prompt"]);
-    $comment = Prompts::getAllComments($_GET["prompt"]);
-    $picture = "";
-    foreach($prompt["examples"] as $example){
-        if(!empty($example)){
-            $picture = "uploads/".$example["example"];
-        }else{
-            $picture = "https://image-placeholder.com/images/actual-size/200x200.png";
-        }
+authenticated();
+$prompt =  Prompts::detailPrompt($_GET["prompt"]);
+$comment = Prompts::getAllComments($_GET["prompt"]);
+$picture = "";
+foreach($prompt["examples"] as $example) {
+    if(!empty($example)) {
+        $picture = "uploads/".$example["example"];
+    } else {
+        $picture = "https://image-placeholder.com/images/actual-size/200x200.png";
     }
+}
 ?>
 
 <!DOCTYPE html>

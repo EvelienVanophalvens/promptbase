@@ -1,67 +1,66 @@
-<?php 
-    include_once(__DIR__."/bootstrap.php");
+<?php
+include_once(__DIR__."/bootstrap.php");
 
 
 
-    if(!empty($_POST)){
+if(!empty($_POST)) {
+    $username = $_POST['username'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $verified = md5(rand());
+
+
+    $options = [
+        'cost' => 14,
+    ];
+
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT, $options);
+
+
+    //gesubmit
+    //inputs uitlezen
+    //USERNAME VALIDATIE
+    if(empty($_POST['username'])) {
+        $usernameError = "Please, don't forget your username!";
+    } else {
         $username = $_POST['username'];
+    };
+    // EMAIL VALIDATIE
+    if(empty($_POST['email'])) {
+        $emailError = "Please, don't forget your email!";
+    } elseif(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+        $emailError = "Sorry, this is a invalid email.";
+    } else {
         $email = $_POST['email'];
-        $password = $_POST['password'];
-        $verified = md5(rand());
+    };
 
-        
-        $options = [
-            'cost' => 14,
-        ];
-
-        $hashed_password = password_hash($password, PASSWORD_DEFAULT, $options);
-
-        
-		//gesubmit        
-        //inputs uitlezen
-        //USERNAME VALIDATIE
-        if(empty($_POST['username'])){
-            $usernameError = "Please, don't forget your username!";
-        }else{
-            $username = $_POST['username'];
-        };
-        // EMAIL VALIDATIE
-        if(empty($_POST['email'])){
-            $emailError = "Please, don't forget your email!";
-        }else if(!filter_var($_POST['email'],FILTER_VALIDATE_EMAIL)){
-            $emailError = "Sorry, this is a invalid email.";
-        }else{
-            $email = $_POST['email'];
-        };
-
-        //WACHTWOORD VALIDATIE
-        //Controleer of het wachtwoord lang genoeg is (meer dan vijf karakters)
-        if(empty($_POST['password'])){
-            $passwordError = "Please, don't forget your password!";
-        }else if(strlen($_POST['password'])<5){
-            $passwordError = "Your password needs to be at least 5 characters long.";
-        }else{
-            //als alle validaties slagen kunnen we de gebruiker opslaan in de database
-            if(empty($usernameError) && empty($emailError) && empty($passwordError)){
-                try{
-                    $user = new User();
-                    $user->setUsername($_POST['username']);
-                    $user->setEmail($_POST['email']);
-                    $user->setPassword($_POST['password']);
-                    $user->setVerified($verified);
-                    //save database -> de gebruiker op te slaan
-                    $res = $user->save();
-                    //de data zit in onze database en we worden doorgestuurd naar de login pagina
-                    sendemail_verify($username, $email, $verified);
-                    header("Location: login.php");
-                }
-                catch(Throwable $e){
-                    echo $e->getMessage();
-                    var_dump($e);
-                }
-            }           
-        };
-	}; 
+    //WACHTWOORD VALIDATIE
+    //Controleer of het wachtwoord lang genoeg is (meer dan vijf karakters)
+    if(empty($_POST['password'])) {
+        $passwordError = "Please, don't forget your password!";
+    } elseif(strlen($_POST['password'])<5) {
+        $passwordError = "Your password needs to be at least 5 characters long.";
+    } else {
+        //als alle validaties slagen kunnen we de gebruiker opslaan in de database
+        if(empty($usernameError) && empty($emailError) && empty($passwordError)) {
+            try {
+                $user = new User();
+                $user->setUsername($_POST['username']);
+                $user->setEmail($_POST['email']);
+                $user->setPassword($_POST['password']);
+                $user->setVerified($verified);
+                //save database -> de gebruiker op te slaan
+                $res = $user->save();
+                //de data zit in onze database en we worden doorgestuurd naar de login pagina
+                sendemail_verify($username, $email, $verified);
+                header("Location: login.php");
+            } catch(Throwable $e) {
+                echo $e->getMessage();
+                var_dump($e);
+            }
+        }
+    };
+};
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -80,13 +79,12 @@
         <h2>Make your account</h2>
         </div>
         <div class="alert">
-            <?php 
-                if(isset($_SESSION['status']))
-                {
+            <?php
+                if(isset($_SESSION['status'])) {
                     echo '<h4>'.$_SESSION['status'].'</h4>';
                     unset($_SESSION['status']);
                 }
-            ?>
+?>
         </div>
         <form class="" action="" method="POST">
         <input type="hidden" name="remember" value="true">

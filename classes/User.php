@@ -1,6 +1,7 @@
 <?php
 
-class User{
+class User
+{
     private string $username;
     private string $email;
     private string $password;
@@ -12,7 +13,7 @@ class User{
 
     /**
      * Get the value of username
-     */ 
+     */
     public function getUsername()
     {
         return $this->username;
@@ -23,13 +24,12 @@ class User{
      * Set the value of username
      *
      * @return  self
-     */ 
+     */
     public function setUsername($username)
     {
-        if(empty($username)){
+        if(empty($username)) {
             throw new Exception("Please, don't forget your username!");
-        }
-        else{
+        } else {
             $this->username = $username;
         }
 
@@ -38,7 +38,7 @@ class User{
 
     /**
      * Get the value of email
-     */ 
+     */
     public function getEmail()
     {
         return $this->email;
@@ -48,16 +48,14 @@ class User{
      * Set the value of email
      *
      * @return  self
-     */ 
+     */
     public function setEmail($email)
     {
-        if(empty($email)){
+        if(empty($email)) {
             throw new Exception("Please, don't forget your email!");
-        }
-        else if(!filter_var($email,FILTER_VALIDATE_EMAIL)){
+        } elseif(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             throw new Exception("Sorry, this is a invalid email.");
-        }
-        else{
+        } else {
             $this->email = $email;
         }
         $this->email = $email;
@@ -67,7 +65,7 @@ class User{
 
     /**
      * Get the value of password
-     */ 
+     */
     public function getPassword()
     {
         return $this->password;
@@ -77,26 +75,26 @@ class User{
      * Set the value of password
      *
      * @return  self
-     */ 
+     */
     public function setPassword($password)
     {
-        if(empty($password)){
+        if(empty($password)) {
             throw new Exception("Please, don't forget your password!");
-        }
-        else{
+        } else {
             $options = [
                 'cost' => 14,
             ];
             $this->password = password_hash($password, PASSWORD_DEFAULT, $options);
-    
-            return $this;;
+
+            return $this;
+            ;
         }
-       
+
     }
 
     /**
      * Get the value of errors
-     */ 
+     */
     public function getErrors()
     {
         return $this->errors;
@@ -106,7 +104,7 @@ class User{
      * Set the value of errors
      *
      * @return  self
-     */ 
+     */
     public function setErrors($errors)
     {
 
@@ -114,10 +112,10 @@ class User{
 
         return $this;
     }
-    
+
     /**
      * Get the value of bio
-     */ 
+     */
     public function getBio()
     {
         return $this->bio;
@@ -127,13 +125,12 @@ class User{
      * Set the value of bio
      *
      * @return  self
-     */ 
+     */
     public function setBio($bio)
     {
-        if(empty($bio)){
+        if(empty($bio)) {
             throw new Exception("Please, don't forget your bio!");
-        }
-        else{
+        } else {
             $this->bio = $bio;
         }
 
@@ -142,7 +139,7 @@ class User{
 
       /**
      * Get the value of userId
-     */ 
+     */
     public function getUserId()
     {
         return $this->userId;
@@ -152,9 +149,9 @@ class User{
      * Set the value of userId
      *
      * @return  self
-     */ 
+     */
     public function setUserId($userId)
-    {        
+    {
         $this->userId = $userId;
 
         return $this;
@@ -163,7 +160,7 @@ class User{
 
         /**
      * Get the value of verified
-     */ 
+     */
     public function getVerified()
     {
         return $this->verified;
@@ -173,7 +170,7 @@ class User{
      * Set the value of verified
      *
      * @return  self
-     */ 
+     */
     public function setVerified($verified)
     {
 
@@ -183,7 +180,8 @@ class User{
     }
 
     //FUNCTIES
-    public function save(){
+    public function save()
+    {
         $conn = Db::getInstance();
         //query voorbereiden voor beveiligd te worden = statement
         $statement = $conn->prepare("INSERT INTO users (username, email, password, active, moderator, credits, verified, verify_token) VALUES (:username, :email, :password, 0, 0, 0, 0, :verify);");
@@ -194,7 +192,8 @@ class User{
         $statement->execute();
     }
 
-    public static function update($bio){
+    public static function update($bio)
+    {
         $conn = Db::getInstance();
         $statement = $conn->prepare("UPDATE users SET bio=:bio WHERE id = :id");
         $statement->bindParam(":bio", $bio);
@@ -202,25 +201,26 @@ class User{
         $statement->execute();
     }
 
-    public static function login($username, $password){
+    public static function login($username, $password)
+    {
         //checken of de gebruiker bestaat
         $conn = Db::getInstance();
         $statement = $conn->prepare("SELECT * FROM users WHERE username = :username");
         $statement->bindValue(":username", $username);
         $statement->execute();
         $user = $statement->fetch(PDO::FETCH_ASSOC);
-        
+
 
         //als de gebruiker bestaat, checken of het wachtwoord klopt
-        if($user){
-			$hash = $user['password'];
-			if(password_verify($password, $hash)){
-				
+        if($user) {
+            $hash = $user['password'];
+            if(password_verify($password, $hash)) {
+
                 if($user['verified'] == 1) {
-                    $_SESSION['authenticated'] = TRUE;
+                    $_SESSION['authenticated'] = true;
                     $_SESSION['auth_user'] = [
                         'username' => $user['username'],
-                        
+
                     ];
                     $_SESSION['userid'] = $user['id'] ;
                     $_SESSION['status'] = "Login Successfull";
@@ -233,43 +233,46 @@ class User{
                 $_SESSION['status'] = "Invalid Username or Password";
                 header("Location: login.php");
             }
-		}else{
-			return false;
-            
-		}
+        } else {
+            return false;
+
+        }
     }
 
     //kijken of gebruiker een moderator is
-    public static function isModerator(){
+    public static function isModerator()
+    {
         $conn = Db::getInstance();
         $statement = $conn->prepare("SELECT * FROM users WHERE id = :id AND moderator = 1");
         $statement->bindValue(":id", $_SESSION['userid']);
         $statement->execute();
         $user = $statement->fetch(PDO::FETCH_ASSOC);
-        if($user){
+        if($user) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
 
     //kijken of gebruiker een admin is
-    public static function isAdmin(){
+    public static function isAdmin()
+    {
         $conn = Dbm::getInstance();
         $statement = $conn->prepare("SELECT * FROM users WHERE id = :id AND moderator = 1");
         $statement->bindValue(":id", $_SESSION['userid']);
         $statement->execute();
         $user = $statement->fetch(PDO::FETCH_ASSOC);
-        if($user){
+        if($user) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
     //update profile picture
-    public static function updateProfilePicture($profilePicture){
+    public static function updateProfilePicture($profilePicture)
+    {
         $conn = Db::getInstance();
         $statement = $conn->prepare("UPDATE users SET profilePicture=:profile_picture WHERE id = :id");
         $statement->bindParam(":profile_picture", $profilePicture);
@@ -278,7 +281,8 @@ class User{
     }
 
     //get profile picture
-    public static function getProfilePicture(){
+    public static function getProfilePicture()
+    {
         $conn = Db::getInstance();
         $statement = $conn->prepare("SELECT profilePicture FROM users WHERE id = :id");
         $statement->bindParam(":id", $_SESSION['userid']);
@@ -287,7 +291,8 @@ class User{
         return $profilePicture['profilePicture'];
     }
     //get profile picture
-    public static function getRecentBio(){
+    public static function getRecentBio()
+    {
         $conn = Db::getInstance();
         $statement = $conn->prepare("SELECT bio FROM users WHERE id = :id");
         $statement->bindParam(":id", $_SESSION['userid']);
@@ -306,30 +311,33 @@ class User{
     //     return true;
     // }
 
-   
 
-    public static function deleteUser(){
+
+    public static function deleteUser()
+    {
         $conn = Db::getInstance();
         $statement = $conn->prepare("DELETE FROM users WHERE id = :id LIMIT 1");
         $statement->bindValue(":id", $_SESSION['userid']);
         $statement->execute();
     }
 
-    public static function getUserByEmail($email){
+    public static function getUserByEmail($email)
+    {
         $conn = Db::getInstance();
         $statement = $conn->prepare("SELECT email FROM users WHERE email= :email");
         $statement->bindValue(":email", $email);
         $statement->execute();
         $user = $statement->fetch(PDO::FETCH_ASSOC);
-        if($user){
+        if($user) {
             //als er een user te vinden is zal het true weergeven anders false
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
-    public static function getUser($id){
+    public static function getUser($id)
+    {
         $conn = Db::getInstance();
         $statement = $conn->prepare("SELECT * FROM users WHERE id = :id");
         $statement->bindValue(":id", $id);
@@ -338,18 +346,19 @@ class User{
         return $user;
     }
 
-    public static function verifiedEmail($token){
+    public static function verifiedEmail($token)
+    {
         $conn = Db::getInstance();
         $statement = $conn->prepare("SELECT verify_token, verified FROM users WHERE verify_token = :token LIMIT 1");
         $statement->bindValue(":token", $token);
         $statement->execute();
         $user = $statement->fetch(PDO::FETCH_ASSOC);
-        if($user['verified'] == 0){
+        if($user['verified'] == 0) {
             $statement = $conn->prepare("UPDATE users SET verified = 1 WHERE verify_token = :token");
             $statement->bindValue(":token", $token);
             $statement->execute();
             return true;
-        }else{
+        } else {
             return false;
         }
 

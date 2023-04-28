@@ -1,20 +1,20 @@
 <?php
-    include_once(__DIR__."/bootstrap.php");
-    include_once (__DIR__."/navbar.php");
+include_once(__DIR__."/bootstrap.php");
+include_once(__DIR__."/navbar.php");
 
-    authenticated();
+authenticated();
 
-    $user = User::getUser($_GET["user"]);
+$user = User::getUser($_GET["user"]);
 
-    $prompts = Prompts::getUserPrompts($user["id"]);
+$prompts = Prompts::getUserPrompts($user["id"]);
 
-    $allExamples = [];
-    
-    foreach($prompts as $prompt){
-        $examples = Prompts::getPromptsExamples($prompt["id"]);
-        $allExamples[$prompt["id"]] = $examples;
-    }
-    $profilePicturePath = "uploads/".$user["profilePicture"];
+$allExamples = [];
+
+foreach($prompts as $prompt) {
+    $examples = Prompts::getPromptsExamples($prompt["id"]);
+    $allExamples[$prompt["id"]] = $examples;
+}
+$profilePicturePath = "uploads/".$user["profilePicture"];
 
 ?>
 
@@ -39,7 +39,8 @@
         <h3>Made prompts</h3>
         <hr>
             <div class="chartContainer">
-                <?php if(!empty($prompts)){ foreach($prompts as $prompt):?>
+                <?php if(!empty($prompts)) {
+                    foreach($prompts as $prompt):?>
                     <div class="chart">
                         <div class="promptInfo">
                             <a href="promptDetail.php?prompt=<?php echo $prompt["id"]?>">
@@ -48,16 +49,19 @@
                             <div class="categoryLabel"><?php echo htmlspecialchars($prompt["name"])?></div>
                         </div>
                         <div class="coverImage">
-                            <?php if(!empty($allExamples)){?>
+                            <?php if(!empty($allExamples)) {?>
                                 <?php foreach($allExamples[$prompt["id"]] as $example):?>
                                         <img class="imageExample" src="<?php echo "uploads/".htmlspecialchars($example["example"])?>" alt="coverImage">
                                 <?php endforeach; ?>
-                            <?php ;}else{?>
+                            <?php ;
+                            } else {?>
                                 <img src="uploads/<?= htmlspecialchars($prompt['prompt']); ?>" alt="prompt">
-                            <?php ;}?>
+                            <?php ;
+                            }?>
                     </div>
                 </div>
-                <?php endforeach; }  ?>
+                <?php endforeach;
+                }  ?>
 
         </div>
 </body>

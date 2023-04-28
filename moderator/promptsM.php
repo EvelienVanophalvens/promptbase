@@ -1,12 +1,12 @@
 <?php
-    include_once(__DIR__."/../bootstrap.php");
-    include_once(__DIR__."/navbarM.php");
-    if( User::isAdmin() === false){
-        header("Location: ../error.php");
-        echo "you are not a moderator";
-    }
+include_once(__DIR__."/../bootstrap.php");
+include_once(__DIR__."/navbarM.php");
+if(User::isAdmin() === false) {
+    header("Location: ../error.php");
+    echo "you are not a moderator";
+}
 
-    $notAccepted =  Prompts::notAccepted();
+$notAccepted =  Prompts::notAccepted();
 
 
 
@@ -29,13 +29,15 @@
                 <th>prompt</th>
                 <th>action</th>
             </tr>
-            <?php if(!empty($notAccepted)){ foreach($notAccepted as $prompt):?>
+            <?php if(!empty($notAccepted)) {
+                foreach($notAccepted as $prompt):?>
             <tr>
                 <td><?php echo htmlspecialchars($prompt["username"])?></td>
                 <td><?php echo htmlspecialchars($prompt["prompt"])?></td>
                 <td><a href="promptsDetailM.php?prompt=<?php echo $prompt["id"]?>">See Details</a></td>
             </tr>
-            <?php endforeach; }  ?>
+            <?php endforeach;
+            }  ?>
         </table>
     </section>
     <section class="reportedPrompts">

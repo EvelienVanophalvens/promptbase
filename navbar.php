@@ -19,7 +19,9 @@
             </li>
             <li>
                 <form action="filteredByCategory.php" method="get">
-                    <input type="text" name="search" id="search" placeholder="Search" value="<?php if(isset($_GET['search'])){echo htmlspecialchars($_GET['search']); } ?>">
+                    <input type="text" name="search" id="search" placeholder="Search" value="<?php if(isset($_GET['search'])) {
+                        echo htmlspecialchars($_GET['search']);
+                    } ?>">
                 </form>
             </li>   
             <li>
@@ -34,9 +36,9 @@
                     
                     <div class="dropdown-content">
                         <a href="profile.php">Mijn account</a>
-                        <?php if(User::isModerator()){
+                        <?php if(User::isModerator()) {
                             echo "<a href='./moderator/moderator.php'>Moderator</a>";
-                        }else{
+                        } else {
                             echo "";
                         }?>
                         <a href="logout.php">Log out</a>

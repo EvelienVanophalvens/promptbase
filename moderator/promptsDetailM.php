@@ -1,19 +1,19 @@
-<?php 
-    include_once(__DIR__."/../bootstrap.php");
-    include_once(__DIR__."/navbarM.php");
-    if( User::isAdmin() === false){
-        header("Location: ../error.php");
-        echo "you are not a moderator";
-    }
+<?php
+include_once(__DIR__."/../bootstrap.php");
+include_once(__DIR__."/navbarM.php");
+if(User::isAdmin() === false) {
+    header("Location: ../error.php");
+    echo "you are not a moderator";
+}
 
-    $prompt = Prompts::detailPromptM($_GET["prompt"]);
-    if(!empty($_POST) && isset($_POST["accept"])){
-        Prompts::acceptPrompt($_POST["id"]);
-        header("Location: promptsM.php");
-    }elseif(!empty($_POST) && isset($_POST["reject"])){
-        Prompts::rejectPrompt($_POST["id"]);
-        header("Location: promptsM.php");
-    }
+$prompt = Prompts::detailPromptM($_GET["prompt"]);
+if(!empty($_POST) && isset($_POST["accept"])) {
+    Prompts::acceptPrompt($_POST["id"]);
+    header("Location: promptsM.php");
+} elseif(!empty($_POST) && isset($_POST["reject"])) {
+    Prompts::rejectPrompt($_POST["id"]);
+    header("Location: promptsM.php");
+}
 ?>
 
 <!DOCTYPE html>

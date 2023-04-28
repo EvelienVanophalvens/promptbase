@@ -1,47 +1,43 @@
 <?php
 include_once(__DIR__."/bootstrap.php");
 
-if(isset($_SESSION['authenticated']))
-{
+if(isset($_SESSION['authenticated'])) {
     $_SESSION['status'] = "You are already Logged In";
     header("Location: home.php");
     exit(0);
 }
 
 //kijken of post niet leeg is
-if(!empty($_POST) ){
+if(!empty($_POST)) {
     //kijken of email niet leeg is ander error
-    if(!empty($_POST['username'])){
+    if(!empty($_POST['username'])) {
         $username = $_POST['username'];
-    }
-    else{
+    } else {
         $usernameError = "Please enter your username";
     }
     //kijken of password niet leeg is ander error
-    if(!empty($_POST['password'])){
+    if(!empty($_POST['password'])) {
         $password = $_POST['password'];
-    }
-    else{
+    } else {
         $passwordError = "Please enter your password";
     }
     //als beide error niet leeg zijn, dan kan je inloggen
-    if(empty($emailError) && empty($passwordError)){
+    if(empty($emailError) && empty($passwordError)) {
         $username = $_POST['username'];
         $password = $_POST['password'];
         $userid = User::login($username, $password);
-        try{
-            if($userid){
+        try {
+            if($userid) {
                 header("Location: home.php");
                 session_start();
                 $_SESSION['loggedin'] = true;
                 $_SESSION['userid'] = $userid ;
-                $_SESSION['authenticated'] = TRUE;
- 
-            }else{
+                $_SESSION['authenticated'] = true;
+
+            } else {
                 $loginError = "Username or password is incorrect";
             };
-        }
-        catch(Throwable $e){
+        } catch(Throwable $e) {
             echo $e->getMessage();
             var_dump($e);
         }
@@ -82,7 +78,7 @@ if(!empty($_POST) ){
         <form class="" action="" method="POST">
         <input type="hidden" name="remember" value="true">
         <div class="form-element">
-            <?php if(!empty($loginError)){  ?>
+            <?php if(!empty($loginError)) {  ?>
             <p class="error"><?php echo $loginError; ?></p>
             <?php } ?>
             <div class="login-input">

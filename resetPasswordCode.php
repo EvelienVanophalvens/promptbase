@@ -1,4 +1,5 @@
 <?php
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -19,7 +20,7 @@ use PHPMailer\PHPMailer\Exception;
 //Load Composer's autoloader
 require 'vendor/autoload.php';
 
-function send_password_reset($get_name, $get_email,$token)
+function send_password_reset($get_name, $get_email, $token)
 {
     //Create an instance; passing `true` enables exceptions
     $mail = new PHPMailer(true);
@@ -35,7 +36,7 @@ function send_password_reset($get_name, $get_email,$token)
     $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
     $mail->Username   = 'lindsay.prompt@gmail.com';                     //SMTP username
     $mail->Password   = 'apjlogqclgpdlpzb';                              //SMTP password
-    
+
     //$mail->SMTPSecure = 'tls';            //Enable implicit TLS encryption
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
     $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
@@ -71,7 +72,7 @@ function send_password_reset($get_name, $get_email,$token)
     }
 }
 
-if(isset($_POST['passwordResetLink'])){
+if(isset($_POST['passwordResetLink'])) {
     $conn = Db::getInstance();
 
     $email = $_POST['email'];
@@ -83,34 +84,31 @@ if(isset($_POST['passwordResetLink'])){
     $row = $statement->fetch(PDO::FETCH_ASSOC);
     var_dump($row);
 
-    if($row !== false)
-    {
+    if($row !== false) {
         $get_name = $row['username'];
         $get_email = $row['email'];
 
         $update_token = "UPDATE users SET password='$token' WHERE email='$get_email' LIMIT 1";
         $update_token_run = $conn->query($update_token);
 
-        if($update_token_run)
-        {
-            send_password_reset($get_name, $get_email,$token);
+        if($update_token_run) {
+            send_password_reset($get_name, $get_email, $token);
             $_SESSION['status'] = "We e-mailed you a password reset link. <br> Go check in your e-mailbox.";
             header("Location: resetPassword.php");
             exit(0);
-        }else{
+        } else {
             $_SESSION['status'] = "Something went wrong";
             header("Location: resetPassword.php");
             exit(0);
         }
-    }else{
+    } else {
         $_SESSION['status'] = "No email found";
         header("Location: resetPassword.php");
         exit(0);
     }
 }
 
-if(isset($_POST['passwordUpdate']))
-{
+if(isset($_POST['passwordUpdate'])) {
     $email = $_POST['email'];
     $token = $_POST['token'];
     $newPassword = $_POST['newPassword'];
@@ -122,10 +120,8 @@ if(isset($_POST['passwordUpdate']))
     ];
     $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT, $options);
 
-    if(!empty($token))
-    {
-        if(!empty($email)&&!empty($newPassword)&&!empty($confirmationPassword))
-        {
+    if(!empty($token)) {
+        if(!empty($email)&&!empty($newPassword)&&!empty($confirmationPassword)) {
             $conn = Db::getInstance();
             //Validatie token
             $check_token = "SELECT password FROM users WHERE password=:password LIMIT 1";
@@ -134,46 +130,39 @@ if(isset($_POST['passwordUpdate']))
             $statement->execute();
             $resl = $statement->fetch(PDO::FETCH_ASSOC);
 
-            if($resl!==false)
-            {
+            if($resl!==false) {
                 //Validatie paswoord invoer
-                if($newPassword == $confirmationPassword)
-                {
+                if($newPassword == $confirmationPassword) {
                     $update_password = "UPDATE users SET password=:password WHERE password=:token LIMIT 1";
                     $statement = $conn -> prepare($update_password);
                     $statement->bindValue(":password", $hashedPassword);
                     $statement->bindValue(":token", $token);
                     $statement->execute();
-                    
-                    if($statement){
+
+                    if($statement) {
                         $_SESSION['status'] = "Confirmed new password!<br>You can log in with your new password.";
                         header("Location: passwordChange.php?token=$token&email=$email");
                         exit(0);
                     }
-                }else
-                {
+                } else {
                     $_SESSION['status'] = "Password and confirm password does not match";
                     header("Location: passwordChange.php?token=$token&email=$email");
                     exit(0);
                 }
-            }else
-            {
+            } else {
                 $_SESSION['status'] = "Invalid token";
                 header("Location: passwordChange.php?token=$token&email=$email");
                 exit(0);
             }
-        }else
-        {
+        } else {
             $_SESSION['status'] = "All fields are required!";
             header("Location: passwordChange.php?token=$token&email=$email");
             exit(0);
         }
-    }else
-    {
+    } else {
         $_SESSION['status'] = "No token avaible";
         header("Location: passwordChange.php");
         exit(0);
     }
 
 }
-?>
