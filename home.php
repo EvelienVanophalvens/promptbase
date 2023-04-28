@@ -4,7 +4,6 @@
 
         authenticated();
         $accepted =  Prompts::accepted();
-        $prompts = Prompts::getAll();
 
         //retrieve the data from mysql using drop down     
      /*   $paid_free = "";

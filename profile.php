@@ -2,7 +2,6 @@
     include_once(__DIR__."/bootstrap.php");    
     include_once (__DIR__."/navbar.php");
     authenticated();
-
     $error = "";
     if(!empty($_FILES)){
         //data van de file
@@ -55,17 +54,13 @@
         $bio = $_POST['new_bio'];
         $update = User::update($bio);
     }else{
-        echo "het is niet gelukt";
+        //echo "het is niet gelukt";
     }
 
     authenticated();
-    $accepted =  Prompts::accepted();
-
     //get the prompts from the database
-    $prompts = Prompts::getAll();
-    
+    $personalPrompts =  Prompts::getPersonalPrompts($_SESSION['userid']);
 
-    
 ?>
 
 <!DOCTYPE html>
@@ -109,38 +104,25 @@
         <h3 class="NewestPrompts">My prompts</h3>
         <hr>
         <div class="chartContainer">
-                    <?php if(!empty($accepted)){ foreach($accepted as $prompt):?>
+                    <?php if(!empty($personalPrompts)){ foreach($personalPrompts as $prompt):?>
                         <div class="chart">
-                        
-
-                  <a href="promptDetail.php?prompt=<?php echo $prompt["id"];?>"> 
-                  <!---<?php if(isset($prompt["example"])){
-                    // code to display the image 
-                    echo htmlspecialchars($prompt["example"]);
-                    } else {
-                    // code to handle the case where there is no image
-                    echo "default_image.jpg";
-                    };?> --->
+                            <a href="promptDetail.php?prompt=<?php echo $prompt["id"];?>">
                                 <div class="coverImage">
-                                <?php if(!empty($prompt["example"])){?>
-                                <img src="<?php echo "uploads/".$prompt["example"]?>" alt="coverImage">
-                                <?php ;}else if (!empty($prompt["image"])){?>
-                                <img src="<?php echo $prompt["image"]?>" alt="example">
-                            <?php ;}?>
-
+                                    <?php if(!empty($prompt["example"])){?>
+                                        <img src="<?php echo "uploads/".$prompt["example"]?>" alt="coverImage">
+                                    <?php ;}else if (!empty($prompt["image"])){?>
+                                        <img src="<?php echo $prompt["image"]?>" alt="example">
+                                    <?php ;}?>
                                 </div>
                                 <div class="promptInfo">
-                               <?php if(isset($prompt["prompt"])){
-    echo htmlspecialchars($prompt["prompt"]);
-}
-?>  
-                                    <div class="categoryLabel"></div>
-                                </div>
+                                <?php if(isset($prompt["prompt"])){echo htmlspecialchars($prompt["prompt"]);}?>  
+                                <div class="categoryLabel"><?php if(isset($prompt["name"])){echo htmlspecialchars($prompt["name"]);}?></div>
+                                    </div>
+                                
                             </a>
                         </div>
-                    <?php endforeach; }  ?>
-                </div>
-            
+                    <?php endforeach; }?>
+                </div>    
     </div>
     <form class="" id="profilePictureForm" method="POST" enctype="multipart/form-data">
         <input type="file" name="profilePicture" id="profilePicture" accept=".jpg, .jpeg, .png">

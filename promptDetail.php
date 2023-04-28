@@ -6,17 +6,11 @@
     $prompt =  Prompts::detailPrompt($_GET["prompt"]);
     $comment = Prompts::getAllComments($_GET["prompt"]);
     $accepted =  Prompts::accepted();
-    $prompts = Prompts::getAll();
-
-    var_dump($prompt);
-
-
-    
+    $prompts = Prompts::getPersonalPrompts($_SESSION['userid']);
+    //var_dump($prompt);
     $picture = "";
-    
-
     foreach($prompt["examples"] as $example){
-        var_dump($example);
+        //var_dump($example);
         $picture = "uploads/".$example["example"];
     }
 ?>
