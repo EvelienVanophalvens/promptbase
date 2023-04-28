@@ -1,23 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,300;0,400;0,500;0,600;0,700;0,900;1,800&display=swap');
 body{
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Libre Franklin', sans-serif;
     padding: 0px;
     margin: 0px;
 }
 .canvas{
-    background-color: #eaeaea;
+    background-color: #e8e8e7;
     padding: 24px;
     text-align: center;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-
 .context{
     margin: 24px;
+    text-align: left;
+}
+.context h2{
+    font-weight: 400;
+}
+.context button.btn.submit{
+    width: 300px;
 }
 .box{
     width: 340px; 
     /*background-color: #ffffff;*/
+}
+.box2{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-items: start;
+}
+.illustration img{
+    max-height: 347px;
 }
 .info{
     text-align: left;
@@ -30,7 +45,7 @@ body{
 }
 .title h2{
     font-size: 32px;
-    font-weight: 600;
+    font-weight: 400;
     margin-bottom: 0px;
 }
 .hidden{

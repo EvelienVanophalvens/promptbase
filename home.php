@@ -77,7 +77,13 @@ foreach($accepted as $example) {
                     <?php unset($_SESSION['status']); ?>
                 <?php } ?>
                 <div class="context">
-                    <h2>Hello! Welcome to the home page <?= htmlspecialchars($_SESSION['auth_user']['username']); ?>.</h2>
+                    <h2>Hello <?= htmlspecialchars($_SESSION['auth_user']['username']); ?>! <br>You joined the collective now.</h2>
+                    <button class="btn submit">
+                        <a href="upload.php">Upload prompt</a>
+                    </button>
+                </div>
+                <div class="illustration">
+                    <img src="uploads/illustration_team.png" alt="team">
                 </div>
             </div>
         </div>
