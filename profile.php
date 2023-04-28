@@ -119,9 +119,12 @@ $personalPrompts =  Prompts::getPersonalPrompts($_SESSION['userid']);
                                     <?php if(isset($prompt["prompt"])) {
                                         echo htmlspecialchars($prompt["prompt"]);
                                     }?>  
-                                    <div class="categoryLabel"><?php if(isset($prompt["name"])) {
-                                        echo htmlspecialchars($prompt["name"]);
-                                    }?>
+                                    <div class="categoryLabel">
+                                        <?php if(isset($prompt["name"])) {
+                                            echo htmlspecialchars($prompt["name"]);
+                                        } else {
+                                            echo "no category";
+                                        }?>
                                     </div>
                                 </div>    
                             </a>

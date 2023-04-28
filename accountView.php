@@ -50,7 +50,13 @@ if(!empty($user["profilePicture"])) {
                             <a href="promptDetail.php?prompt=<?php echo $prompt["id"]?>">
                             <p><?php echo htmlspecialchars($prompt["promptName"])?></p>
                             </a>
-                            <div class="categoryLabel"><?php echo htmlspecialchars($prompt["name"])?></div>
+                            <div class="categoryLabel">
+                                <?php if(isset($prompt["name"])) {
+                                    echo htmlspecialchars($prompt["name"]);
+                                } else {
+                                    echo "no category";
+                                }?>
+                            </div>
                         </div>
                         <div class="coverImage">
                             <?php if(!empty($allExamples)) {?>
@@ -58,8 +64,11 @@ if(!empty($user["profilePicture"])) {
                                         <img class="imageExample" src="<?php echo "uploads/".htmlspecialchars($example["example"])?>" alt="coverImage">
                                 <?php endforeach; ?>
                             <?php ;
-                            } else {?>
+                            } elseif(!($prompt['prompt'] == NULL)) { ?>
                                 <img src="uploads/<?= htmlspecialchars($prompt['prompt']); ?>" alt="prompt">
+                            <?php ;
+                            } else {?>
+                                <img src="uploads/default_image.png" alt="default img">
                             <?php ;
                             }?>
                         </div>

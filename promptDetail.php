@@ -10,7 +10,7 @@ foreach($prompt["examples"] as $example) {
     if(!empty($example)) {
         $picture = "uploads/".$example["example"];
     } else {
-        $picture = "https://image-placeholder.com/images/actual-size/200x200.png";
+        $picture = "uploads/default_image.png";
     }
 }
 ?>
@@ -29,15 +29,28 @@ foreach($prompt["examples"] as $example) {
         <a href="home.php" id="backbtn">< BACK TO OVERVIEW</a>
         <div class="title">
             <h2><?php echo htmlspecialchars($prompt["prompts"]["promptName"])?></h2>  
-            <p class="categoryLabel dark left"><?php echo htmlspecialchars($prompt["prompts"]["name"])?></p>
+            <p class="categoryLabel dark left">
+            <?php if(isset($prompt["name"])) {
+                echo htmlspecialchars($prompt["prompts"]["name"]);
+            } else {
+                echo "no category";
+            }?>
+            </p>
             <br>
         </div>
         <section id="exampleBox">
+        <?php if(!empty($prompt["examples"])) {?>
             <?php foreach($prompt["examples"] as $example):?>
                 <div class="imageExample">
-                    <img src="<?php echo htmlspecialchars($picture)?>" alt="example">           
+                        <img src="<?php echo htmlspecialchars($picture)?>" alt="example">  
                 </div>
             <?php endforeach; ?>
+        <?php } else {?>  
+            <div class="imageExample">
+                <img src="/uploads/default_image.png" alt="example">  
+            </div>  
+        <?php ;
+        }?>
         </section>
         <div class="promptUserInfo">
             <div class="half">

@@ -142,6 +142,9 @@ foreach($accepted as $example) {
                                     } elseif (!empty($prompt["image"])) {?>
                                         <img src="<?php echo htmlspecialchars($prompt["image"])?>" alt="example">
                                     <?php ;
+                                    } else {?>
+                                        <img src="uploads/default_image.png" alt="example">
+                                    <?php ;
                                     }?>
                                 </div>
                                 <div class="promptInfo">
@@ -152,11 +155,13 @@ foreach($accepted as $example) {
                                     <!--Displays the category of the prompt-->
                                     <div class="categoryLabel"><?php if(isset($prompt["name"])) {
                                         echo htmlspecialchars($prompt["name"]);
+                                    } else {
+                                        echo "no category";
                                     }?></div>
                                 </div>
                             </a>
                         </div>
-                    <?php endforeach;
+                        <?php endforeach;
                     }  ?>
                 </div>
             </div>
