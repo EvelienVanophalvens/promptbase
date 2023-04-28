@@ -111,24 +111,20 @@
                 <div class="chartContainer">
                     <?php if(!empty($accepted)){ foreach($accepted as $prompt):?>
                         <div class="chart">
-                        
-
-                  <a href="promptDetail.php?prompt=<?php echo $prompt["id"];?>"> 
-                  
+                            <a href="promptDetail.php?prompt=<?php echo $prompt["id"];?>"> 
                                 <div class="coverImage">
-                                <?php if(!empty($prompt["example"])){?>
-                                <img src="<?php echo "uploads/".htmlspecialchars($prompt["example"])?>" alt="coverImage">
-                                <?php ;}else if (!empty($prompt["image"])){?>
-                                <img src="<?php echo htmlspecialchars($prompt["image"])?>" alt="example">
-                            <?php ;}?>
-
+                                    <!--Displays the example images of the prompt-->
+                                    <?php if(!empty($prompt["example"])){?>
+                                        <img src="<?php echo "uploads/".htmlspecialchars($prompt["example"])?>" alt="coverImage">
+                                    <?php ;}else if (!empty($prompt["image"])){?>
+                                        <img src="<?php echo htmlspecialchars($prompt["image"])?>" alt="example">
+                                    <?php ;}?>
                                 </div>
                                 <div class="promptInfo">
-                               <?php if(isset($prompt["prompt"])){
-    echo htmlspecialchars($prompt["prompt"]);
-}
-?>  
-                                    <div class="categoryLabel"></div>
+                                    <!--Displays the name of the prompt-->
+                                    <?php if(isset($prompt["prompt"])){echo htmlspecialchars($prompt["prompt"]);}?>  
+                                    <!--Displays the category of the prompt-->
+                                    <div class="categoryLabel"><?php if(isset($prompt["name"])){echo htmlspecialchars($prompt["name"]);}?></div>
                                 </div>
                             </a>
                         </div>
