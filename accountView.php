@@ -14,8 +14,12 @@ foreach($prompts as $prompt) {
     $examples = Prompts::getPromptsExamples($prompt["id"]);
     $allExamples[$prompt["id"]] = $examples;
 }
-$profilePicturePath = "uploads/".$user["profilePicture"];
-
+//get the profile picture from the database
+if(!empty($user["profilePicture"])) {
+    $profilePicturePath = "uploads/".$user["profilePicture"];
+} else {
+    $profilePicturePath = "uploads/default_profile.png";
+}
 ?>
 
 <!DOCTYPE html>
