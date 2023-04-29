@@ -480,10 +480,19 @@ class Prompts
     }
 
     //geef alle likes
-    public function getLikes($promptId){
+    public function getLikes(){
         $conn = Dbm::getInstance();
         $statement = $conn->prepare("SELECT count(*) AS likes FROM prompt_likes WHERE promptId = :promptId");
-        $statement->bindValue(":promptId", $promptId);
+        $statement->bindValue(":promptId", $this->id);
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        return $result["likes"];
+    }
+
+    public static function getPromptLike($promtpId){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT count(*) AS likes FROM prompt_likes WHERE promptId = :promptId");
+        $statement->bindValue(":promptId", $promtpId);
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
         return $result["likes"];

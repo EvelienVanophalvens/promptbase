@@ -12,7 +12,7 @@ if (!empty($_POST)) {
 
     $p = new Prompts();
     $p->setId($promptId);
-    $likes = $p->getLikes($promptId);
+    $likes = $p->getLikes();
 
     $result = [
         "status" => "success",
@@ -20,6 +20,5 @@ if (!empty($_POST)) {
         "likes" => $likes 
     ];
 
-    header('Content-Type: application/json');
     echo json_encode($result);
 }

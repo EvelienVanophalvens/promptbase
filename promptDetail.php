@@ -7,14 +7,8 @@ $prompt =  Prompts::detailPrompt($_GET["prompt"]);
 $comment = Prompts::getAllComments($_GET["prompt"]);
 
 
-$picture = "";
-foreach($prompt["examples"] as $example) {
-    if(!empty($example)) {
-        $picture = "uploads/".$example["example"];
-    } else {
-        $picture = "uploads/default_image.png";
-    }
-}
+var_dump($prompt["prompts"][0]->getId());
+
 ?>
 
 <!DOCTYPE html>
@@ -44,7 +38,7 @@ foreach($prompt["examples"] as $example) {
         <?php if(!empty($prompt["examples"])) {?>
             <?php foreach($prompt["examples"] as $example):?>
                 <div class="imageExample">
-                        <img src="<?php echo htmlspecialchars($picture)?>" alt="example">  
+                        <img src="<?php echo "uploads/".htmlspecialchars($example["example"])?>" alt="example">  
                 </div>
             <?php endforeach; ?>
         <?php } else {?>  
@@ -54,51 +48,56 @@ foreach($prompt["examples"] as $example) {
         <?php ;
         }?>
         </section>
-        <div class="promptUserInfo">
-            <div class="half">
-                <a href="accountView.php?user=<?php echo htmlspecialchars($prompt['prompts'][0]->user)?>" ><p><strong>Made by </strong><?php echo htmlspecialchars($prompt['prompts'][0]->username)?> </p></a>
-                <p><strong>Date:</strong> <?php echo htmlspecialchars($prompt["prompts"][0]->getdate())?></p>
+        <section class="leftContainer" >
+            <div class="promptUserInfo">
+                <div class="half">
+                    <a href="accountView.php?user=<?php echo htmlspecialchars($prompt['prompts'][0]->user)?>" ><p><strong>Made by </strong><?php echo htmlspecialchars($prompt['prompts'][0]->username)?> </p></a>
+                    <p><strong>Date:</strong> <?php echo htmlspecialchars($prompt["prompts"][0]->getdate())?></p>
+                </div>
             </div>
-            <p data-id="<?php echo $prompt["prompts"][0]->getId(); ?>" class="likes">
-                Likes 
-                <span class='likes' id = "counter<?php echo $prompt["prompts"][0]->getId(); ?>" ></span>
-                <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402m5.726-20.583c-2.203 0-4.446 1.042-5.726 3.238-1.285-2.206-3.522-3.248-5.719-3.248-3.183 0-6.281 2.187-6.281 6.191 0 4.661 5.571 9.429 12 15.809 6.43-6.38 12-11.148 12-15.809 0-4.011-3.095-6.181-6.274-6.181"/></svg>
-            </p>
-        </div>
-        <div class="promptPromptInfo">
-            <p class="title">
-                <h3>Description</h3>
-            </p>
-            <p class="half"><?php echo htmlspecialchars($prompt["prompts"][0]->getDescription());?></p>
+            <div class="promptPromptInfo">
+                <p class="title">
+                    <h3>Description</h3>
+                </p>
+                <p class="half"><?php echo htmlspecialchars($prompt["prompts"][0]->getDescription());?></p>
+             </div> 
+            <div class="commentsection">
+                <p class="title">
+                    <h3>What others think</h3>
+                </p>
+                <?php foreach($comment as $comment):?>
+                    <div class="comment half">
+                        <p><strong><?php echo htmlspecialchars($comment["username"]);?></strong></p>
+                        <p><?php echo htmlspecialchars($comment["comment"]);?></p>
+                    </div>
+                    <br>
+                <?php endforeach; ?>
+            </div>
+                <form id="comment-form" method="POST">
+                    <div class="title">
+                        <h4>Hi <?= htmlspecialchars($_SESSION['auth_user']['username']); ?>, what do you think?</h4>
+                    </div>
+                    <div class="form-element">
+                        <input id="comment" name="comment" type="text" autocomplete="comment" placeholder="Comment here"></input>
+                    </div>
+                    <div class="form-element">
+                        <button type="submit" class="submit small" name="post_comment">
+                            Send
+                        </button>
+                    </div>
+                </form>  
+        </section>
+        <section class="rightContainer">
+            <div class='likes dark'>
+                <svg class="whiteSvg" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402m5.726-20.583c-2.203 0-4.446 1.042-5.726 3.238-1.285-2.206-3.522-3.248-5.719-3.248-3.183 0-6.281 2.187-6.281 6.191 0 4.661 5.571 9.429 12 15.809 6.43-6.38 12-11.148 12-15.809 0-4.011-3.095-6.181-6.274-6.181"/></svg>
+                <p data-id="<?php echo $prompt["prompts"][0]->getId(); ?>" class = "like"> Likes 
+                    <span class='like' id = "counter" ><?php echo Prompts::getPromptLike($prompt["prompts"][0]->getId()); ?></span>
+                </p>
+            </div>
             <button class="submit small">Get prompt</button>
-        </div> 
-        <div class="commentsection">
-            <p class="title">
-                <h3>What others think</h3>
-            </p>
-            <?php foreach($comment as $comment):?>
-                <div class="comment half">
-                    <p><strong><?php echo htmlspecialchars($comment["username"]);?></strong></p>
-                    <p><?php echo htmlspecialchars($comment["comment"]);?></p>
-                </div>
-                <br>
-            <?php endforeach; ?>
-        </div>
-            <form id="comment-form" method="POST">
-                <div class="title">
-                    <h4>Hi <?= htmlspecialchars($_SESSION['auth_user']['username']); ?>, what do you think?</h4>
-                </div>
-                <div class="form-element">
-                    <input id="comment" name="comment" type="text" autocomplete="comment" placeholder="Comment here"></input>
-                </div>
-                <div class="form-element">
-                    <button type="submit" class="submit small" name="post_comment">
-                        Send
-                    </button>
-                </div>
-            </form>               
-        </div>     
-    </div>
+        </section>            
+                
+    </div>     
     <script>
         const commentForm = document.getElementById('comment-form');
         const commentInput = document.getElementById('comment');
@@ -145,14 +144,15 @@ foreach($prompt["examples"] as $example) {
 
 
         //add click event to a.like
-	let likes = document.querySelectorAll('.likes');
+	let likes = document.querySelectorAll('.like');
 	for(let i = 0; i < likes.length; i++){
 		likes[i].addEventListener('click', function(e){
 			e.preventDefault();
 			//get the id of the post
 			let id = this.getAttribute('data-id');
+            console.log(id);
 			//get the counter
-			let counter = document.querySelector('#counter' + id);
+			let counter = document.querySelector('#counter');
 			//fetch request (post) to '/ajax/like.php', use formdata
 			let formData = new FormData();
 			formData.append('promptId', id);
