@@ -34,7 +34,7 @@ if(!empty($_POST)) {
 
             } else {
                 $loginError = "Username or password is incorrect";
-            };
+            }
 
     }
 
@@ -73,9 +73,9 @@ if(!empty($_POST)) {
         <form class="" method="POST">
       
         <div class="form-element">
-            <?php if(!empty($loginError)) {  ?>
+            
             <p class="error"><?php echo $loginError; ?></p>
-            <?php } ?>
+            
             <div class="login-input">
                 <?php if(!empty($usernameError)) { ?>
                     <p class="error"><?php echo $usernameError; ?></p>
