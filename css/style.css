@@ -483,12 +483,13 @@ nav ul a{
     gap: -10px;
   }
   .likes{
-    margin: 0px;
-    padding: 5px;
+    margin-top: 16px;
+    padding: 0px 10px;
     border-radius: 3px;
     width: 100px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
   }
   .half{
     width: 50%;
@@ -676,3 +677,17 @@ nav ul a{
             border-radius: 4px;
             background-color: #f8f8f8;
           }
+
+.container{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+}
+
+.rightContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    align-items: start;
+    gap: 20px;
+}
