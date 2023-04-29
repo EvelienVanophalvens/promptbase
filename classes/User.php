@@ -203,6 +203,8 @@ class User
 
     public static function login($username, $password)
     {
+        var_dump("hello");
+
         //checken of de gebruiker bestaat
         $conn = Db::getInstance();
         $statement = $conn->prepare("SELECT * FROM users WHERE username = :username");
@@ -230,8 +232,8 @@ class User
                     header("Location: login.php");
                 }
             } else {
-                $_SESSION['status'] = "Invalid Username or Password";
-                header("Location: login.php");
+                return false;
+
             }
         } else {
             return false;
