@@ -4,7 +4,14 @@ include_once(__DIR__."/bootstrap.php");
 include_once(__DIR__."/navbar.php");
 
 //get user id
-$user = $_SESSION['userid'];
+if (isset($_SESSION['userid'])) {
+    // get user id
+    $user = $_SESSION['userid'];
+} else {
+    // handle the case where userid is not set in the session
+    $user = null;
+}
+
 
 //get model for prompts
 $models = Prompts::getModules();
@@ -119,7 +126,7 @@ if(!empty($_FILES) && empty($message)) {
     <h1>Upload your prompt</h1>
     <form  action="upload.php" method="POST" enctype="multipart/form-data">
     <label for="file">Upload example:</label>
-    <p>ctr+shift to select multiple picture</p>
+    <p>ctrl+shift to select multiple picture</p>
     <input type="file" name="files[]" multiple="multiple">
     <br>
     <label for="title">Title:</label>
@@ -148,7 +155,7 @@ if(!empty($_FILES) && empty($message)) {
     <label for="price">Credits:</label>
     <input type="number" id="price" name="price">
     <br>
-    <label for="description">description:</label>
+    <label for="description">Description:</label>
     <textarea name="description" rows="10" cols="30"></textarea>
     <br>
     <div id="list1" class="dropdown-check-list" tabindex="100">
