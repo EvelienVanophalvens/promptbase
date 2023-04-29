@@ -13,7 +13,11 @@ $categories = Prompts::categories();
 
 $promptId = "";
 
-if(!empty($_POST) && $_POST['paid'] == 0) {
+$message = "";
+if(!empty($_POST) && !empty($_POST['paid'])) {
+    if($_POST['paid'] == 0) {
+
+    
     try {
         $prompt = new Prompts();
         $prompt->setPrompt($_POST['title']);
@@ -29,8 +33,6 @@ if(!empty($_POST) && $_POST['paid'] == 0) {
     } catch(Throwable $e) {
         $message = $e->getMessage();
     }
-
-
 } elseif(!empty($_POST) && $_POST['paid'] == 1) {
     $message = "Your price will be set to 0 because you have chosen to make this prompt free";
     $prompt = new Prompts();
@@ -45,6 +47,9 @@ if(!empty($_POST) && $_POST['paid'] == 0) {
     $prompt->setModel($_POST['model_choice']);
     $promptId = $prompt->save();
 } else {
+    $message = "Please fill in all the fields";
+}
+}else{
     $message = "Please fill in all the fields";
 }
 
