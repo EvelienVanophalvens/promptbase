@@ -28,6 +28,7 @@ document.addEventListener("click", function(e) {
 const editButton = document.getElementById('edit-button');
 const bioText = document.getElementById('bio-text');
 const bioInput = document.getElementById('bio-input');
+const bioForm = document.getElementById('bio-form');
 
 editButton.addEventListener('click', () => {
   bioInput.value = bioText.textContent.trim();
@@ -35,12 +36,3 @@ editButton.addEventListener('click', () => {
   bioInput.style.display = '';
 });
 
-bioInput.addEventListener('keydown', (event) => {
-  if (event.keyCode === 13 || event.key === 'Enter') {
-    // Bij het drukken van de enter zal er een submit uitgevoerd worden
-    bioText.style.display = '';
-    bioText.textContent = bioInput.value;
-    document.querySelector('form').submit();
-  }
-});
- 

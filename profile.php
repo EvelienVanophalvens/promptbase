@@ -89,13 +89,15 @@ $personalPrompts =  Prompts::getPersonalPrompts($_SESSION['userid']);
                 </div>
             </div>
             <h2 class="username"><?php echo htmlspecialchars($_SESSION['auth_user']['username'])?></h2>
-            <form action="" method="POST">
+            <div >
+            <form action="" method="POST" id="bio-form">
                 <p id="bio-text">
                     <?php echo $bio; ?>
                     <button type="button" id="edit-button"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill-rule="evenodd" clip-rule="evenodd" d="m3.99 16.854-1.314 3.504a.75.75 0 0 0 .966.965l3.503-1.314a3 3 0 0 0 1.068-.687L18.36 9.175s-.354-1.061-1.414-2.122c-1.06-1.06-2.122-1.414-2.122-1.414L4.677 15.786a3 3 0 0 0-.687 1.068zm12.249-12.63 1.383-1.383c.248-.248.579-.406.925-.348.487.08 1.232.322 1.934 1.025.703.703.945 1.447 1.025 1.934.058.346-.1.677-.348.925L19.774 7.76s-.353-1.06-1.414-2.12c-1.06-1.062-2.121-1.415-2.121-1.415z" fill="#000000"></path></g></svg></button>
                 </p>
-                <textarea name="new_bio" id="bio-input" style="display: none;" value="<?php echo htmlspecialchars($bio); ?>"></textarea>
+                <input name="new_bio" id="bio-input" value="<?php echo htmlspecialchars($bio); ?>">
             </form>
+            </div>
             <button class="submit small"><a href="profileSettings.php">Profiel bewerken</a></button>
         </div>  
         <div class="userPrompts">
@@ -139,6 +141,7 @@ $personalPrompts =  Prompts::getPersonalPrompts($_SESSION['userid']);
         <button type="submit" id="submitProfilePicture">Upload</button>
         <button id="cancelPicture"type="button" id="cancelProfilePicture">Cancel</button>
     </form>
+   
     <script src="./scripts/scriptProfile.js"></script> 
 </body>
 </html>

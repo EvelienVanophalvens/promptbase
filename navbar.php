@@ -23,7 +23,7 @@
         </div>
         <ul class="navigation">
             <li>
-                <form action="filteredByCategory.php" method="get">
+                <form action="filteredByCategory.php" method="get" autocomplete="off" id="search-form">
                     <input type="text" name="search" id="search" placeholder="Search" value="<?php if(isset($_GET['search'])) {
                         echo htmlspecialchars($_GET['search']);
                     } ?>">
@@ -60,6 +60,22 @@
             </li>
         </ul>
     </nav>
+    <script>
+        const inputFields = document.querySelectorAll("input, textearea");
+        console.log(inputFields);
+        inputFields.forEach((inputFields) =>{
+            inputFields.addEventListener("keydown", (event)=>{
+                if(event.target.id === "search"){
+                    return;
+                }else{
+                    event.preventDefault();
+                }
+            })
+        })
+
+    
+    </script>
+
 </body>
 </html>
 
