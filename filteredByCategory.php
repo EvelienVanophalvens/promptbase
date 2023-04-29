@@ -17,6 +17,12 @@ foreach($accepted as $example) {
     $picture = "uploads/".$example["example"];
 }
 
+//getting the result of the search
+if(!empty($_GET['search'])) {
+    $search = $_GET['search'];
+    $accepted = Prompts::search($search);
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -81,7 +87,50 @@ foreach($accepted as $example) {
 
                 </div>
             </div>
+            <h3>By search </h3>
+            <hr>
+            <div class="chart__content__item">
+                            <div class="chart__content__item__value">
+                                <h2><?php if(isset($accepted)) {
+                                    echo count($accepted);
+                                } ?></h2>
+                            </div>
+                    </div>
+            <div class="chartContainer">
+                    <?php if(!empty($accepted)) {
+                        foreach($accepted as $prompt){
+                            $example = Prompts::getPromptExample($prompt["id"]);
+                            $picture = "uploads/".$example["example"];?>
+                            <div class="chart">
+                                <a href="promptDetail.php?prompt=<?php echo $prompt["id"];?>"> 
+                                    <div class="coverImage">
+                                        <?php if(!empty($picture)) {?>
+                                            <img src="<?php echo htmlspecialchars($picture)?>" alt="coverImage">
+                                        <?php } elseif (!empty($prompt["image"])) {?>
+                                            <img src="<?php echo htmlspecialchars($prompt["image"])?>" alt="example">
+                                        <?php } else {?>
+                                            <img src="uploads/default_image.png" alt="example">
+                                        <?php }?>
+                                    </div>
+                                    <div class="promptInfo">
+                                        <?php if(isset($prompt["prompt"])) {
+                                            echo htmlspecialchars($prompt["prompt"]);
+                                        }?>  
+                                        <div class="categoryLabel">
+                                            <?php if(isset($prompt["name"])) {
+                                                echo htmlspecialchars($prompt["name"]);
+                                            } else {
+                                                echo "no category";
+                                            }?>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        <?php }
+                    }  ?>
+                </div>
         </div>
     </div>
+    
 </body>
 </html>

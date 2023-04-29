@@ -105,10 +105,6 @@ if(!empty($_GET['search'])) {
         } ?>>Midjourney</option>
     </select>
     <button type="submit">Filter</button>
-   <input type="text" class="search" name="search" placeholder="Search.." value="<?php if(isset($_GET['search'])) {
-       echo htmlspecialchars($_GET['search']);
-   } ?>">
-    <button type="submit">Search</button>
 </form>
     
     </div>

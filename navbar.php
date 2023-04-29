@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,11 +20,12 @@
             </ul>
         </div>
         <ul class="navigation">
-            <li>
+        <?php ob_start(); ?>
+           <li>
                 <form action="filteredByCategory.php" method="get" autocomplete="off" id="search-form">
                     <input type="text" name="search" id="search" placeholder="Search" value="<?php if(isset($_GET['search'])) {
                         echo htmlspecialchars($_GET['search']);
-                    } ?>">
+                    }?>">
                 </form>
             </li>   
             <li>
@@ -59,6 +58,7 @@
                 </a>
             </li>
         </ul>
+        
     </nav>
     <script>
         const inputFields = document.querySelectorAll("input, textearea");
