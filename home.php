@@ -44,19 +44,6 @@ if(!empty($_GET['search'])) {
 }
 
 
-// getting the image from the prompt
-$picture = "";
-foreach($accepted as $example) {
-    if (!empty($example["example"])) {
-        $picture = "uploads/" . $example["example"];
-    } else {
-        // default image path if the 'example' key is not set or is empty
-        $picture = "default_image.jpg";
-    }
-    // display the first image and break the loop
-    break;
-}
-
 ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -131,37 +118,35 @@ foreach($accepted as $example) {
                 <hr>
                 <div class="chartContainer">
                     <?php if(!empty($accepted)) {
-                        foreach($accepted as $prompt):?>
-                        <div class="chart">
-                            <a href="promptDetail.php?prompt=<?php echo $prompt["id"];?>"> 
-                                <div class="coverImage">
-                                    <!--Displays the example images of the prompt-->
-                                    <?php if(!empty($prompt["example"])) {?>
-                                        <img src="<?php echo "uploads/".htmlspecialchars($prompt["example"])?>" alt="coverImage">
-                                    <?php ;
-                                    } elseif (!empty($prompt["image"])) {?>
-                                        <img src="<?php echo htmlspecialchars($prompt["image"])?>" alt="example">
-                                    <?php ;
-                                    } else {?>
-                                        <img src="uploads/default_image.png" alt="example">
-                                    <?php ;
-                                    }?>
-                                </div>
-                                <div class="promptInfo">
-                                    <!--Displays the name of the prompt-->
-                                    <?php if(isset($prompt["prompt"])) {
-                                        echo htmlspecialchars($prompt["prompt"]);
-                                    }?>  
-                                    <!--Displays the category of the prompt-->
-                                    <div class="categoryLabel"><?php if(isset($prompt["name"])) {
-                                        echo htmlspecialchars($prompt["name"]);
-                                    } else {
-                                        echo "no category";
-                                    }?></div>
-                                </div>
-                            </a>
-                        </div>
-                        <?php endforeach;
+                        foreach($accepted as $prompt){
+                            $example = Prompts::getPromptExample($prompt["id"]);
+                            $picture = "uploads/".$example["example"];?>
+                            <div class="chart">
+                                <a href="promptDetail.php?prompt=<?php echo $prompt["id"];?>"> 
+                                    <div class="coverImage">
+                                        <?php if(!empty($picture)) {?>
+                                            <img src="<?php echo htmlspecialchars($picture)?>" alt="coverImage">
+                                        <?php } elseif (!empty($prompt["image"])) {?>
+                                            <img src="<?php echo htmlspecialchars($prompt["image"])?>" alt="example">
+                                        <?php } else {?>
+                                            <img src="uploads/default_image.png" alt="example">
+                                        <?php }?>
+                                    </div>
+                                    <div class="promptInfo">
+                                        <?php if(isset($prompt["prompt"])) {
+                                            echo htmlspecialchars($prompt["prompt"]);
+                                        }?>  
+                                        <div class="categoryLabel">
+                                            <?php if(isset($prompt["name"])) {
+                                                echo htmlspecialchars($prompt["name"]);
+                                            } else {
+                                                echo "no category";
+                                            }?>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        <?php }
                     }  ?>
                 </div>
             </div>
