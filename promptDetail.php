@@ -5,6 +5,8 @@ include_once(__DIR__."/navbar.php");
 authenticated();
 $prompt =  Prompts::detailPrompt($_GET["prompt"]);
 $comment = Prompts::getAllComments($_GET["prompt"]);
+
+
 $picture = "";
 foreach($prompt["examples"] as $example) {
     if(!empty($example)) {
@@ -28,7 +30,7 @@ foreach($prompt["examples"] as $example) {
     <div class="content">
         <a href="home.php" id="backbtn">< BACK TO OVERVIEW</a>
         <div class="title">
-            <h2><?php echo htmlspecialchars($prompt["prompts"]["promptName"])?></h2>  
+            <h2><?php echo htmlspecialchars($prompt['prompts'][0]->promptName)?></h2>  
             <p class="categoryLabel dark left">
             <?php if(isset($prompt["name"])) {
                 echo htmlspecialchars($prompt["prompts"]["name"]);
@@ -54,11 +56,12 @@ foreach($prompt["examples"] as $example) {
         </section>
         <div class="promptUserInfo">
             <div class="half">
-                <a href="accountView.php?user=<?php echo htmlspecialchars($prompt["prompts"]["user"])?>" ><p><strong>Made by </strong><?php echo $prompt["prompts"]["username"]?> </p></a>
-                <p><strong>Date:</strong> <?php echo htmlspecialchars($prompt["prompts"]["date"])?></p>
+                <a href="accountView.php?user=<?php echo htmlspecialchars($prompt['prompts'][0]->user)?>" ><p><strong>Made by </strong><?php echo htmlspecialchars($prompt['prompts'][0]->username)?> </p></a>
+                <p><strong>Date:</strong> <?php echo htmlspecialchars($prompt["prompts"][0]->getdate())?></p>
             </div>
-            <p class="likes">
+            <p data-id="<?php echo $prompt["prompts"][0]->getId(); ?>" class="likes">
                 Likes 
+                <span class='likes' id = "counter<?php echo $prompt["prompts"][0]->getId(); ?>" ></span>
                 <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402m5.726-20.583c-2.203 0-4.446 1.042-5.726 3.238-1.285-2.206-3.522-3.248-5.719-3.248-3.183 0-6.281 2.187-6.281 6.191 0 4.661 5.571 9.429 12 15.809 6.43-6.38 12-11.148 12-15.809 0-4.011-3.095-6.181-6.274-6.181"/></svg>
             </p>
         </div>
@@ -66,7 +69,7 @@ foreach($prompt["examples"] as $example) {
             <p class="title">
                 <h3>Description</h3>
             </p>
-            <p class="half"><?php echo htmlspecialchars($prompt["prompts"]["description"]);?></p>
+            <p class="half"><?php echo htmlspecialchars($prompt["prompts"][0]->getDescription());?></p>
             <button class="submit small">Get prompt</button>
         </div> 
         <div class="commentsection">
@@ -139,6 +142,35 @@ foreach($prompt["examples"] as $example) {
             // Verzend het AJAX-verzoek met de gegevens
             xhr.send(JSON.stringify(data));
         };
+
+
+        //add click event to a.like
+	let likes = document.querySelectorAll('.likes');
+	for(let i = 0; i < likes.length; i++){
+		likes[i].addEventListener('click', function(e){
+			e.preventDefault();
+			//get the id of the post
+			let id = this.getAttribute('data-id');
+			//get the counter
+			let counter = document.querySelector('#counter' + id);
+			//fetch request (post) to '/ajax/like.php', use formdata
+			let formData = new FormData();
+			formData.append('promptId', id);
+			fetch('./ajax/likes.php', {
+				method: 'POST',
+				body: formData
+			})
+			.then(function(response){
+				return response.json();
+			})
+			.then(function(data){
+				//update the counter
+				counter.innerHTML = data.likes;
+			})
+		});
+	}
+
+
 </script>
 </body>
 </html>

@@ -2,6 +2,7 @@
 
 class Prompts
 {
+    private int $id;
     private string $prompt;
     private string $author;
     private string $date;
@@ -11,6 +12,27 @@ class Prompts
     private int $paid;
     private int $model;
     private int $price;
+
+    
+    /**
+     * Get the value of id
+     */ 
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set the value of id
+     *
+     * @return  self
+     */ 
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
 
     /**
      * Get the value of prompt
@@ -350,7 +372,7 @@ class Prompts
         $statement = $conn->prepare("SELECT prompts.prompt AS promptName, prompts.date, prompts.userId, prompts.accepted, prompts.id, prompts.description, users.id AS user, users.username, prompt_categories.promptId, prompt_categories.categoryId,categories.name FROM prompts LEFT JOIN users ON prompts.userid = users.id  LEFT JOIN prompt_categories ON prompts.id = prompt_categories.promptId LEFT JOIN categories ON prompt_categories.categoryId = categories.id WHERE accepted = 1 AND prompts.id = :id LIMIT 1;");
         $statement->bindValue(":id", $id);
         $statement->execute();
-        $results =$statement->fetch(PDO::FETCH_ASSOC);
+        $results =$statement->fetchAll(PDO::FETCH_CLASS,  __CLASS__);
         //statement voor meerdere voorbeelden te kunnen laden
         $statement2 = $conn->prepare("SELECT  prompt_examples.example FROM prompts LEFT JOIN prompt_examples ON prompts.id = prompt_examples.promptId WHERE prompts.id= :id;");
         $statement2->bindValue(":id", $id);
@@ -445,4 +467,15 @@ class Prompts
         //beide resultaten worden doorgestuurd
         return $results;
     }
+
+    //geef alle likes
+    public function getLikes($promptId){
+        $conn = Dbm::getInstance();
+        $statement = $conn->prepare("SELECT count(*) AS likes FROM prompt_likes WHERE promptId = :promptId");
+        $statement->bindValue(":promptId", $promptId);
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        return $result["likes"];
+    }
+
 }
