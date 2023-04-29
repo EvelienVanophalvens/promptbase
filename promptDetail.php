@@ -7,7 +7,19 @@ $prompt =  Prompts::detailPrompt($_GET["prompt"]);
 $comment = Prompts::getAllComments($_GET["prompt"]);
 
 
-var_dump($prompt["prompts"][0]->getId());
+if(!empty($_POST["reason"])) {
+    try{
+    $report = new Reports();
+    $report->setPromptId($_GET["prompt"]);
+    $report->setUserId($_SESSION["userid"]);
+    $report->setReason($_POST["reason"]);
+    $report->save();
+    $message = "Your report has been sent";        
+    } catch(Throwable $e) {
+        $error = $e->getMessage();
+        var_dump($error);
+    }
+}
 
 ?>
 
@@ -23,6 +35,9 @@ var_dump($prompt["prompts"][0]->getId());
 <body>
     <div class="content">
         <a href="home.php" id="backbtn">< BACK TO OVERVIEW</a>
+        <?php if(!empty($message)):?><p><?php echo $message ?></p><?php endif?>
+        <?php if(!empty($error)):?><p><?php echo $error ?></p><?php endif;?>
+        <div class="container">
         <div class="title">
             <h2><?php echo htmlspecialchars($prompt['prompts'][0]->promptName)?></h2>  
             <p class="categoryLabel dark left">
@@ -33,6 +48,17 @@ var_dump($prompt["prompts"][0]->getId());
             }?>
             </p>
             <br>
+        </div>
+        <div id="dottedMenu">
+            <div class="hidden" id="promptMenu">
+                <p id="reporting">report prompt</p>
+            </div>
+            <div id="dots">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+        </div>
         </div>
         <section id="exampleBox">
         <?php if(!empty($prompt["examples"])) {?>
@@ -74,7 +100,7 @@ var_dump($prompt["prompts"][0]->getId());
                     <br>
                 <?php endforeach; ?>
             </div>
-                <form id="comment-form" method="POST">
+            <form id="comment-form" method="POST">
                     <div class="title">
                         <h4>Hi <?= htmlspecialchars($_SESSION['auth_user']['username']); ?>, what do you think?</h4>
                     </div>
@@ -86,7 +112,7 @@ var_dump($prompt["prompts"][0]->getId());
                             Send
                         </button>
                     </div>
-                </form>  
+                </form>
         </section>
         <section class="rightContainer">
             <div class='likes dark'>
@@ -99,10 +125,21 @@ var_dump($prompt["prompts"][0]->getId());
             <button class="submit small">Get prompt</button>
         </section>    
         </div>        
-                
+
     </div>     
+    
+    <form action=""  method="POST" class= "middleForm">
+            <h2>You want to rapport prompt <?php  echo htmlspecialchars($prompt['prompts'][0]->promptName)?> </h2>
+            <label for="reason">reason</label>
+            <textarea name="reason" id="reason" placeholder="Type here your reason"></textarea>
+            <input type="hidden" name="report"  value="<?php echo $prompt["prompts"][0]->getId()?>">
+            <div class="form-element">
+                <button type="submit" class="submit small">Send</button>
+            </div>
+        </form>
+                
     <script>
-        const commentForm = document.getElementById('comment-form');
+       const commentForm = document.getElementById('comment-form');
         const commentInput = document.getElementById('comment');
 
         commentForm.onsubmit = (e) => {
@@ -172,6 +209,23 @@ var_dump($prompt["prompts"][0]->getId());
 			})
 		});
 	}
+
+    document.querySelector('#dots').addEventListener('click', function(e){
+        e.preventDefault();
+        document.querySelector('#promptMenu').classList.toggle('hidden');
+        console.log("e")
+    });
+
+    let report = false
+
+    document.querySelector('#promptMenu #reporting').addEventListener('click', function(e){
+        e.preventDefault();
+        document.querySelector('.content').classList.add('faded');
+        document.querySelector(".middleForm").style.transform = "translate(-50%, -50%)";
+        report = true;
+    });
+
+    
 
 
 </script>

@@ -6,7 +6,7 @@ document.querySelector("#userProfilePicture img").addEventListener("click", func
 
 document.querySelector("#changePicture").addEventListener("click", function() {
     if(active === false){
-        document.querySelector(".context").classList.add("faded");
+        document.querySelector(".profileContext").classList.add("faded");
         document.querySelector("#profilePictureForm").classList.remove("hidden");
         document.querySelector("#profilePictureForm").style.transform = "translate(-50%, -50%)";
         active = true;
@@ -14,7 +14,7 @@ document.querySelector("#changePicture").addEventListener("click", function() {
 });
 
 document.querySelector("#cancelPicture").addEventListener("click", function() {
-    document.querySelector(".context").classList.remove("faded");
+    document.querySelector(".profileContext").classList.remove("faded");
     document.querySelector("#profilePictureForm").classList.add("hidden");
 });
 

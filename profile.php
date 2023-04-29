@@ -136,7 +136,7 @@ $personalPrompts =  Prompts::getPersonalPrompts($_SESSION['userid']);
             </div>    
         </div>
     </div>
-    <form class="" id="profilePictureForm" method="POST" enctype="multipart/form-data">
+    <form class= "middleForm" id="profilePictureForm" method="POST" enctype="multipart/form-data">
         <input type="file" name="profilePicture" id="profilePicture" accept=".jpg, .jpeg, .png">
         <button type="submit" id="submitProfilePicture">Upload</button>
         <button id="cancelPicture"type="button" id="cancelProfilePicture">Cancel</button>

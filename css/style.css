@@ -6,9 +6,7 @@ body{
 }
 a { text-decoration: none; }
 a:visited { text-decoration: none; color:black }
-a:hover { text-decoration: none;  color:black }
-a:focus { text-decoration: none;  color:black}
-a:hover, a:active { text-decoration: none;  color:black }
+ a:active { text-decoration: none;  color:black }
 
 .canvas{
     background-color: #e8e8e7;
@@ -285,7 +283,7 @@ nav ul a{
     justify-content: start;
 }
 
-#profilePictureForm{
+.middleForm{
     position: absolute;
     display: flex;
     width: 25%;
@@ -295,6 +293,9 @@ nav ul a{
     top:  50%;
     left: 50%;
     transform: translate(-500%, -50%);
+    background-color: #E8E7E7;
+    border-radius: 10px;
+    padding: 10px;
 
 }
 
@@ -690,4 +691,39 @@ nav ul a{
     justify-content: end;
     align-items: start;
     gap: 20px;
+}
+
+#dottedMenu{
+    justify-self: end;
+    align-self: center;
+    display: flex;
+    justify-content: space-around;
+    width: 25%;
+    height: 25%;
+
+
+}
+
+#promptMenu{
+    display: flex;
+    flex-direction: column;
+    background-color: #1F2937;
+    color: #E8E7E7;
+    cursor: pointer;
+    width: 100%;
+    height: fit-content;
+    align-items: start;
+    gap:10px;
+    padding: 10px;
+}
+
+.dot{
+    width: 15px;
+    height: 15px;
+    background-color:  #1f2937;
+    border-radius: 50%;
+}
+
+#dots{
+    cursor: pointer;
 }
