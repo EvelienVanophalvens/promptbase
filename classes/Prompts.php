@@ -498,4 +498,35 @@ class Prompts
         return $result["likes"];
     }
 
+    public static function addFavoritePrompt($userId, $promptId) {
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("INSERT INTO favourits (userId, promptId) VALUES (:userId, :promptId)");
+            $statement->bindValue(":userId", $userId);
+            $statement->bindValue(":promptId", $promptId);
+            $statement->execute();
+      }
+
+    public static function removeFavoritePrompt($userId, $promptId) {
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("DELETE FROM favourits WHERE userId = :userId AND promptId = :promptId");
+            $statement->bindValue(":userId", $userId);
+            $statement->bindValue(":promptId", $promptId);
+            $statement->execute();
+      }
+
+      public static function isPromptFavorited($userId, $promptId){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT * FROM favourits WHERE userId = :userId AND promptId = :promptId");
+        $statement->bindValue(":userId", $userId);
+        $statement->bindValue(":promptId", $promptId);
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        if($result){
+          return true;
+        }else{
+          return false;
+        }
+      }
+
+      
 }
