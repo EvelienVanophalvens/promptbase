@@ -528,5 +528,14 @@ class Prompts
         }
       }
 
+      public static function getFavouritePrompt($id){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT * FROM favourits WHERE userId = :userId");
+        $statement->bindValue(":userId", $id);
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+      }
+
       
 }
