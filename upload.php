@@ -21,7 +21,7 @@ $categories = Prompts::categories();
 $promptId = "";
 
 $message = "";
-if(!empty($_POST) && !empty($_POST['paid'])) {
+if(!empty($_POST) && empty(((int) $_POST['status']))) {
     if($_POST['paid'] == 0) {
 
     
@@ -31,9 +31,9 @@ if(!empty($_POST) && !empty($_POST['paid'])) {
         $prompt->setAuthor($user);
         $prompt->setDate(date("Y-m-d"));
         $prompt->setDescription($_POST['description']);
-        $prompt->setStatus($_POST['status']);
-        $prompt->setPaid($_POST['paid']);
-        $prompt->setPrice($_POST['price']);
+        $prompt->setStatus(((int) $_POST['status']));
+        $prompt->setPaid(((int) $_POST['paid']));
+        $prompt->setPrice(((int) $_POST['price']));
         $prompt->setCategories($_POST['categories']);
         $prompt->setModel($_POST['model_choice']);
         $promptId = $prompt->save();
@@ -47,9 +47,9 @@ if(!empty($_POST) && !empty($_POST['paid'])) {
     $prompt->setAuthor($user);
     $prompt->setDate(date("Y-m-d"));
     $prompt->setDescription($_POST['description']);
-    $prompt->setStatus($_POST['status']);
-    $prompt->setPaid($_POST['paid']);
-    $prompt->setPrice(0);
+    $prompt->setStatus(((int) $_POST['status']));
+    $prompt->setPaid(((int) $_POST['paid']));
+    $prompt->setPrice(((int) 0));
     $prompt->setCategories($_POST['categories']);
     $prompt->setModel($_POST['model_choice']);
     $promptId = $prompt->save();
@@ -57,7 +57,8 @@ if(!empty($_POST) && !empty($_POST['paid'])) {
     $message = "Please fill in all the fields";
 }
 }else{
-    $message = "Please fill in all the fields";
+    $message = "YOutube Please fill in all the fields";
+
 }
 
 
@@ -133,15 +134,15 @@ if(!empty($_FILES) && empty($message)) {
     <input type="text" id="title" name="title" >
     <br>
     <br>
-    <input type="radio" id="private" name="status" value=1>
+    <input type="radio" id="private" name="status" value="1">
     <label for="private">Private</label>
-    <input type="radio" id="public" name="status" value=0>
+    <input type="radio" id="public" name="status" value="0">
     <label for="public">Public</label>
     <br>
     <br>
-    <input type="radio" id="paid" name="paid" value=0>
+    <input type="radio" id="paid" name="paid" value="0">
     <label for="paid">Paid</label>
-    <input type="radio" id="free" name="paid" value=1>
+    <input type="radio" id="free" name="paid" value="1">
     <label for="free">Free</label>
     <br>
     <br>

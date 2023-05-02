@@ -174,7 +174,8 @@ class Prompts
      */
     public function setStatus($status)
     {
-        if(empty($status)) {
+        $status = (int)$status; 
+        if(is_null($status)) {
             throw new Exception("Please fill in a status");
         } else {
             $this->status = $status;
@@ -199,7 +200,7 @@ class Prompts
      */
     public function setPaid($paid)
     {
-        if(empty($paid)) {
+        if(is_null($paid)) {
             throw new Exception("Please fill in a paid form");
         } else {
             $this->paid = $paid;
