@@ -538,5 +538,12 @@ class Prompts
         return $result;
       }
 
+      public static function delete ($id){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("DELETE prompt_categories, prompts, prompt_likes, prompt_examples, prompt_comments from prompts LEFT JOIN prompt_categories ON prompts.id = prompt_categories.promptId LEFT JOIN prompt_comments ON prompts.id = prompt_comments.promptId LEFT JOIN prompt_likes ON prompts.id = prompt_likes.promptId LEFT JOIN prompt_examples ON prompts.id = prompt_examples.promptId WHERE prompts.id = :id");
+        $statement->bindValue(":id", $id);
+        $statement->execute();
+      }
+
       
 }
