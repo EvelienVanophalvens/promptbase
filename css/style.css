@@ -731,4 +731,12 @@ nav ul a{
 #promptMenu .save-favourite-link {
     color: white;
   }
-  
+
+.content-settings{
+    display: flex;
+    justify-content: space-around;
+    margin: 24px;
+}
+.content-settings .credits{
+    max-width: 549px;
+}
