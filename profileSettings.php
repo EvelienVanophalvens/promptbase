@@ -2,8 +2,8 @@
 include_once(__DIR__."/bootstrap.php");
 include_once(__DIR__."/navbar.php");
 authenticated();
+$user = User::getUser($_SESSION['userid']);
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,6 +25,11 @@ authenticated();
         <form action="deleteaccount.php" method="POST">
             <button  name="user_delete" class="submit small danger" type="submit" value="<?= htmlspecialchars($_SESSION['auth_user']['username']);?>">Delete account</button>
         </form>
+        <div class="credits">
+            <h3>Credits</h3>
+            <h3><?php echo htmlspecialchars($user['credits'])?></h3>
+            <p>You have a amount of <strong><?php echo htmlspecialchars($user['credits'])?></strong> credits to spend. In order to receive more credits you need to make new prompts.</p>
+        </div>
     </div>
 </body>
 </html>
