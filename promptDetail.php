@@ -198,32 +198,38 @@ $favourites = Prompts::addFavoritePrompt($userId, $promptId);
         };
 
 
-        //add click event to a.like
-	let likes = document.querySelectorAll('.like');
-	for(let i = 0; i < likes.length; i++){
-		likes[i].addEventListener('click', function(e){
-			e.preventDefault();
-			//get the id of the post
-			let id = this.getAttribute('data-id');
-            console.log(id);
-			//get the counter
-			let counter = document.querySelector('#counter');
-			//fetch request (post) to '/ajax/like.php', use formdata
-			let formData = new FormData();
-			formData.append('promptId', id);
-			fetch('./ajax/likes.php', {
-				method: 'POST',
-				body: formData
-			})
-			.then(function(response){
-				return response.json();
-			})
-			.then(function(data){
-				//update the counter
-				counter.innerHTML = data.likes;
-			})
-		});
-	}
+        //add click event to a.like    
+
+        let likes = document.querySelectorAll('.like');
+        for(let i = 0; i < likes.length; i++){
+            likes[i].addEventListener('click', function(e){ 
+                e.preventDefault();
+                //get the id of the post
+                let id = this.getAttribute('data-id');
+                console.log(id);
+                //get the counter
+                let counter = document.querySelector('#counter');
+                //fetch request (post) to '/ajax/like.php', use formdata
+                let formData = new FormData();
+                formData.append('promptId', id);
+                fetch('./ajax/likes.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(function(response){
+                    return response.json();
+                })
+                .then(function(data){
+                    //update the counter
+                    counter.innerHTML = data.likes;
+                })
+                .then(liked = true)
+        
+            });
+        }
+
+
+
 
     document.querySelector('#dots').addEventListener('click', function(e){
         e.preventDefault();

@@ -53,4 +53,23 @@
             $statement->bindValue(":userid", $this->getUserId());
             return $statement->execute();
         }
+        
+        public function removeLike(){
+    
+                $conn = Dbm::getInstance();
+                $statement = $conn->prepare("DELETE FROM prompt_likes WHERE promptId = :promptid AND userId = :userid");
+                $statement->bindValue(":promptid", $this->getPromptId());
+                $statement->bindValue(":userid", $this->getUserId());
+                return $statement->execute();
+            }
+
+        public static function getLikes($promptId, $userId){
+                $conn = Dbm::getInstance();
+                $statement = $conn->prepare("SELECT * FROM prompt_likes WHERE promptId = :promptid AND userId = :userid");
+                $statement->bindValue(":promptid", $promptId);
+                $statement->bindValue(":userid", $userId);
+                $statement->execute();
+                $result = $statement->fetch(PDO::FETCH_ASSOC);
+                return $result;
+        }    
     }
