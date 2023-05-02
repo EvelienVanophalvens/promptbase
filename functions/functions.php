@@ -39,7 +39,7 @@ function sendemail_verify($username, $email, $verified)
     $mail->isHTML(true);
     $mail->Subject = 'Email Verification';
 
-    $mail->Body = "<h1>Hi $username, Welcome to PromptBase</h1>
+    $mail->Body = "<h1>Hi $username, Welcome to collectivePrompts</h1>
         <p>Click on the link below to verify your email address</p>
         <a href='http://localhost/promptbase/verify-email.php?token=$verified'>Click Here</a>";
 
@@ -51,7 +51,7 @@ function authenticated()
 {
 
     if(!isset($_SESSION['authenticated'])) {
-        $_SESSION['status'] = "Please Login to Access User Home!";
+        $_SESSION['status'] = "Please Login to Access User Profile!";
         header("Location: login.php");
         exit(0);
     }

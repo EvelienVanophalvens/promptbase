@@ -1,8 +1,8 @@
-    <?php
-        include_once(__DIR__."/bootstrap.php");
+<?php
+include_once(__DIR__."/bootstrap.php");
 include_once(__DIR__."/navbar.php");
 
-authenticated();
+//authenticated();
 $accepted =  Prompts::accepted();
 
 
@@ -62,8 +62,14 @@ if(!empty($_GET['search'])) {
                     </div>
                     <?php unset($_SESSION['status']); ?>
                 <?php } ?>
-                <div class="context">
-                    <h2>Hello <?= htmlspecialchars($_SESSION['auth_user']['username']); ?>! <br>You joined the collective now.</h2>
+                <div class="context">                    
+                    <h2><?php
+if (isset($_SESSION['auth_user'])) {
+    echo "<h2>Hello " . htmlspecialchars($_SESSION['auth_user']['username']) . "! <br>You joined the collective now.</h2>";
+}else{
+    echo "<h2>Hello! <br>Welcome to collectivePrompts.</h2>";
+}
+?></h2>
                     <button class="btn submit">
                         <a href="upload.php">Upload prompt</a>
                     </button>
