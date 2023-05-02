@@ -21,6 +21,17 @@ if(!empty($_POST["reason"])) {
     }
 }
 
+$userId = $_SESSION['userid'];
+$promptId = $_GET["prompt"];
+
+
+
+
+$favourites = Prompts::addFavoritePrompt($userId, $promptId);
+//$favourites = Prompts::removeFavoritePrompt($userId, $promptId);
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -52,6 +63,8 @@ if(!empty($_POST["reason"])) {
         <div id="dottedMenu">
             <div class="hidden" id="promptMenu">
                 <p id="reporting">report prompt</p>
+                <p id="favourites"><a href="#" class="save-favourite-link" onclick="saveToFavourites(<?php echo $_SESSION['userid']; ?>, <?php echo $_GET['prompt']; ?>);">Save as favourite</a></p>
+
             </div>
             <div id="dots">
                 <div class="dot"></div>
@@ -225,7 +238,28 @@ if(!empty($_POST["reason"])) {
         report = true;
     });
 
-    
+    function saveToFavourites(userId, promptId) {
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "saveToFavourites.php", true);
+  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState == 4 && xhr.status == 200) {
+      var response = xhr.responseText;
+      // Display a success message or handle errors here
+      if (response == "success") {
+        // Do something, like showing a confirmation message
+        alert("prompt saved");
+      } else {
+        // Do something else, like showing an error
+        alert("prompt not saved");
+      }
+      
+    }
+  };
+  xhr.send("userId=" + userId + "&promptId=" + promptId);
+}
+
+
 
 
 </script>

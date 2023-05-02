@@ -62,6 +62,10 @@ authenticated();
 //get the prompts from the database
 $personalPrompts =  Prompts::getPersonalPrompts($_SESSION['userid']);
 
+//get the favourite prompt from the database
+$favouritePrompt = Prompts::getFavouritePrompt($_SESSION['userid']);
+
+
 ?>
 
 <!DOCTYPE html>
@@ -133,8 +137,44 @@ $personalPrompts =  Prompts::getPersonalPrompts($_SESSION['userid']);
                             </div>
                     <?php endforeach;
                 }?>
-            </div>    
+            </div>  
+            <h3>My favorite prompts</h3>
+            <hr>  
+            <div class="chartContainer">
+                <?php if(!empty($favouritePrompt)) {
+                    foreach($favouritePrompt as $prompt):?>
+                        <div class="chart">
+                            <a href="promptDetail.php?prompt=<?php echo $prompt["id"];?>">
+                                <div class="coverImage">
+                                    <?php if(!empty($prompt["example"])) {?>
+                                        <img src="<?php echo "uploads/".$prompt["example"]?>" alt="coverImage">
+                                    <?php ;
+                                    } elseif (!empty($prompt["image"])) {?>
+                                        <img src="<?php echo $prompt["image"]?>" alt="example">
+                                    <?php ;
+                                    }?>
+                                </div>
+                                <div class="promptInfo">
+                                    <?php if(isset($prompt["prompt"])) {
+                                        echo htmlspecialchars($prompt["prompt"]);
+                                    }?>  
+                                    <div class="categoryLabel">
+                                        <?php if(isset($prompt["name"])) {
+                                            echo htmlspecialchars($prompt["name"]);
+                                        } else {
+                                            echo "no category";
+                                        }?>
+                                    </div>
+                                </div>    
+                            </a>
+                            </div>
+                    <?php endforeach;
+                }?>
+            </div>  
+
+
         </div>
+      </div>
     </div>
     <form class= "middleForm" id="profilePictureForm" method="POST" enctype="multipart/form-data">
         <input type="file" name="profilePicture" id="profilePicture" accept=".jpg, .jpeg, .png">

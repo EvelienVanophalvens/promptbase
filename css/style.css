@@ -727,3 +727,8 @@ nav ul a{
 #dots{
     cursor: pointer;
 }
+
+#promptMenu .save-favourite-link {
+    color: white;
+  }
+  
