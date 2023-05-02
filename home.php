@@ -118,17 +118,15 @@ if (isset($_SESSION['auth_user'])) {
                 <h3>Newest prompts</h3>
                 <hr>
                 <div class="chartContainer">
-                    <?php if(!empty($accepted)) {
-                        foreach($accepted as $prompt){
+                    <?php if(!empty($accepted)):
+                        foreach($accepted as $prompt):
                             $example = Prompts::getPromptExample($prompt["id"]);
-                            $picture = "uploads/".$example["example"];?>
+                            $picture = $example["example"];?>
                             <div class="chart">
                                 <a href="promptDetail.php?prompt=<?php echo $prompt["id"];?>"> 
                                     <div class="coverImage">
                                         <?php if(!empty($picture)) {?>
-                                            <img src="<?php echo htmlspecialchars($picture)?>" alt="coverImage">
-                                        <?php } elseif (!empty($prompt["image"])) {?>
-                                            <img src="<?php echo htmlspecialchars($prompt["image"])?>" alt="example">
+                                            <img src=" uploads/<?php echo htmlspecialchars($picture)?>" alt="coverImage">
                                         <?php } else {?>
                                             <img src="uploads/default_image.png" alt="example">
                                         <?php }?>
@@ -147,8 +145,8 @@ if (isset($_SESSION['auth_user'])) {
                                     </div>
                                 </a>
                             </div>
-                        <?php }
-                    }  ?>
+                        <?php endforeach;
+                    endif; ?>
                 </div>
             </div>
         </div>
