@@ -397,7 +397,7 @@ class Prompts
     public static function rejectPrompt($id)
     {
         $conn = Dbm::getInstance();
-        $statement = $conn->prepare("DELETE FROM prompts WHERE id = :id;");
+        $statement = $conn->prepare("UPDATE prompts SET accepted = 2 WHERE id = :id");
         $statement->bindValue(":id", $id);
         $statement->execute();
     }
