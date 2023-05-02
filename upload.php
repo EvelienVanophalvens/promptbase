@@ -57,7 +57,7 @@ if(!empty($_POST) && empty(((int) $_POST['status']))) {
     $message = "Please fill in all the fields";
 }
 }else{
-    $message = "YOutube Please fill in all the fields";
+    $message = "Please fill in all the fields";
 
 }
 
