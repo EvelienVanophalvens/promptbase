@@ -56,7 +56,7 @@
                     </button> 
                     <div class="dropdown-content">
                         <a href="profile.php">Mijn account</a>
-                        <?php if(User::isModerator()) {
+                        <?php if(!empty($_SESSION) && User::isModerator()) {
                             echo "<a href='./moderator/moderator.php'>Moderator</a>";
                         } else {
                             echo "";

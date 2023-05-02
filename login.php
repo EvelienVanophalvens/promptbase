@@ -28,7 +28,6 @@ if(!empty($_POST)) {
             if($userid) {
                 header("Location: home.php");
                 session_start();
-                $_SESSION['loggedin'] = true;
                 $_SESSION['userid'] = $userid ;
                 $_SESSION['authenticated'] = true;
 
