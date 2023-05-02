@@ -4,7 +4,7 @@ include_once(__DIR__."/bootstrap.php");
 if(isset($_SESSION['authenticated'])) {
     $_SESSION['status'] = "You are already Logged In";
     header("Location: home.php");
-    exit(0);
+
 }
 //kijken of post niet leeg is
 if(!empty($_POST)) {
