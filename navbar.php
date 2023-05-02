@@ -55,13 +55,23 @@
                         </svg>
                     </button> 
                     <div class="dropdown-content">
-                        <a href="profile.php">Mijn account</a>
+                        <?php if(!empty($_SESSION)){
+                            echo "<a href='profile.php'>Mijn account</a>"; 
+                        }else{
+                            echo "<a href='login.php'>Log in</a>";
+                        }?>
+
+
                         <?php if(!empty($_SESSION) && User::isModerator()) {
                             echo "<a href='./moderator/moderator.php'>Moderator</a>";
                         } else {
                             echo "";
                         }?>
-                        <a href="logout.php">Log out</a>
+                        <?php if(!empty($_SESSION)){
+                        echo "<a href='logout.php'>Log out</a>";
+                        }else{
+                            echo "";
+                        }?>
                     </div>
                 </div> 
             </li>
