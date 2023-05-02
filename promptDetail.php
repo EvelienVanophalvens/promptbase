@@ -7,7 +7,7 @@ $prompt =  Prompts::detailPrompt($_GET["prompt"]);
 $comment = Prompts::getAllComments($_GET["prompt"]);
 
 
-if(!empty($_POST["reason"])) {
+if(!empty($_POST["reason"]) && isset($_POST["report"])) {
     try{
     $report = new Reports();
     $report->setPromptId($_GET["prompt"]);
@@ -147,7 +147,9 @@ $favourites = Prompts::addFavoritePrompt($userId, $promptId);
             <textarea name="reason" id="reason" placeholder="Type here your reason"></textarea>
             <input type="hidden" name="report"  value="<?php echo $prompt["prompts"][0]->getId()?>">
             <div class="form-element">
-                <button type="submit" class="submit small">Send</button>
+                <button type="submit" name="report" class="submit small">Send</button>
+                <button type="submit" class="submit small" id="cancel">cancel</button>
+
             </div>
         </form>
                 
@@ -258,6 +260,16 @@ $favourites = Prompts::addFavoritePrompt($userId, $promptId);
   };
   xhr.send("userId=" + userId + "&promptId=" + promptId);
 }
+
+
+
+document.querySelector("#cancel").addEventListener('click', function(e){
+    e.preventDefault();
+    document.querySelector('.content').classList.remove('faded');
+    document.querySelector(".middleForm").style.transform = "translate(50%, 150%)";
+    report = false;
+});
+
 
 
 
