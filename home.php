@@ -12,29 +12,32 @@ $model_choice = "";
 $paid_free_selected = isset($_GET['paid_free']) ? $_GET['paid_free'] : "";
 $model_choice_selected = isset($_GET['model_choice']) ? $_GET['model_choice'] : "";
 
+
 if(!empty($_GET['paid_free']) && !empty($_GET['model_choice'])) {
+    $paid_free = $_GET['paid_free'];
     $model_choice = $_GET['model_choice'];
     $accepted = Prompts::filter($paid_free, $model_choice);
-} elseif(!empty($_GET['paid_free'])) {
+}elseif(!empty($_GET['paid_free'])){
     $paid_free = $_GET['paid_free'];
     $accepted = Prompts::filter($paid_free, null);
-} elseif(!empty($_GET['model_choice'])) {
-    $model_choice = $_GET['model_choice'];
-    $accepted = Prompts::filter(null, $model_choice);
-}elseif(!empty($_GET['paid_free'])) {
-    $paid_free = $_GET['paid_free'];
-}
-elseif(!empty($_GET['model_choice'])) {
-    $model_choice = $_GET['model_choice'];
-}
-$accepted = Prompts::filter($paid_free, $model_choice);
+    }else if(!empty($_GET['model_choice'])){
+        $model_choice = $_GET['model_choice'];
+        $accepted = Prompts::filter(null, $model_choice);
+        }
 
+
+
+//var_dump($paid_free);
+//var_dump($model_choice);
+var_dump($accepted);
 
 //getting the result all from all of the filter
 if(empty($_GET['paid_free']) && empty($_GET['model_choice'])) {
     $accepted = Prompts::accepted();
+}else{
+    $accepted = Prompts::filter($paid_free, $model_choice);
 }
-
+ 
 
 //getting the result of the search
 if(!empty($_GET['search'])) {
