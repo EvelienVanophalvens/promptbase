@@ -29,59 +29,7 @@ if(!empty($_GET['search'])) {
 <body>
     <div class="content">
         <div class="newestPrompts">
-            <h3>By category </h3>
-            <hr>
-            <div class="chart2">
-                    <div class="chart__title">
-                        <h1><?php if(isset($_GET['search'])) {
-                            echo htmlspecialchars($_GET['search']);
-                        } ?></h1>
-                    </div>
-                    <div class="chart__content">
-                        <div class="chart__content__item">  
-                            <div class="chart__content__item__value">
-                                <h2>Found prompts</h2>
-                            </div>
-                        </div>
-                        <div class="chart__content__item">
-                            <div class="chart__content__item__value">
-                                <h2><?php if(isset($results)) {
-                                    echo count($results);
-                                } ?></h2>
-                            </div>
-                    </div>
-                    <div class="chartContainer">
-                <?php if(!empty($results)) {
-                    foreach($results as $prompt):
-                        $example = Prompts::getPromptExample($prompt["id"]);
-                        $picture = $example["example"];?>                    
-                    <div class="chart">
-                        <a href="promptDetail.php?prompt=<?php echo $prompt["id"]?>">
-                        <div class="coverImage">
-                                <?php if(!empty($prompt["example"])) {?>
-                                <img src="<?php echo "uploads/".htmlspecialchars($prompt["example"])?>" alt="coverImage">
-                                <?php ;
-                                } elseif (!empty($picture)) {?>
-                                <img src="<?php echo htmlspecialchars($picture)?>" alt="example">
-                            <?php ;
-                                }?>
-
-                                </div>
-                            <div class="promptInfo">
-                                <?php echo htmlspecialchars($prompt["promptName"])?>
-                                <div class="categoryLabel"><?php echo $prompt["name"]?></div>
-                            </div>
-                        </a>
-                    </div>
-                <?php endforeach;
-                }  ?>
-            </div>
-
-
-
-                </div>
-            </div>
-            <h3>By title</h3>
+            <h3>You searched by '<?php echo $_GET['search']?>'</h3>
             <hr>
             <div class="chart__content__item">
                             <div class="chart__content__item__value">
