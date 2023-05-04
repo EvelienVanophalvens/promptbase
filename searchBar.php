@@ -3,18 +3,10 @@ include_once(__DIR__."/bootstrap.php");
 include_once(__DIR__."/navbar.php");
 
 authenticated();
-$accepted =  Prompts::accepted();
-
 
 if(!empty($_GET)) {
     //Alle prompts waarin de ingetypte categorie voorkomt
     $results = Prompts::filteredPromptsByCategory($_GET['search']);
-}
-
-// getting the image from the prompt
-$picture = "";
-foreach($accepted as $example) {
-    $picture = "uploads/".$example["example"];
 }
 
 //getting the result of the search
@@ -60,15 +52,17 @@ if(!empty($_GET['search'])) {
                     </div>
                     <div class="chartContainer">
                 <?php if(!empty($results)) {
-                    foreach($results as $prompt):?>
+                    foreach($results as $prompt):
+                        $example = Prompts::getPromptExample($prompt["id"]);
+                        $picture = $example["example"];?>                    
                     <div class="chart">
                         <a href="promptDetail.php?prompt=<?php echo $prompt["id"]?>">
                         <div class="coverImage">
                                 <?php if(!empty($prompt["example"])) {?>
                                 <img src="<?php echo "uploads/".htmlspecialchars($prompt["example"])?>" alt="coverImage">
                                 <?php ;
-                                } elseif (!empty($prompt["image"])) {?>
-                                <img src="<?php echo htmlspecialchars($prompt["image"])?>" alt="example">
+                                } elseif (!empty($picture)) {?>
+                                <img src="<?php echo htmlspecialchars($picture)?>" alt="example">
                             <?php ;
                                 }?>
 
@@ -87,7 +81,7 @@ if(!empty($_GET['search'])) {
 
                 </div>
             </div>
-            <h3>By search </h3>
+            <h3>By title</h3>
             <hr>
             <div class="chart__content__item">
                             <div class="chart__content__item__value">
