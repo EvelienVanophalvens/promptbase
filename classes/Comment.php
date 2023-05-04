@@ -80,5 +80,13 @@
             $statement->execute();
             $allComments = $statement->fetchAll(PDO::FETCH_ASSOC);
             return $allComments;
-        }    
+        } 
+        public static function getLastComment($promptId){
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("SELECT prompt_comments.id AS commitId, prompt_comments.promptId, prompt_comments.userId, prompt_comments.comment, users.id, users.username, users.profilePicture FROM `prompt_comments`LEFT JOIN users ON prompt_comments.userId= users.id WHERE prompt_comments.promptId = :prompt ORDER BY commitId DESC LIMIT 1;");
+            $statement->bindValue(":prompt", $promptId);
+            $statement->execute();
+            $lastComment = $statement->fetchAll(PDO::FETCH_ASSOC);
+            return $lastComment;
+        }   
     }

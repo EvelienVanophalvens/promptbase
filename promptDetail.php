@@ -189,8 +189,8 @@ $favourites = Prompts::addFavoritePrompt($userId, $promptId);
                 newComment.className = 'comment half';
                 //De user toekennen
                 const userParagraph = document.createElement('p');
-                const lastCommentIndex = response.length - 1;
-                const comment = response[lastCommentIndex];
+                const lastCommentIndex = data.comments.length - 1;
+                const comment = data.comments[lastCommentIndex];
                 userParagraph.innerHTML = `<strong>${comment.username}</strong>`;
                 newComment.appendChild(userParagraph);
                 //De comment zelf toekennen

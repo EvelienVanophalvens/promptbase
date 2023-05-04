@@ -18,7 +18,7 @@ if (!empty($_POST)) {
 
     // Haal de volledige lijst van comments opnieuw op voor de AJAX response
     $comments = Comment::getAllComments($promptId);
-
+    //$postedComment = Comment::getLastComment($promptId);
     //Houdt de status bij
     $result = [
         "status" => "success",
