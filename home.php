@@ -27,9 +27,6 @@ if(!empty($_GET['paid_free']) && !empty($_GET['model_choice'])) {
 
 
 
-//var_dump($paid_free);
-//var_dump($model_choice);
-var_dump($accepted);
 
 //getting the result all from all of the filter
 if(empty($_GET['paid_free']) && empty($_GET['model_choice'])) {
