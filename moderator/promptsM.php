@@ -1,10 +1,7 @@
 <?php
 include_once(__DIR__."/../bootstrap.php");
 include_once(__DIR__."/navbarM.php");
-if(User::isAdmin() === false) {
-    header("Location: ../error.php");
-    echo "you are not a moderator";
-}
+
 
 $notAccepted =  Prompts::notAccepted();
 
