@@ -464,8 +464,38 @@ if($paid_free == "free"){
     $statement->execute();
     $results = $statement->fetchAll(PDO::FETCH_ASSOC);
     return $results;
-}
+}   
     }
+
+    public static function filterModel($model_choice)
+    {
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT prompts.id, prompt, date, userId, accepted, description, status, paid, price, modelId, name FROM prompts JOIN model ON prompts.modelId = model.id WHERE name = :model_choice AND accepted = 1");
+        $statement->bindValue(":model_choice", $model_choice);
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $results;
+    }
+
+    public static function filterPaid($paid_free)
+    {
+    if($paid_free == "free") {
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT prompts.id, prompt, date, userId, accepted, description, status, paid, price, modelId, name FROM prompts JOIN model ON prompts.modelId = model.id WHERE paid = :paid_free AND accepted = 1");
+        $statement->bindValue(":paid_free", 1);
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $results;
+
+    } else {
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT prompts.id, prompt, date, userId, accepted, description, status, paid, price, modelId, name FROM prompts JOIN model ON prompts.modelId = model.id WHERE paid = :paid_free AND accepted = 1");
+        $statement->bindValue(":paid_free", 0);
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $results;
+    }
+}
 
 
     //ANDERE:
