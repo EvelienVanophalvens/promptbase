@@ -13,7 +13,7 @@
         <div></div>
         <ul>
             <li>
-                <a href="promptsM.php">promps</a>
+                <a href="promptsM.php">prompts</a>
             </li>
             <li>
                 <a href="usersM.php">users</a>
