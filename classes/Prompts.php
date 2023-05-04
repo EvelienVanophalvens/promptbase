@@ -447,9 +447,10 @@ class Prompts
     //FILTERFUNCTIES:
     public static function filter($paid_free, $model_choice)
     {
+        
         $conn = Db::getInstance();
         $statement = $conn->prepare("SELECT prompts.id, prompt, date, userId, accepted, description, status, paid, price, modelId, name FROM prompts JOIN model ON prompts.modelId = model.id WHERE paid = :paid_free AND name = :model_choice");
-        $statement->bindValue(":paid_free", $paid_free);
+        $statement->bindValue(":paid_free", 1 );
         $statement->bindValue(":model_choice", $model_choice);
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
