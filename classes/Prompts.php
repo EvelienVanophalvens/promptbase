@@ -447,40 +447,25 @@ class Prompts
     //FILTERFUNCTIES:
     public static function filter($paid_free, $model_choice)
     {
-        
-        $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT prompts.id, prompt, date, userId, accepted, description, status, paid, price, modelId, name FROM prompts JOIN model ON prompts.modelId = model.id WHERE paid = :paid_free AND name = :model_choice");
-        $statement->bindValue(":paid_free", 1 );
-        $statement->bindValue(":model_choice", $model_choice);
-        $statement->execute();
-        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
-        return $results;
 
-
-        $query = "SELECT prompts.id, prompt, date, userId, accepted, description, status, paid, price, modelId, name FROM prompts JOIN model ON prompts.modelId = model.id WHERE 1=1";
-    
-        if ($paid_free == 'paid') {
-            $query .= " AND paid = 0";
-        } else if ($paid_free == 'free') {
-            $query .= " AND paid = 1";
-        }
-        
-        if (!empty($model_choice)) {
-            $query .= " AND modelId = :model_choice";
-        }
-    
-        $stmt = $conn->prepare($query);
-    
-        if (!empty($model_choice)) {
-            $stmt->bindParam(":model_choice", $model_choice);
-        }
-
-        
-    
-        $stmt->execute();
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $result;    
+if($paid_free == "free"){
+    $conn = Db::getInstance();
+    $statement = $conn->prepare("SELECT prompts.id, prompt, date, userId, accepted, description, status, paid, price, modelId, name FROM prompts JOIN model ON prompts.modelId = model.id WHERE paid = :paid_free AND name = :model_choice AND accepted = 1");
+    $statement->bindValue(":paid_free", 1);
+    $statement->bindValue(":model_choice", $model_choice);
+    $statement->execute();
+    $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+    return $results;
+}else{
+    $conn = Db::getInstance();
+    $statement = $conn->prepare("SELECT prompts.id, prompt, date, userId, accepted, description, status, paid, price, modelId, name FROM prompts JOIN model ON prompts.modelId = model.id WHERE paid = :paid_free AND name = :model_choice AND accepted = 1");
+    $statement->bindValue(":paid_free", 0);
+    $statement->bindValue(":model_choice", $model_choice);
+    $statement->execute();
+    $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+    return $results;
 }
+    }
 
 
     //ANDERE:

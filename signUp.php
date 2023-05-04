@@ -7,6 +7,7 @@ if(!empty($_POST)) {
     $username = $_POST['username'];
     $email = $_POST['email'];
     $password = $_POST['password'];
+    // genereert een willekeurige tekenreeks en versleutelt deze met het MD5-hash-algoritme (email)
     $verified = md5(rand());
 
 
@@ -84,7 +85,7 @@ if(!empty($_POST)) {
                     echo '<h4>'.$_SESSION['status'].'</h4>';
                     unset($_SESSION['status']);
                 }
-?>
+            ?>
         </div>
         <form class="" action="" method="POST">
         <input type="hidden" name="remember" value="true">

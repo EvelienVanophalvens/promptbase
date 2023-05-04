@@ -17,13 +17,14 @@ if(!empty($_GET['paid_free']) && !empty($_GET['model_choice'])) {
     $paid_free = $_GET['paid_free'];
     $model_choice = $_GET['model_choice'];
     $accepted = Prompts::filter($paid_free, $model_choice);
-}elseif(!empty($_GET['paid_free'])){
+}else if(!empty($_GET['paid_free'])){
     $paid_free = $_GET['paid_free'];
     $accepted = Prompts::filter($paid_free, null);
-    }else if(!empty($_GET['model_choice'])){
-        $model_choice = $_GET['model_choice'];
-        $accepted = Prompts::filter(null, $model_choice);
-        }
+}else if(!empty($_GET['model_choice'])){
+    $model_choice = $_GET['model_choice'];
+    $accepted = Prompts::filter(null, $model_choice);
+}
+
 
 
 
@@ -89,9 +90,7 @@ if (isset($_SESSION['auth_user'])) {
         <option value="paid"<?php if ($paid_free_selected == "paid") {
             echo "selected";
         } ?>>Paid</option>
-        <option value="free"<?php if ($paid_free_selected == "free") {
-            echo "selected";
-        } ?>>Free</option>
+        <option value="free">Free</option>
     </select>
 
     <label for="model_choice">Model:</label>
