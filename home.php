@@ -26,16 +26,22 @@ if(!empty($_GET['paid_free']) && !empty($_GET['model_choice'])) {
 }
 
 
-
-
-
-//getting the result all from all of the filter
-if(empty($_GET['paid_free']) && empty($_GET['model_choice'])) {
-    $accepted = Prompts::accepted();
-}else{
-    $accepted = Prompts::filter($paid_free, $model_choice);
+// getting the result all from modelId of the filter
+if(!empty($_GET['model_choice']) && empty($_GET['paid_free'])) {
+    $model_choice = $_GET['model_choice'];
+    $accepted = Prompts::filterModel($model_choice);
 }
- 
+
+// getting the result paid from all of the filter
+if(!empty($_GET['paid_free']) && empty($_GET['model_choice'])) {
+    $paid_free = $_GET['paid_free'];
+    $accepted = Prompts::filterPaid($paid_free);
+}
+
+
+
+
+
 
 //getting the result of the search
 if(!empty($_GET['search'])) {
