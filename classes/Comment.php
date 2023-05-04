@@ -2,6 +2,7 @@
     class Comment {
         private $promptId;
         private $userId;
+        private $comment;
 
         /**
          * Get the value of postId
@@ -42,18 +43,37 @@
 
                 return $this;
         }
+         /**
+         * Get the value of comment
+         */ 
+        public function getComment()
+        {
+                return $this->comment;
+        }
 
-        public function save($userId, $promptId, $comment){
+        /**
+         * Set the value of comment
+         *
+         * @return  self
+         */ 
+        public function setComment($comment)
+        {
+                $this->comment = $comment;
+
+                return $this;
+        }
+
+        public function save(){
             $conn = Db::getInstance();
             $statement = $conn->prepare("INSERT INTO prompt_comments (promptId, userId, comment)VALUES (:prompt, :user, :comment);");
-            $statement->bindValue(":prompt", $promptId);
-            $statement->bindValue(":user", $userId);
-            $statement->bindValue(":comment", $comment);
+            $statement->bindValue(":prompt", $this ->promptId);
+            $statement->bindValue(":user", $this -> userId);
+            $statement->bindValue(":comment", $this -> comment);
             $statement->execute();
         }
 
 
-        public static function getComment($promptId){
+        public static function getAllComments($promptId){
             $conn = Db::getInstance();
             $statement = $conn->prepare("SELECT prompt_comments.id AS commitId, prompt_comments.promptId, prompt_comments.userId, prompt_comments.comment, users.id, users.username, users.profilePicture FROM `prompt_comments`LEFT JOIN users ON prompt_comments.userId= users.id WHERE prompt_comments.promptId = :prompt;");
             $statement->bindValue(":prompt", $promptId);

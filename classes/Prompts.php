@@ -402,7 +402,7 @@ class Prompts
         $statement->execute();
     }
 
-    //COMMENTFUNCTIES:
+    /* //COMMENTFUNCTIES:
     //Geef lijst van alle comments voor een specifieke prompt
     public static function getAllComments($promptId)
     {
@@ -422,7 +422,7 @@ class Prompts
         $statement->bindValue(":user", $userId);
         $statement->bindValue(":comment", $comment);
         $statement->execute();
-    }
+    } */
 
     //SEARCHFUNCTIES:
     // Prompts zoeken op basis van NAAM

@@ -4,7 +4,7 @@ include_once(__DIR__."/navbar.php");
 
 authenticated();
 $prompt =  Prompts::detailPrompt($_GET["prompt"]);
-$comment = Prompts::getAllComments($_GET["prompt"]);
+$comment = Comment::getAllComments($_GET["prompt"]);
 
 
 if(!empty($_POST["reason"]) && isset($_POST["report"])) {
@@ -123,10 +123,10 @@ $favourites = Prompts::addFavoritePrompt($userId, $promptId);
                         <h4>Hi <?= htmlspecialchars($_SESSION['auth_user']['username']); ?>, what do you think?</h4>
                     </div>
                     <div class="form-element">
-                        <input id="comment" name="comment" type="text" autocomplete="comment" placeholder="Comment here"></input>
+                        <input id="comment" name="comment" type="text" autocomplete="comment" placeholder="Comment here" data-id="<?php echo $promptId?>"></input>
                     </div>
                     <div class="form-element">
-                        <button type="submit" class="submit small" name="post_comment">
+                        <button type="submit" class="submit small" name="post_comment" id="postComment">
                             Send
                         </button>
                     </div>
@@ -154,52 +154,58 @@ $favourites = Prompts::addFavoritePrompt($userId, $promptId);
             <div class="form-element">
                 <button type="submit" name="report" class="submit small">Send</button>
                 <button type="submit" class="submit small" id="cancel">cancel</button>
-
             </div>
-        </form>
-                
+        </form> 
     <script>
-       const commentForm = document.getElementById('comment-form');
+        const commentForm = document.getElementById('comment-form');
+        const sendBtn = document.getElementById('postComment');
         const commentInput = document.getElementById('comment');
 
         commentForm.onsubmit = (e) => {
             // Voorkomt standaard verzending van het formulier
             e.preventDefault(); 
-            // Maak een nieuw AJAX-verzoek
-            const xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = () => {
-                if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-                    // Succesvol AJAX-verzoek
-                    const response = JSON.parse(xhr.responseText);
-                    //Het maken van een nieuwe comment begint hier
-                    const commentSection = document.querySelector('.commentsection');
-                    const newComment = document.createElement('div');
-                    newComment.className = 'comment half';
-                    //De user toekennen
-                    const userParagraph = document.createElement('p');
-                    const lastCommentIndex = response.length - 1;
-                    const comment = response[lastCommentIndex];
-                    userParagraph.innerHTML = `<strong>${comment.username}</strong>`;
-                    newComment.appendChild(userParagraph);
-                    //De comment zelf toekennen
-                    const commentParagraph = document.createElement('p');
-                    commentParagraph.innerHTML = comment.comment;
-                    newComment.appendChild(commentParagraph);
-                    commentSection.appendChild(newComment);
-                    // voeg hier een nieuw <br> element toe
-                    commentSection.appendChild(document.createElement('br'));
-                    // Leeg het invoerveld
-                    commentInput.value = '';
-                }
-            }
-            // AJAX-verzoek naar deze URL
-            xhr.open('POST', 'post-comment.php');
-            // Stel het inhoudstype in op JSON
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            // Gegevens die naar de server worden verzonden
-            const data = {comment: commentInput.value, prompt: <?php echo $_GET["prompt"]; ?>};
-            // Verzend het AJAX-verzoek met de gegevens
-            xhr.send(JSON.stringify(data));
+            console.log("You submitted");
+            // Maak een nieuwe FormData object
+            let formData = new FormData();
+            //get the id of the post
+            let id = commentInput.getAttribute('data-id');
+            let comment = commentInput.value;
+            console.log("id:", id);
+            console.log("comment:", comment);
+            formData.append('promptId', id);
+            formData.append('comment', comment);
+            // Maak een Fetch-verzoek naar comment.php
+            fetch('./comment.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(function(response){
+                return response.json();
+            })
+            .then(function(data){
+                //Het maken van een nieuwe comment begint hier
+                const commentSection = document.querySelector('.commentsection');
+                const newComment = document.createElement('div');
+                newComment.className = 'comment half';
+                //De user toekennen
+                const userParagraph = document.createElement('p');
+                const lastCommentIndex = response.length - 1;
+                const comment = response[lastCommentIndex];
+                userParagraph.innerHTML = `<strong>${comment.username}</strong>`;
+                newComment.appendChild(userParagraph);
+                //De comment zelf toekennen
+                const commentParagraph = document.createElement('p');
+                commentParagraph.innerHTML = comment.comment;
+                newComment.appendChild(commentParagraph);
+                commentSection.appendChild(newComment);
+                // voeg hier een nieuw <br> element toe
+                commentSection.appendChild(document.createElement('br'));
+                // Leeg het invoerveld
+                commentInput.value = '';
+            })
+            .catch(function(error) {
+                console.log('Er is een fout opgetreden: ' + error.message);
+            });
         };
 
 
