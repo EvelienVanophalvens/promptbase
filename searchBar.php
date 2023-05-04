@@ -4,19 +4,13 @@ include_once(__DIR__."/navbar.php");
 
 authenticated();
 
-if(!empty($_GET)) {
-    //Alle prompts waarin de ingetypte categorie voorkomt
-    $results = Prompts::filteredPromptsByCategory($_GET['search']);
-}
-
 //getting the result of the search
 if(!empty($_GET['search'])) {
     $search = $_GET['search'];
-    $accepted = Prompts::search($search);
+    $results = Prompts::search($search);
 }
 
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,33 +25,30 @@ if(!empty($_GET['search'])) {
         <div class="newestPrompts">
             <h3>You searched by '<?php echo $_GET['search']?>'</h3>
             <hr>
-            <div class="chart__content__item">
-                            <div class="chart__content__item__value">
-                                <h2><?php if(isset($accepted)) {
-                                    echo count($accepted);
-                                } ?></h2>
-                            </div>
-                    </div>
+            <h4>
+                <?php if(isset($results)) { echo count($results);} ?> results found.
+            </h4>
             <div class="chartContainer">
-                    <?php if(!empty($accepted)) {
-                        foreach($accepted as $prompt){
+                    <?php if(!empty($results)) {
+                        foreach($results as $prompt){
+                            //get the right first example for each prompt
                             $example = Prompts::getPromptExample($prompt["id"]);
-                            $picture = "uploads/".$example["example"];?>
+                            $picture = $example["example"];?>
                             <div class="chart">
                                 <a href="promptDetail.php?prompt=<?php echo $prompt["id"];?>"> 
                                     <div class="coverImage">
                                         <?php if(!empty($picture)) {?>
-                                            <img src="<?php echo htmlspecialchars($picture)?>" alt="coverImage">
-                                        <?php } elseif (!empty($prompt["image"])) {?>
-                                            <img src="<?php echo htmlspecialchars($prompt["image"])?>" alt="example">
+                                            <img src="uploads/<?php echo htmlspecialchars($picture)?>" alt="coverImage">
                                         <?php } else {?>
                                             <img src="uploads/default_image.png" alt="example">
                                         <?php }?>
                                     </div>
                                     <div class="promptInfo">
+                                        <!--The prompt title-->
                                         <?php if(isset($prompt["prompt"])) {
                                             echo htmlspecialchars($prompt["prompt"]);
-                                        }?>  
+                                        }?>
+                                        <!--The right category label-->  
                                         <div class="categoryLabel">
                                             <?php if(isset($prompt["name"])) {
                                                 echo htmlspecialchars($prompt["name"]);
@@ -72,7 +63,6 @@ if(!empty($_GET['search'])) {
                     }  ?>
                 </div>
         </div>
-    </div>
-    
+    </div> 
 </body>
 </html>
