@@ -4,8 +4,19 @@ include_once(__DIR__."/navbarM.php");
 
 
 $prompt = Prompts::detailPromptM($_GET["prompt"]);
+if ($prompt) {
+    $userId = $prompt["prompts"]["userId"];
+    // Doe iets met $userId
+    var_dump($userId);
+
+} else {
+    // Doe iets anders als $prompt false is
+    echo "mislukt";
+}
+
 if(!empty($_POST) && isset($_POST["accept"])) {
     Prompts::acceptPrompt($_POST["id"]);
+    User::earnCredits($userId);
     header("Location: promptsM.php");
 } elseif(!empty($_POST) && isset($_POST["reject"])) {
     Prompts::rejectPrompt($_POST["id"]);

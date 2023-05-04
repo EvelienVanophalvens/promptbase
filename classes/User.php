@@ -366,7 +366,12 @@ class User
 
 
     }
-
+    public static function earnCredits($userId){
+        $conn = Dbm::getInstance();
+        $statement = $conn->prepare("UPDATE users SET credits = 50 WHERE id = :user");
+        $statement->bindValue(":user", $userId);
+        $statement->execute();
+    }
 
 
 }
