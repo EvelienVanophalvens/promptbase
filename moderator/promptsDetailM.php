@@ -9,6 +9,11 @@ if(!empty($_POST) && isset($_POST["accept"])) {
     header("Location: promptsM.php");
 } elseif(!empty($_POST) && isset($_POST["reject"])) {
     Prompts::rejectPrompt($_POST["id"]);
+    $Notifications = new Notifications();
+    $Notifications->setReceiverId($prompt["prompts"]["user"]);
+    $Notifications->setTitle("Prompt rejected");
+    $Notifications->setMessage("Your prompt has been rejected, you can edit it and resubmit it if you want to. You can do this by this link: http://localhost/promptbase/editPrompt.php?prompt=".$prompt["prompts"]["id"]);
+    $Notifications->saveRejectNotifiction();    
     header("Location: promptsM.php");
 }
 ?>

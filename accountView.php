@@ -3,8 +3,13 @@ include_once(__DIR__."/bootstrap.php");
 include_once(__DIR__."/navbar.php");
 
 authenticated();
-
-$user = User::getUser($_GET["user"]);
+$userId = filter_input(INPUT_GET, 'user', FILTER_VALIDATE_INT);
+var_dump($userId);
+if($userId === false) {
+    header("Location: home.php");
+    exit;
+}
+$user = User::getUser($userId);
 $prompts = Prompts::getUserPrompts($user["id"]);
 
 $allExamples = [];
