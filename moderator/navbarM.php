@@ -9,7 +9,7 @@
 
 </head>
 <body>
-    <nav>
+    <nav id="moderator">
         <div></div>
         <ul>
             <li>
