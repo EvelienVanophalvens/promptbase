@@ -368,9 +368,25 @@ class User
     }
     public static function earnCredits($userId){
         $conn = Dbm::getInstance();
-        $statement = $conn->prepare("UPDATE users SET credits = 50 WHERE id = :user");
+        $statement = $conn->prepare("SELECT credits FROM users WHERE id = :user");
         $statement->bindValue(":user", $userId);
         $statement->execute();
+        $credits = $statement->fetch(PDO::FETCH_ASSOC);
+        if($credits) {
+            //als er een user te vinden is zal het true weergeven anders false
+            $conn = Dbm::getInstance();
+            $statement = $conn->prepare("UPDATE users SET credits = :credits WHERE id = :user");
+            $statement->bindValue(":user", $userId);
+            $total = $credits['credits'] + 20;
+            $statement->bindValue(":credits", $total);
+            $statement->execute();
+        } else {
+            $conn = Dbm::getInstance();
+            $statement = $conn->prepare("UPDATE users SET credits = 20 WHERE id = :user");
+            $statement->bindValue(":user", $userId);
+            $statement->execute();
+        }
+        
     }
 
 
