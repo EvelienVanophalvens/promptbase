@@ -26,9 +26,13 @@ $promptId = $_GET["prompt"];
 
 
 
+$isFavorite = Prompts::isPromptFavorited($userId, $promptId);
 
-$favourites = Prompts::addFavoritePrompt($userId, $promptId);
-//$favourites = Prompts::removeFavoritePrompt($userId, $promptId);
+if ($isFavorite) {
+  $favourites = Prompts::removeFavoritePrompt($userId, $promptId);
+} else {
+  $favourites = Prompts::addFavoritePrompt($userId, $promptId);
+}
 
 
 
@@ -63,7 +67,10 @@ $favourites = Prompts::addFavoritePrompt($userId, $promptId);
         <div id="dottedMenu">
             <div class="hidden" id="promptMenu">
                 <p id="reporting">report prompt</p>
-                <p id="favourites"><a href="#" class="save-favourite-link" onclick="saveToFavourites(<?php echo $_SESSION['userid']; ?>, <?php echo $_GET['prompt']; ?>);">Save as favourite</a></p>
+                <p id="favourites"><a href="#" class="save-favourite-link" onclick="event.preventDefault(); document.getElementById('add-favorite-form').submit();">
+  <?php echo $isFavorite ? 'Remove from favourites' : 'Save as favourite'; ?>
+</a>
+</p>
 
             </div>
             <div id="dots">

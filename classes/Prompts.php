@@ -573,7 +573,7 @@ if($paid_free == "free"){
 
       public static function getFavouritePrompt($id){
         $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT * FROM favourits WHERE userId = :userId");
+        $statement = $conn->prepare("SELECT prompts.id, prompt, favourits.userId FROM prompts JOIN favourits ON prompts.id = favourits.promptId WHERE favourits.userId = :userId");
         $statement->bindValue(":userId", $id);
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);

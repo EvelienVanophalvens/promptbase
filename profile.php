@@ -145,6 +145,7 @@ $favouritePrompt = Prompts::getFavouritePrompt($_SESSION['userid']);
                     foreach($favouritePrompt as $prompt):?>
                         <div class="chart">
                             <a href="promptDetail.php?prompt=<?php echo $prompt["id"];?>">
+                            
                                 <div class="coverImage">
                                     <?php if(!empty($prompt["example"])) {?>
                                         <img src="<?php echo "uploads/".$prompt["example"]?>" alt="coverImage">
