@@ -119,7 +119,9 @@ $favouritePrompt = Prompts::getFavouritePrompt($_SESSION['userid']);
                                     } elseif (!empty($prompt["image"])) {?>
                                         <img src="<?php echo $prompt["image"]?>" alt="example">
                                     <?php ;
-                                    }?>
+                                    } else {?>
+                                        <img src="uploads/default_image.png" alt="coverImage">
+                                    <?php ;}?>
                                 </div>
                                 <div class="promptInfo">
                                     <?php if(isset($prompt["prompt"])) {
@@ -153,7 +155,9 @@ $favouritePrompt = Prompts::getFavouritePrompt($_SESSION['userid']);
                                     } elseif (!empty($prompt["image"])) {?>
                                         <img src="<?php echo $prompt["image"]?>" alt="example">
                                     <?php ;
-                                    }?>
+                                    }else{?>
+                                        <img src="uploads/default_image.png" alt="coverImage">
+                                    <?php ;}?>
                                 </div>
                                 <div class="promptInfo">
                                     <?php if(isset($prompt["prompt"])) {
