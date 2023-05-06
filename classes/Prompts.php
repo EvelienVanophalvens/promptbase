@@ -595,5 +595,90 @@ if($paid_free == "free"){
         $statement->execute();
       }
 
+      public static function getRejectedPrompt($id, $userId){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT prompts.id, prompt, date, userId, accepted, description, status, paid, price, modelId, model.name AS name, categories.name AS categorie FROM prompts JOIN model ON prompts.modelId = model.id LEFT JOIN prompt_categories ON prompts.id = prompt_categories.promptId LEFT JOIN categories ON prompt_categories.categoryId = categories.id  WHERE prompts.id = :promptId AND prompts.userId = :userId AND accepted = 2");
+        $statement->bindValue(":promptId", $id);
+        $statement->bindValue(":userId", $userId);
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        
+
+        $statement2 = $conn->prepare("SELECT example FROM prompt_examples LEFT JOIN prompts ON prompt_examples.promptId = prompts.id WHERE prompts.id = :promptId");
+        $statement2->bindValue(":promptId", $id);
+        $statement2->execute();
+        $result2 = $statement2->fetchAll(PDO::FETCH_ASSOC);
+
+
+        if(empty($result)){
+          header("Location: notifications.php");
+        }else{ 
+          return array(
+            "prompt" => $result, 
+            "examples" => $result2);
+        }
+
+        return array(
+            "prompt" => $result, 
+            "examples" => $result2);
+
+      }
+
+      public function updatePrompt($promptId){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("UPDATE prompts SET prompt = :prompt, description = :description, price = :price, modelId = :modelId, accepted = 0 WHERE id = :id");
+        $statement->bindValue(":prompt", $this->prompt);
+        $statement->bindValue(":description", $this->description);
+        $statement->bindValue(":price", $this->price);
+        $statement->bindValue(":modelId", $this->model);
+        $statement->bindValue(":id", $promptId);
+        $statement->execute();
+
+        $statement2 = $conn->prepare("DELETE FROM prompt_categories WHERE promptId = :promptId");
+        $statement2->bindValue(":promptId", $promptId);
+        $statement2->execute();
+
+        foreach($this->getCategories() as $category) {
+            $statement3 = $conn->prepare("INSERT INTO prompt_categories (promptId, categoryId) VALUES (:promptId, :categoryId) ");
+            $statement3->bindValue(":promptId", $promptId);
+            $statement3->bindValue(":categoryId", $category);
+            $statement3->execute();
+        }
+
+      }
+
+      public static function updateExamples($files, $promptId){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("DELETE FROM prompt_examples WHERE promptId = :promptId");
+        $statement->bindValue(":promptId", $promptId);
+        $statement->execute();
+
+        $targetDir = "uploads/";
+        foreach($files["files"]["name"] as $key => $val){
+            $fileName = basename($files["files"]["name"][$key]);
+            $targetFilePath = $targetDir . $fileName;
+            //check wheter file type is valid
+            $fileExt = explode('.', $fileName);
+            $fileActualExt = strtolower(end($fileExt));
+            $allowed = array('jpg', 'jpeg', 'png', 'pdf');
+            if(in_array($fileActualExt, $allowed)){
+                if(move_uploaded_file($files["files"]["tmp_name"][$key], $targetFilePath)){
+                    $statement2 = $conn->prepare("INSERT INTO prompt_examples (promptId, example) VALUES (:promptId, :example)");
+                    $statement2->bindValue(":promptId", $promptId);
+                    $statement2->bindValue(":example", $fileName);
+                    $statement2->execute();
+                }else{
+                    return "error";
+                }
+            }else{
+                return "sorry this file type is not allowed";
+            }
+
+        }
+
+        header("Location: notifications.php");
+        
+      }
+
       
 }

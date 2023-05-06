@@ -150,6 +150,22 @@ button a{
 button.danger{
     background-color: #ad0000;
 }
+
+input[type=submit].danger{
+    background-color: #EA394A;
+}
+
+input[type=submit].succes{
+    background-color: #0CBC8B ;
+}
+
+input[type=submit].long{
+    margin-top: 50px;
+    width: 25%;
+}
+
+
+
 nav{
     width: 100%;
     margin: 0px;
@@ -745,4 +761,61 @@ nav ul a{
 }
 .content-settings .credits{
     max-width: 549px;
+}
+
+.formContainer{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    margin: 0 70px 0 30px;
+
+}
+
+.formContainerLeft{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    height: 50%;
+}
+
+.input{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.input input, .input select{
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.uploadImg{
+   margin-top: 30px;
+}
+
+.uploadImg .coverImages{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.uploadImg input[type="file"]{
+    margin-top: 10px;
+}
+
+.uploadImg input[type="file"]::file-selector-button{
+    padding: 10px;
+    border-radius: 4px;
+    background-color: #D9D9D9;
+    cursor: pointer;
+    border: none;
+}
+
+.radio1, .radio2{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin-bottom: 20px;
 }

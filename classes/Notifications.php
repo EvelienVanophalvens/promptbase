@@ -80,5 +80,14 @@
                 $statement->execute();
             }
 
+            public static function getNotifications($recieverId){
+                $conn = Db::getInstance();
+                $statement = $conn->prepare("SELECT * FROM notifications WHERE receiverId = :receiverId");
+                $statement->bindValue(":receiverId", $recieverId );
+                $statement->execute();
+                $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+                return $result;
+            }
+
         }
 
