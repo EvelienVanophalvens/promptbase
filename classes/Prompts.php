@@ -313,7 +313,7 @@ class Prompts
     public static function getPersonalPrompts($id)
     {
         $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT prompts.prompt, prompts.date, prompts.userId, prompts.accepted, prompts.id, users.id AS user, users.username, prompt_categories.promptId, prompt_categories.categoryId,categories.name, prompt_examples.example FROM prompts LEFT JOIN users ON prompts.userid = users.id  LEFT JOIN prompt_categories ON prompts.id = prompt_categories.promptId LEFT JOIN categories ON prompt_categories.categoryId = categories.id LEFT JOIN prompt_examples ON prompts.id = prompt_examples.promptId WHERE userId = :id ORDER BY prompts.date DESC;");
+        $statement = $conn->prepare("SELECT prompts.prompt, prompts.date, prompts.userId, prompts.accepted, prompts.id, users.id AS user, users.username, prompt_categories.promptId, prompt_categories.categoryId,categories.name, prompt_examples.example FROM prompts LEFT JOIN users ON prompts.userid = users.id  LEFT JOIN prompt_categories ON prompts.id = prompt_categories.promptId LEFT JOIN categories ON prompt_categories.categoryId = categories.id LEFT JOIN prompt_examples ON prompts.id = prompt_examples.promptId WHERE userId = :id AND accepted = 1 ORDER BY prompts.date DESC;");
         $statement->bindValue(":id", $id);
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -375,11 +375,20 @@ class Prompts
         $statement->execute();
         $results =$statement->fetchAll(PDO::FETCH_CLASS,  __CLASS__);
         //statement voor meerdere voorbeelden te kunnen laden
-        $statement2 = $conn->prepare("SELECT  prompt_examples.example FROM prompts LEFT JOIN prompt_examples ON prompts.id = prompt_examples.promptId WHERE prompts.id= :id;");
+        $statement2 = $conn->prepare("SELECT  prompt_examples.example FROM prompts LEFT JOIN prompt_examples ON prompts.id = prompt_examples.promptId WHERE prompts.id= :id; AND prompts.accepted = 1");
         $statement2->bindValue(":id", $id);
         $statement2->execute();
         $results2 = $statement2->fetchALL(PDO::FETCH_ASSOC);
         //beide resultaten worden doorgestuurd
+
+        if ($results) {
+            return array("prompts" => $results[0],
+                      "examples" => $results2);
+        } else {
+            header("Location: profile.php");
+        }
+
+
         return array("prompts" => $results,
                       "examples" => $results2);
     }
@@ -402,7 +411,7 @@ class Prompts
         $statement->execute();
     }
 
-    /* //COMMENTFUNCTIES:
+     //COMMENTFUNCTIES://
     //Geef lijst van alle comments voor een specifieke prompt
     public static function getAllComments($promptId)
     {
@@ -422,8 +431,7 @@ class Prompts
         $statement->bindValue(":user", $userId);
         $statement->bindValue(":comment", $comment);
         $statement->execute();
-    } */
-
+    }
     //SEARCHFUNCTIES:
     // Prompts zoeken op basis van NAAM
     public static function search($search)
