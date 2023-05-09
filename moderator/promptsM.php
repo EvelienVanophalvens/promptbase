@@ -6,7 +6,6 @@ include_once(__DIR__."/navbarM.php");
 $notAccepted =  Prompts::notAccepted();
 
 
-
 ?>
 
 <!DOCTYPE html>

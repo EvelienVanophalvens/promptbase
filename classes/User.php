@@ -366,27 +366,54 @@ class User
 
 
     }
-    public static function earnCredits($userId){
+    public static function earnCredits($userId){   
+    // Het credits aantal verhogen met 20
+    $conn = Dbm::getInstance();
+    $statement = $conn->prepare("UPDATE users SET credits = credits + 20 WHERE id = :user");
+    $statement->bindValue(":user", $userId);
+    $statement->execute();
+
+    // Het actieve status van de gebruiker ophalen
+    $conn = Dbm::getInstance();
+    $statement = $conn->prepare("SELECT active FROM users WHERE id = :user");
+    $statement->bindValue(":user", $userId);
+    $statement->execute();
+    $active = $statement->fetch(PDO::FETCH_ASSOC)['active'];
+
+    //Telt het aantal rijen van de specifieke gebruiker
+    $conn = Dbm::getInstance();
+    $statement = $conn->prepare("SELECT COUNT('accepted') AS 'accepted' FROM `prompts` WHERE accepted = 1 and userId = :user");
+    $statement->bindValue(":user", $userId);
+    $statement->execute();
+    $count = $statement->fetch(PDO::FETCH_ASSOC)['accepted'];
+    
+
+    // Als earn_count >= 3, active op 1 zetten als het nog niet actief is
+    if ($count >= 3 && $active == 0) {
         $conn = Dbm::getInstance();
-        $statement = $conn->prepare("SELECT credits FROM users WHERE id = :user");
+        $statement = $conn->prepare("UPDATE users SET active = 1 WHERE id = :user");
         $statement->bindValue(":user", $userId);
         $statement->execute();
-        $credits = $statement->fetch(PDO::FETCH_ASSOC);
-        if($credits) {
-            //als er een user te vinden is zal het true weergeven anders false
-            $conn = Dbm::getInstance();
-            $statement = $conn->prepare("UPDATE users SET credits = :credits WHERE id = :user");
-            $statement->bindValue(":user", $userId);
-            $total = $credits['credits'] + 20;
-            $statement->bindValue(":credits", $total);
-            $statement->execute();
-        } else {
-            $conn = Dbm::getInstance();
-            $statement = $conn->prepare("UPDATE users SET credits = 20 WHERE id = :user");
-            $statement->bindValue(":user", $userId);
-            $statement->execute();
-        }
-        
+    } elseif($count >= 3 && $active == 1) {
+        // Als earn_count < 3 en active al op 1 staat
+        $conn = Dbm::getInstance();
+        $statement = $conn->prepare("UPDATE users SET active = 1 WHERE id = :user");
+        $statement->bindValue(":user", $userId);
+        $statement->execute();
+    }elseif($count < 3 && $active == 1){
+        // Als earn_count < 3 of al actief, active op 0 zetten
+        $conn = Dbm::getInstance();
+        $statement = $conn->prepare("UPDATE users SET active = 0 WHERE id = :user");
+        $statement->bindValue(":user", $userId);
+        $statement->execute();
+    }else{
+        // Als earn_count < 3 of al actief, active op 0 zetten
+        $conn = Dbm::getInstance();
+        $statement = $conn->prepare("UPDATE users SET active = 0 WHERE id = :user");
+        $statement->bindValue(":user", $userId);
+        $statement->execute();
+    } 
+      
     }
 
 
