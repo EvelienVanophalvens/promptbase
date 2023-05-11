@@ -7,9 +7,16 @@ User::isAdmin();
 $reportedUsers = User::reportedUsers();
 $blockedUsers = User::blockedUsers();
 
-if(!empty($_POST["approve"])) {
+if(!empty($_POST) && isset($_POST["approve"])) {
     $user = User::approveUser($_POST["id"]);
     
+    header("Location: usersM.php");
+    exit;
+}
+
+if(!empty($_POST) && isset($_POST["unblock"])) {
+    var_dump($_POST["id"]);
+    $user = User::unblockUser($_POST["id"]);
     header("Location: usersM.php");
     exit;
 }
@@ -44,7 +51,7 @@ if(!empty($_POST["approve"])) {
                 <td><?php echo htmlSpecialChars($reportedUser["username"]) ?></td>
                 <td><?php echo htmlSpecialChars($reportedUser["reason"]) ?></td>
                 <td><a href="../accountViewM.php?user=<?php echo $reportedUser["id"];?>">See the profile</a></td>
-                <td><form method="POST"><input type=hidden name="id" value="<?php echo $reportedUser["id"]?>"><input type="submit" name="approve" value="approve"> </form><button id="" class="blackBtn block" data-id=<?php echo $reportedUser["id"]?>>Block user</button></td>
+                <td><form method="POST"><input type=hidden name="id" value="<?php echo $reportedUser["id"]?>"><input type="submit" name="approve" value="approve"> </form><button id="" class="blackBtn block" data-id=<?php echo $reportedUser["id"]?>>Block</button></td>
             </tr>
             <?php endforeach;
             }  ?>
@@ -63,7 +70,7 @@ if(!empty($_POST["approve"])) {
             <tr >
                 <td id="blockedUsername"><?php echo htmlspecialchars($blockedUser["username"])?></td>
                 <td id="blockedEmail"><?php echo htmlspecialchars($blockedUser["email"])?></td>
-                <td id="unblockBtn"><button id="unblock" class="blackBtn" data-id="<?php echo $blockedUser["id"]?>">Unblock user</button></td>
+                <td id="unblockBtn"><form method="POST"><input type=hidden name="id" value=<?php echo $blockedUser["id"]?>><input type=submit name="unblock" value ="unblock"></form></td>
             </tr>
             <?php endforeach;
             }  ?>
