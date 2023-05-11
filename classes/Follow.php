@@ -3,6 +3,7 @@
 class Follow{
     private int $followerId;
     private int $followingId;
+    private int $userId;
 
     /**
      * Get the value of followerId
@@ -44,6 +45,26 @@ class Follow{
         return $this;
     }
 
+      /**
+     * Get the value of userId
+     */ 
+    public function getUserId()
+    {
+        return $this->userId;
+    }
+
+    /**
+     * Set the value of userId
+     *
+     * @return  self
+     */ 
+    public function setUserId($userId)
+    {
+        $this->userId = $userId;
+
+        return $this;
+    }
+
     public function save(){
         $conn = Db::getInstance();
         $statement = $conn->prepare("insert into follow (follower_Id, following_Id) values (:follower_Id, :following_Id)");
@@ -81,4 +102,15 @@ class Follow{
         $statement->bindValue(":following_Id", $followed_id);
         $statement->execute();
     }
+
+    public static function getFollowerCount($userId){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT COUNT(follower_Id) FROM follows WHERE following_Id = :following_Id");
+        $statement->bindValue(":following_Id", $userId);
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+  
 }

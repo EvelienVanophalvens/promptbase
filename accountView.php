@@ -44,15 +44,15 @@ $followed_id = $_GET['user'];
 // Check if the follow relationship already exists
 $follow = Follow::checkFollow($follower_id, $followed_id);
 
-// If the relationship doesn't exist, insert it into the database
+// If the relationship doesn't exist, insert it into the database when pressed on follow button
 if (!$follow) {
     Follow::insertFollow($follower_id, $followed_id);
-     echo "You don't follow this user";
 } else {
-    // If the relationship exists, delete it from the database
+    // If the relationship exists, delete it from the database when pressed on unfollow button
     Follow::deleteFollow($follower_id, $followed_id);
-    echo "You already follow this user";
 }
+
+$count = Follow::getFollowerCount($userId);
 
 ?>
 
@@ -89,8 +89,15 @@ if (!$follow) {
             </div>
         </div>
                 <p id="bio-text"><?php echo htmlspecialchars($user["bio"]); ?></p>
-                <button id="followButton" class="submit small follow" onclick="toggleFollow()"><a href="#">Follow</a></button>
+                <div id="followerCount">
+                <p>followers:
 
+  <?php foreach ($count as $value): ?>
+    <?php echo htmlspecialchars($value); ?>
+  <?php endforeach; ?></p>
+
+                    <button id="followButton" class="submit small follow" onclick="toggleFollow()"><a href="#">Follow</a></button>
+                </div>
 
         </div>  
         <div class="userPrompts"><!--Hier komen de gemaakte prompts-->
@@ -161,6 +168,20 @@ if (!$follow) {
         }
 
     }
+
+    $(document).ready(function() {
+    // Make AJAX call to get follower count
+    $.ajax({
+        url: 'follow.php',
+        type: 'POST',
+        data: {user: <?php echo $userId; ?>},
+        success: function(response) {
+            // Update follower count
+            $('#followerCount').html(response);
+        }
+    });
+});
+
     document.querySelector('#dots').addEventListener('click', function(e){
         e.preventDefault();
         document.querySelector('#promptMenu').classList.toggle('hidden');
