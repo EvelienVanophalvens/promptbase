@@ -416,5 +416,49 @@ class User
       
     }
 
+    public static function reportedUsers(){
+        $conn = Dbm::getInstance();
+        $statement = $conn->prepare("SELECT * FROM reported_users LEFT JOIN users ON reported_users.userId = users.id");
+        $statement->execute();
+        $users = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $users;
+    }
+
+    public static function approveUser($userId){
+        $conn = Dbm::getInstance();
+        $statement = $conn->prepare("DELETE FROM reported_users WHERE userId = :user");
+        $statement->bindValue(":user", $userId);
+        $statement->execute();
+    }
+
+    public static function blockedUsers(){
+        $conn = Dbm::getInstance();
+        $statement = $conn->prepare("SELECT * FROM users WHERE verified = 2");
+        $statement->execute();
+        $users = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $users;
+    }
+
+    public static function blockUser($userId){
+        $conn = Dbm::getInstance();
+        $statement = $conn->prepare("UPDATE users SET verified = 2 WHERE id = :user");
+        $statement->bindValue(":user", $userId);
+        $statement->execute();
+    }
+
+    public static function unblockUser($userId){
+        $conn = Dbm::getInstance();
+        $statement = $conn->prepare("UPDATE users SET verified = 1 WHERE id = :user");
+        $statement->bindValue(":user", $userId);
+        $statement->execute();
+    }
+
+    public static function removeReportedUser($userId){
+        $conn = Dbm::getInstance();
+        $statement = $conn->prepare("DELETE FROM reported_users WHERE userId = :user");
+        $statement->bindValue(":user", $userId);
+        $statement->execute();
+    }
+
 
 }

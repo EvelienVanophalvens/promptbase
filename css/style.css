@@ -112,6 +112,9 @@ a.forgot{
     float: right;
     color: #0099CB;
 }
+
+
+
 button.submit{
     background-color: #008CBA;
     border: none;
@@ -538,6 +541,21 @@ nav ul a{
   .error input[type="email"] {
     color: #ff0000;
   }
+
+  .blackBtn{
+    background-color: #1f2937;
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 3px;
+  }
+
+    .blackBtn:hover{
+        background-color: #0099CB;
+    }
 
    input[type=submit]{
       background-color: #1f2937;
