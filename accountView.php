@@ -37,6 +37,23 @@ if(!empty($_POST["reason"]) && isset($_POST["report"])) {
     }
 }
 
+// Get the follower and followed user IDs from the client-side request 
+$follower_id = $_SESSION['userid'];
+$followed_id = $_GET['user'];
+
+// Check if the follow relationship already exists
+$follow = Follow::checkFollow($follower_id, $followed_id);
+
+// If the relationship doesn't exist, insert it into the database
+if (!$follow) {
+    Follow::insertFollow($follower_id, $followed_id);
+     echo "You don't follow this user";
+} else {
+    // If the relationship exists, delete it from the database
+    Follow::deleteFollow($follower_id, $followed_id);
+    echo "You already follow this user";
+}
+
 ?>
 
 <!DOCTYPE html>

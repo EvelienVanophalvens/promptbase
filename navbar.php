@@ -20,7 +20,7 @@
             </ul>
         </div>
         <ul class="navigation">
-        <?php ob_start(); ?>
+        <?php ob_start(); ?> 
            <li>
                 <form action="searchBar.php" method="get" autocomplete="off" id="search-form">
                     <input type="text" name="search" id="search" placeholder="Search" value="<?php if(isset($_GET['search'])) {
