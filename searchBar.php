@@ -23,7 +23,7 @@ if(!empty($_GET['search'])) {
 <body>
     <div class="content">
         <div class="newestPrompts">
-            <h3>You searched by '<?php echo $_GET['search']?>'</h3>
+            <h3>You searched by '<?php echo htmlspecialchars($_GET['search'])?>'</h3>
             <hr>
             <h4>
                 <?php if(isset($results)) { echo count($results);} ?> results found.
