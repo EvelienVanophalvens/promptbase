@@ -21,20 +21,21 @@ if(!empty($_POST["reason"]) && isset($_POST["report"])) {
     }
 }
 
-$userId = $_SESSION['userid'];
-$promptId = $_GET["prompt"];
 
+    $userId = $_SESSION['userid'];
+    $promptId = $_GET["prompt"];
 
+    // Check if the prompt is already a favorite
+    $isFavorite = Prompts::getFavouritePrompt($userId, $promptId);
 
-$isFavorite = Prompts::isPromptFavorited($userId, $promptId);
+    if ($isFavorite) {
+        // Remove the prompt from favorites
+        Prompts::removeFavoritePrompt($userId, $promptId);
 
-if ($isFavorite) {
-  $favourites = Prompts::removeFavoritePrompt($userId, $promptId);
-} else {
-  $favourites = Prompts::addFavoritePrompt($userId, $promptId);
-}
-
-
+    } else {
+        // Add the prompt to favorites
+        Prompts::addFavoritePrompt($userId, $promptId);
+    }
 
 ?>
 
@@ -67,11 +68,15 @@ if ($isFavorite) {
         <div id="dottedMenu">
             <div class="hidden" id="promptMenu">
                 <p id="reporting">report prompt</p>
-                <p id="favourites"><a href="#" class="save-favourite-link" onclick="event.preventDefault(); document.getElementById('add-favorite-form').submit();">
-  <?php echo $isFavorite ? 'Remove from favourites' : 'Save as favourite'; ?>
-</a>
-</p>
-
+                <p id="favourites"><a href="profile.php" class="save-favourite-link" onclick="toggleFavorite()">
+  <?php 
+    if($isFavorite) {
+        echo "Remove from favourites";
+    } else {
+        echo "Add to favourites";
+    }
+  ?>
+</a></p>
             </div>
             <div id="dots">
                 <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -264,7 +269,7 @@ if ($isFavorite) {
         report = true;
     });
 
-    function saveToFavourites(userId, promptId) {
+    function toggleFavorite() {
   var xhr = new XMLHttpRequest();
   xhr.open("POST", "saveToFavourites.php", true);
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -284,8 +289,6 @@ if ($isFavorite) {
   };
   xhr.send("userId=" + userId + "&promptId=" + promptId);
 }
-
-
 
 document.querySelector("#cancel").addEventListener('click', function(e){
     e.preventDefault();
