@@ -5,8 +5,8 @@ require_once("../bootstrap.php");
 //follow
 
 if(!empty($_POST)){
-    $followerId = $_POST['followerId'];
-    $followingId = $_POST['followingId'];
+    $followerId = $_POST['userId'];
+    $followingId = $_SESSION['userid'];
 
     $f = new Follow();
     $f->setFollowerId($followerId);
@@ -18,3 +18,5 @@ if(!empty($_POST)){
         "message" => "Follower was saved"
     ];
 }
+
+echo json_encode($result);

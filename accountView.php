@@ -57,7 +57,7 @@ if(!empty($_POST["reason"]) && isset($_POST["report"])) {
                 <img src="<?php echo htmlspecialchars($profilePicturePath)?>" alt="profile picture">
             </div>
             <h2 class="username"><?php echo htmlspecialchars($user['username'])?></h2>
-            <div id="dottedMenu">
+           <!-- <div id="dottedMenu">
             <div class="hidden" id="promptMenu">
                 <p id="reporting">report prompt</p>
             </div>
@@ -71,7 +71,7 @@ if(!empty($_POST["reason"]) && isset($_POST["report"])) {
                     </g>
                 </svg>
             </div>
-        </div>
+        </div>-->
                 <p id="bio-text"><?php echo htmlspecialchars($user["bio"]); ?></p>
                 <div id="followerCount">
                 <button id="followButton" class="submit small follow">Follow</button>
@@ -146,6 +146,24 @@ if(!empty($_POST["reason"]) && isset($_POST["report"])) {
           }
      });
      
+     //update the database follows
+        document.querySelector('#followButton').addEventListener('click', function(e){
+            e.preventDefault();
+            let follow = document.querySelector('#followButton').classList.contains('unfollow');
+            let userId = <?php echo $user["id"]?>;
+            let data = new FormData();
+            data.append('follow', follow);
+            data.append('userId', userId);
+            fetch('ajax/follow.php', {
+                method: 'POST',
+                body: data
+            })
+            .then(response => response.json())
+            .then(result => {
+                console.log(result);
+            })
+        });
+
 
     document.querySelector('#dots').addEventListener('click', function(e){
         e.preventDefault();
