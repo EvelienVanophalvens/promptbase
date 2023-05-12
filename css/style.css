@@ -837,3 +837,23 @@ nav ul a{
     gap: 10px;
     margin-bottom: 20px;
 }
+
+.container2{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    margin: 24px;
+}
+
+.container2 #submit{
+    width: 200px;
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 4px;
+    background-color: #1F2937;
+    color: #E8E7E7;
+    border: none;
+}
+
+ 
