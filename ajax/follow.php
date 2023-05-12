@@ -15,6 +15,6 @@ if(!empty($_POST)){
 
     $result = [
         "status" => "success",
-        "message" => "Follow was saved"
+        "message" => "Follower was saved"
     ];
 }

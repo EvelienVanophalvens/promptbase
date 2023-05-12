@@ -37,22 +37,6 @@ if(!empty($_POST["reason"]) && isset($_POST["report"])) {
     }
 }
 
-// Get the follower and followed user IDs from the client-side request 
-$follower_id = $_SESSION['userid'];
-$followed_id = $_GET['user'];
-
-// Check if the follow relationship already exists
-$follow = Follow::checkFollow($follower_id, $followed_id);
-
-// If the relationship doesn't exist, insert it into the database when pressed on follow button
-if (!$follow) {
-    Follow::insertFollow($follower_id, $followed_id);
-} else {
-    // If the relationship exists, delete it from the database when pressed on unfollow button
-    Follow::deleteFollow($follower_id, $followed_id);
-}
-
-$count = Follow::getFollowerCount($userId);
 
 ?>
 
@@ -90,13 +74,7 @@ $count = Follow::getFollowerCount($userId);
         </div>
                 <p id="bio-text"><?php echo htmlspecialchars($user["bio"]); ?></p>
                 <div id="followerCount">
-                <p>followers:
-
-  <?php foreach ($count as $value): ?>
-    <?php echo htmlspecialchars($value); ?>
-  <?php endforeach; ?></p>
-
-                    <button id="followButton" class="submit small follow" onclick="toggleFollow()"><a href="#">Follow</a></button>
+                <button id="followButton" class="submit small follow">Follow</button>
                 </div>
 
         </div>  
@@ -150,37 +128,24 @@ $count = Follow::getFollowerCount($userId);
 </body>
 
 <script>
-    function toggleFollow() {
-        var button = document.getElementById("followButton");
-        
-        if(button.classList.contains("follow")) {
-            button.classList.remove("follow");
-            button.classList.add("unfollow");
-            button.innerHTML = "<a href='#'>Unfollow</a>";
-            button.style.backgroundColor = "#1F2937 ";
-            button.style.color = "white";
-        } else {
-            button.classList.remove("unfollow");
-            button.classList.add("follow");
-            button.innerHTML = "<a href='#'>Follow</a>";
-            button.style.backgroundColor = "#008CBA";
-            button.style.color = "white";
-        }
-
-    }
-
-    $(document).ready(function() {
-    // Make AJAX call to get follower count
-    $.ajax({
-        url: 'follow.php',
-        type: 'POST',
-        data: {user: <?php echo $userId; ?>},
-        success: function(response) {
-            // Update follower count
-            $('#followerCount').html(response);
-        }
-    });
-});
+   //add event to a button
+    document.querySelector('#followButton').addEventListener('click', function(e){
+          e.preventDefault();
+          document.querySelector('#followButton').classList.toggle('follow');
+          document.querySelector('#followButton').classList.toggle('unfollow');
+          if(document.querySelector('#followButton').classList.contains('unfollow')){
+                document.querySelector('#followButton').innerHTML = "Unfollow";
+                document.querySelector('#followButton').style.backgroundColor = "#1F2937";
+                document.querySelector('#followButton').style.color = "white";
+                console.log("following user");
+          } else {
+                document.querySelector('#followButton').innerHTML = "Follow";
+                document.querySelector('#followButton').style.backgroundColor = "#008CBA";
+                document.querySelector('#followButton').style.color = "white";
+                console.log("unfollowing user");
+          }
+     });
+     
 
     document.querySelector('#dots').addEventListener('click', function(e){
         e.preventDefault();

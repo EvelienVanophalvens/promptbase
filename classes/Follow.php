@@ -73,7 +73,7 @@ class Follow{
         return $statement->execute();
     }
 
-    public static function checkFollow($follower_id, $followed_id){
+   /* public static function checkFollow($follower_id, $followed_id){
         $conn = Db::getInstance();
         $statement = $conn->prepare("SELECT * FROM follows WHERE follower_Id = :follower_Id AND following_Id = :following_Id");
         $statement->bindValue(":follower_Id", $follower_id);
@@ -86,8 +86,25 @@ class Follow{
             return false;
         }
     }
+*/
 
-    public static function insertFollow($follower_id, $followed_id){
+    public static function isFollowing($userId){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT * FROM follows WHERE follower_Id = :follower_Id AND following_Id = :following_Id");
+        $statement->bindValue(":follower_Id", $_SESSION['id']);
+        $statement->bindValue(":following_Id", $userId);
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        if($result){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+
+    public static function follow($follower_id, $followed_id){
         $conn = Db::getInstance();
         $statement = $conn->prepare("INSERT INTO follows (follower_Id, following_Id) VALUES (:follower_Id, :following_Id)");
         $statement->bindValue(":follower_Id", $follower_id);
@@ -95,7 +112,7 @@ class Follow{
         $statement->execute();
     }
 
-    public static function deleteFollow($follower_id, $followed_id){
+    public static function unfollow($follower_id, $followed_id){
         $conn = Db::getInstance();
         $statement = $conn->prepare("DELETE FROM follows WHERE follower_Id = :follower_Id AND following_Id = :following_Id");
         $statement->bindValue(":follower_Id", $follower_id);
