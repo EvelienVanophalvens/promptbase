@@ -1,5 +1,9 @@
-// Purpose: Buy credits to get more prompts
-<!DOCTYPE html>
+<?php 
+include_once(__DIR__."/bootstrap.php");
+include_once(__DIR__."/navbar.php");
+
+
+?><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -11,32 +15,35 @@
 <body>
     <div class="container2">
         <h1>Buy credits</h1>
-        <p>You can buy credits to get more prompts</p>
         <form action="">
            <div class="form-group">
-                <label for="credits">Choose the amount of credits you want to buy</label>
-                <button type="submit" id="submit" name="buyCredits">
-                    25 credits
-                </button>
-                <button type="submit" id="submit" name="buyCredits">
-                    50 credits
-                </button>
-                <button type="submit" id="submit" name="buyCredits">
-                    100 credits
-                </button>
+                <label id="buy" for="credits">Choose the amount of credits you want to buy</label>
+                <div class="Credits">
+            <div class="creditschoice">
+                <img class="creditsImg" src="uploads/credits.png" alt="credits">
+                <div class="credit">
+                <h2>25 credits</h2>              
+                <button type="submit" id="credit" name="buyCredits">Buy credits</button>
+                </div>
+            </div>
+            <div class="creditschoice">
+                <img class="creditsImg" src="uploads/credits.png" alt="credits">
+                <div class="credit">
+                <h2>50 credits</h2>
+                <button type="submit" id="credit" name="buyCredits">Buy credits</button>
+                </div>
+            </div>
+            <div class="creditschoice">
+                <img class="creditsImg" src="uploads/credits.png" alt="credits">
+                <div class="credit">
+                <h2>100 credits</h2> 
+                <button type="submit" id="credit" name="buyCredits">Buy credits</button>
+                </div>
+            </div>
+            </div>
             </div>
             <div class="form-element">
-                <label for="payment">Choose your payment method</label>
-                <select name="payment" id="payment" required>
-                    <option value="visa">Visa</option>
-                    <option value="mastercard">Mastercard</option>
-                    <option value="paypal">Paypal</option>
-                </select>
-            </div>
-            <div class="form-element">
-                <button type="submit" id="submit" name="buyCredits">
-                    Buy credits
-                </button>
+                
             </div>
         </form>
     </div>

@@ -31,7 +31,13 @@ $user = User::getUser($_SESSION['userid']);
             <h3>Credits</h3>
             <h3><?php echo htmlspecialchars($user['credits'])?></h3>
             <p>You have a amount of <strong><?php echo htmlspecialchars($user['credits'])?></strong> credits to spend. In order to receive more credits you need to make new prompts.</p>
+            <div class="buyCredits">
+            <h3>Buy credits</h3>
+            <p>Do you want to buy more credits? <br>Click the button below to buy more credits.</p>
+            <button class="submit small"><a href="buyCredits.php">Buy credits</a></button>
         </div>
+        </div>
+        
     </div>
 </body>
 </html>

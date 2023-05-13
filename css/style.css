@@ -856,4 +856,62 @@ nav ul a{
     border: none;
 }
 
- 
+.form-group{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+
+}
+
+.Credits{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.creditschoice{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 100px;
+    margin: 10px 20px;
+    padding: 10px;
+    border-radius: 5%;
+    border-color: #1F2937;
+    border-style: solid;
+    border-width: 2px;
+}
+
+.creditschoice:hover{
+    cursor: pointer;
+    background-color: #1F2937;
+    color: #E8E7E7;
+}
+
+#credit{
+    background-color: #0099CB;
+    color: #E8E7E7;
+    border: none;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+.creditsImg{
+    width: 50%;
+}
+
+.credit{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+#buy{
+    margin-left: 38.5%;
+}
