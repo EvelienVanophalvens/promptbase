@@ -10,7 +10,15 @@
 </head>
 <body>
     <nav id="moderator">
-        <div></div>
+        <div>
+        <ul class="logo">
+                <li>
+                    <a href="../home.php">
+                        <img src="../uploads/logo.png" alt="collectivePrompts">
+                    </a>
+                </li>
+            </ul>
+        </div>
         <ul>
             <li>
                 <a href="promptsM.php">prompts</a>
