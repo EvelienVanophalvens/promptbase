@@ -461,4 +461,16 @@ class User
     }
 
 
+    //credits verhogen met 25, 50 of 100
+    public static function addCredits($userId, $credits)
+    {
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("UPDATE users SET credits = credits + :credits WHERE id = :user");
+        $statement->bindValue(":credits", $credits);
+        $statement->bindValue(":user", $userId);
+        $statement->execute();
+    }
+    
+
+
 }
