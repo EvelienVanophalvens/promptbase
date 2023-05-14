@@ -27,31 +27,27 @@ $accepted = User::acceptedModerators();
             <tr>
                 <th>Name</th>
                 <th>Email</th>
-                <th>action</th>
+                <th>Action</th>
             </tr>
             <?php if(!empty($accepted)) {
                 foreach($accepted as $moderator):?>
             <tr>
                 <td><?php echo htmlspecialchars($moderator["username"])?></td>
                 <td><?php echo htmlspecialchars($moderator["email"])?></td>
-                <td><a class="blackBtn" href="deleteModerator.php?id=<?php echo htmlspecialchars($moderator["id"])?> ">Remove</a></td>
+                <td><a class="blackBtn">Remove</a></td>
             </tr>
             <?php endforeach;
             }  ?>
         </table>
     
     <hr>
-    <h2>Add a moderator</h2>
-    <form action="addModerator.php" method="POST">
-        <div class="form-group">
-            <label for="username">Username</label>
-            <input class="form-control" type="text" id="username" name="username">
-        </div>
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input class="form-control" type="text" id="email" name="email">
-        </div>
-        <input class="blackBtn" type="submit" value="Add moderator">
+    <form action="" method="POST">
+        <label for="username">Username</label>
+        <input type="text" name="username" id="usernameM" placeholder="username">
+        <label for="email">Email</label>
+        <input type="email" name="email" id="emailM " placeholder="email">
+        <input id="addM" type="submit" value="Add moderator">
+    </form>
 
         
 </div>
