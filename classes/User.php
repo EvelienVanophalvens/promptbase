@@ -472,5 +472,12 @@ class User
     }
     
 
+    public static function acceptedModerators(){
+        $conn = Dbm::getInstance();
+        $statement = $conn->prepare("SELECT * FROM users WHERE moderator = 1");
+        $statement->execute();
+        $users = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $users;
+    }
 
 }

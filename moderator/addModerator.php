@@ -2,6 +2,9 @@
 include_once(__DIR__."/../bootstrap.php");
 include_once(__DIR__."/navbarM.php");
 
+User::isAdmin();
+$accepted = User::acceptedModerators();
+
 
 ?>
 <!DOCTYPE html>
@@ -15,45 +18,42 @@ include_once(__DIR__."/navbarM.php");
 </head>
 <body>
 <div class="content">
-<a href="home.php" id="backbtn">< BACK TO OVERVIEW</a>
+<a href="moderator.php" id="backbtn">< BACK TO OVERVIEW</a>
 
     <h1>Moderator</h1>
     <h2>Newest moderators</h2>
     <hr>
     <table>
-    <tr>
-            <th>name</th>
-            <th>email</th>
-           <th> <button>Remove</button></th>
-        </tr>
-        <tr>
-            <th>name</th>
-            <th>email</th>
-           <th> <button>Remove</button></th>
-        </tr>
-        <tr>
-            <th>name</th>
-            <th>email</th>
-           <th> <button>Remove</button></th>
-        </tr>
-        
-    </table>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>action</th>
+            </tr>
+            <?php if(!empty($accepted)) {
+                foreach($accepted as $moderator):?>
+            <tr>
+                <td><?php echo htmlspecialchars($moderator["username"])?></td>
+                <td><?php echo htmlspecialchars($moderator["email"])?></td>
+                <td><a class="blackBtn" href="deleteModerator.php?id=<?php echo htmlspecialchars($moderator["id"])?> ">Remove</a></td>
+            </tr>
+            <?php endforeach;
+            }  ?>
+        </table>
     
     <hr>
-    <form action="addModeratorCode.php" method="POST">
-        <div class="form-element">
-            <label for="username">Name:</label>
-            <input type="text" id="username" name="username" required>
+    <h2>Add a moderator</h2>
+    <form action="addModerator.php" method="POST">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input class="form-control" type="text" id="username" name="username">
         </div>
-        <div class="form-element">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input class="form-control" type="text" id="email" name="email">
         </div>
-        <div class="form-element">
-            <button type="submit" class="submit" name="addModerator">
-                Add
-            </button>
-        </div>
+        <input class="blackBtn" type="submit" value="Add moderator">
+
+        
 </div>
 </body>
 </html>

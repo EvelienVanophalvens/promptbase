@@ -39,8 +39,10 @@ if (isset($_SESSION['auth_user'])) {
             </div>
         </div>
 
-        <button>Moderate users</button>
-        <button>Moderate prompts</button>
-        <button>Edit moderators</button>
+        <div class="moderateOptions">
+        <button id="moderate"><a href="usersM.php" >Moderate users</a></button>
+        <button id="moderate"><a href="promptsM.php" >Moderate prompts</a></button>
+        <button id="moderate"><a href="addModerator.php" >Edit moderators</a></button>
+    </div>
 </body>
 </html>

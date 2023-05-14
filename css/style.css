@@ -915,3 +915,42 @@ nav ul a{
 #buy{
     margin-left: 38.5%;
 }
+
+#moderate{
+    background-color: #1F2937;
+    color: #E8E7E7;
+    border: none;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+#moderate:hover{
+    cursor: pointer;
+    background-color: #0099CB;
+    color: #E8E7E7;
+}
+
+#moderate a{
+    color: #E8E7E7;
+}
+
+.moderateOptions{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+
+#addModerate{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+td{
+    padding: 18px;
+}
