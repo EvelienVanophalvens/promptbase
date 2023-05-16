@@ -498,4 +498,20 @@ class User
         return $users;
     }
 
+    public static function addModerator($username, $email){
+        $conn = Dbm::getInstance();
+        $statement = $conn->prepare("UPDATE users SET moderator = 1 WHERE username = :username AND email = :email");
+        $statement->bindValue(":username", $username);
+        $statement->bindValue(":email", $email);
+        $statement->execute();
+    }
+
+    public static function removeModerator($username, $email){
+        $conn = Dbm::getInstance();
+        $statement = $conn->prepare("UPDATE users SET moderator = 0 WHERE username = :username AND email = :email");
+        $statement->bindValue(":username", $username);
+        $statement->bindValue(":email", $email);
+        $statement->execute();
+    }
+
 }

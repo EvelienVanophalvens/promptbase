@@ -5,6 +5,21 @@ include_once(__DIR__."/navbarM.php");
 User::isAdmin();
 $accepted = User::acceptedModerators();
 
+//add moderator
+if (isset($_POST['add'])) {
+    $username = htmlspecialchars($_POST['username']);
+    $email = htmlspecialchars($_POST['email']);
+    $add = User::addModerator($username, $email);
+}
+
+
+//remove moderator
+if (isset($_POST['remove'])) {
+    $username = htmlspecialchars($_POST['username']);
+    $email = htmlspecialchars($_POST['email']);
+    $remove = User::removeModerator($username, $email);
+}
+
 
 ?>
 <!DOCTYPE html>
@@ -29,24 +44,29 @@ $accepted = User::acceptedModerators();
                 <th>Email</th>
                 <th>Action</th>
             </tr>
-            <?php if(!empty($accepted)) {
-                foreach($accepted as $moderator):?>
-            <tr>
-                <td><?php echo htmlspecialchars($moderator["username"])?></td>
-                <td><?php echo htmlspecialchars($moderator["email"])?></td>
-                <td><a class="blackBtn">Remove</a></td>
-            </tr>
-            <?php endforeach;
-            }  ?>
+            <?php if (!empty($accepted)) {
+    foreach ($accepted as $moderator) : ?>
+        <tr>
+            <form action="" method="POST">
+                <td><?php echo htmlspecialchars($moderator["username"]) ?></td>
+                <td><?php echo htmlspecialchars($moderator["email"]) ?></td>
+                <input type="hidden" name="username" value="<?php echo htmlspecialchars($moderator["username"]) ?>">
+                <input type="hidden" name="email" value="<?php echo htmlspecialchars($moderator["email"]) ?>">
+                <td><input type="submit" name="remove" id="remove" value="Remove"></td>
+            </form>
+        </tr>
+    <?php endforeach;
+} ?>
+
         </table>
     
     <hr>
     <form action="" method="POST">
-        <label for="username">Username</label>
+        <label for="username">Username:</label>
         <input type="text" name="username" id="usernameM" placeholder="username">
-        <label for="email">Email</label>
-        <input type="email" name="email" id="emailM " placeholder="email">
-        <input id="addM" type="submit" value="Add moderator">
+        <label for="email">Email:</label>
+        <input type="email" name="email" id="emailM" placeholder="email">
+        <input type="submit" name="add" id="add" value="Add">
     </form>
 
         
