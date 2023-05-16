@@ -6,7 +6,7 @@ authenticated();
 if (!empty($_POST)) {
     //gegevens die we gaan doorsturen
     $promptId = $_POST["promptId"];
-    $comment = $_POST['comment'];
+    $comment = htmlspecialchars($_POST['comment']);
     $userId = $_SESSION['userid'];
 
     // Voeg de comment toe aan de database
