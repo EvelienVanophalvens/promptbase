@@ -254,6 +254,24 @@ class User
         } else {
             return false;
         }
+
+      
+    }
+
+    public static function isModeratorM()
+    {
+        $conn = Dbm::getInstance();
+        $statement = $conn->prepare("SELECT * FROM users WHERE id = :id AND moderator = 1");
+        $statement->bindValue(":id", $_SESSION['userid']);
+        $statement->execute();
+        $user = $statement->fetch(PDO::FETCH_ASSOC);
+        if($user) {
+            return true;
+        } else {
+            return false;
+        }
+
+      
     }
 
 
