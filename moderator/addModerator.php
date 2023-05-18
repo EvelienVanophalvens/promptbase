@@ -5,19 +5,27 @@ include_once(__DIR__."/navbarM.php");
 User::isAdmin();
 $accepted = User::acceptedModerators();
 
-//add moderator
-if (isset($_POST['add'])) {
-    $username = htmlspecialchars($_POST['username']);
-    $email = htmlspecialchars($_POST['email']);
+
+$username = isset($_POST['username']) ? htmlspecialchars($_POST['username']) : '';
+$email = isset($_POST['email']) ? htmlspecialchars($_POST['email']) : '';
+
+$add = User::addModerator($username, $email);
+$remove = User::removeModerator($username, $email);
+
+if(!empty($_POST) && isset($_POST["add"])){
+    $username = isset($_POST['username']) ? htmlspecialchars($_POST['username']) : '';
+    $email = isset($_POST['email']) ? htmlspecialchars($_POST['email']) : '';
     $add = User::addModerator($username, $email);
+    header("Location: addModerator.php");
+    exit;
 }
 
-
-//remove moderator
-if (isset($_POST['remove'])) {
-    $username = htmlspecialchars($_POST['username']);
-    $email = htmlspecialchars($_POST['email']);
+if(!empty($_POST) && isset($_POST["remove"])){
+    $username = isset($_POST['username']) ? htmlspecialchars($_POST['username']) : '';
+    $email = isset($_POST['email']) ? htmlspecialchars($_POST['email']) : '';
     $remove = User::removeModerator($username, $email);
+    header("Location: addModerator.php");
+    exit;
 }
 
 
@@ -52,7 +60,7 @@ if (isset($_POST['remove'])) {
                 <td><?php echo htmlspecialchars($moderator["email"]) ?></td>
                 <input type="hidden" name="username" value="<?php echo htmlspecialchars($moderator["username"]) ?>">
                 <input type="hidden" name="email" value="<?php echo htmlspecialchars($moderator["email"]) ?>">
-                <td><input type="submit" name="remove" id="remove" value="Remove"></td>
+                <td><input type="submit" name="remove" id="remove" value="Remove" onclick="addEventListener(event)"></td>
             </form>
         </tr>
     <?php endforeach;
@@ -66,10 +74,60 @@ if (isset($_POST['remove'])) {
         <input type="text" name="username" id="usernameM" placeholder="username">
         <label for="email">Email:</label>
         <input type="email" name="email" id="emailM" placeholder="email">
-        <input type="submit" name="add" id="add" value="Add">
+        <input type="submit" name="add" id="add" value="Add" onclick="addEventListener(event)">
     </form>
 
         
 </div>
+
+<script>
+
+
+const addBtn = document.querySelector('#add');
+addBtn.addEventListener('click', (event) => { // Change parameter name to event
+    event.preventDefault();
+
+    const formData = new FormData(); // Initialize formData
+
+    const username = document.querySelector('#usernameM').value;
+    const email = document.querySelector('#emailM').value;
+    formData.append('username', username);
+    formData.append('email', email);
+    console.log(username);
+    console.log(email);
+    fetch('../ajax/addModerator.php', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+        })
+})
+
+const removeBtn = document.querySelector('#remove');
+removeBtn.addEventListener('click', (event) => { // Change parameter name to event
+    event.preventDefault();
+
+    const formData = new FormData(); // Initialize formData
+
+    const username = document.querySelector('#usernameM').value;
+    const email = document.querySelector('#emailM').value;
+    formData.append('username', username);
+    formData.append('email', email);
+    console.log(username);
+    console.log(email);
+    fetch('../ajax/removeModerator.php', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+        })
+})
+
+
+</script>
 </body>
 </html>
