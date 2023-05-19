@@ -26,16 +26,14 @@ if(!empty($_POST["reason"]) && isset($_POST["report"])) {
     $promptId = $_GET["prompt"];
 
     // Check if the prompt is already a favorite
-    $isFavorite = Prompts::getFavouritePrompt($userId, $promptId);
-
-    if ($isFavorite) {
-        // Remove the prompt from favorites
-        Prompts::removeFavoritePrompt($userId, $promptId);
-
+    $isFavorite = Favourite::getFavouritePrompt($userId, $promptId);
+    if($isFavorite) {
+        $favourites = "Remove from favourites";
     } else {
-        // Add the prompt to favorites
-        Prompts::addFavoritePrompt($userId, $promptId);
+        $favourites = "Add to favourites";
     }
+    
+
 
 ?>
 
@@ -68,15 +66,7 @@ if(!empty($_POST["reason"]) && isset($_POST["report"])) {
         <div id="dottedMenu">
             <div class="hidden" id="promptMenu">
                 <p id="reporting">report prompt</p>
-                <p id="favourites"><a href="profile.php" class="save-favourite-link" onclick="toggleFavorite()">
-  <?php 
-    if($isFavorite) {
-        echo "Remove from favourites";
-    } else {
-        echo "Add to favourites";
-    }
-  ?>
-</a></p>
+               <form action="" method="POST"><p id="favourites" onclick="addEventListener(e)">Add to favourites</p></form>
             </div>
             <div id="dots">
                 <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -168,6 +158,8 @@ if(!empty($_POST["reason"]) && isset($_POST["report"])) {
                 <button type="submit" class="submit small" id="cancel">cancel</button>
             </div>
         </form> 
+
+       
     <script>
         const commentForm = document.getElementById('comment-form');
         const sendBtn = document.getElementById('postComment');
@@ -269,27 +261,6 @@ if(!empty($_POST["reason"]) && isset($_POST["report"])) {
         report = true;
     });
 
-    function toggleFavorite() {
-  var xhr = new XMLHttpRequest();
-  xhr.open("POST", "saveToFavourites.php", true);
-  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-  xhr.onreadystatechange = function() {
-    if (xhr.readyState == 4 && xhr.status == 200) {
-      var response = xhr.responseText;
-      // Display a success message or handle errors here
-      if (response == "success") {
-        // Do something, like showing a confirmation message
-        alert("prompt saved");
-      } else {
-        // Do something else, like showing an error
-        alert("prompt not saved");
-      }
-      
-    }
-  };
-  xhr.send("userId=" + userId + "&promptId=" + promptId);
-}
-
 document.querySelector("#cancel").addEventListener('click', function(e){
     e.preventDefault();
     document.querySelector('.content').classList.remove('faded');
@@ -297,7 +268,24 @@ document.querySelector("#cancel").addEventListener('click', function(e){
     report = false;
 });
 
+// add event to favourites
 
+let favourites = document.querySelector('#promptMenu #favourites');
+favourites.addEventListener('click', function(e){
+    e.preventDefault();
+    let id = this.getAttribute('data-id');
+    console.log(id);
+    //fetch request (post) to '/ajax/favourites.php', use formdata
+    let formData = new FormData();
+    formData.append('promptId', id);
+    fetch('./ajax/favourites.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(function(response){
+        return response.json();
+    })
+});
 
 
 
