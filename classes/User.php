@@ -514,4 +514,22 @@ class User
         $statement->execute();
     }
 
+
+    public static function followUser($userId)
+    {
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("INSERT INTO user_follow (userId, followId) VALUES (:userId, :followerId)");
+        $statement->bindValue(":userId", $userId);
+        $statement->bindValue(":followerId", $_SESSION['userid']);
+        $statement->execute();
+    }
+
+    public static function unfollowUser($userId)
+    {
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("DELETE FROM user_follow WHERE userId = :userId AND followId = :followerId");
+        $statement->bindValue(":userId", $userId);
+        $statement->bindValue(":followerId", $_SESSION['userid']);
+        $statement->execute();
+    }
 }

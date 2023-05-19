@@ -2,21 +2,34 @@
 
 require_once("../bootstrap.php");
 
-//follow
+//follow user
 
-if(!empty($_POST)){
-    $followerId = $_POST['userId'];
-    $followingId = $_SESSION['userid'];
-
-    $f = new Follow();
-    $f->setFollowerId($followerId);
-    $f->setFollowingId($followingId);
-    $f->save();
+ 
+if (!isset($_POST['follow'])) {
+    $userId = $_POST['userId'];
+    $follow = User::followUser($userId);
 
     $result = [
         "status" => "success",
-        "message" => "Follower was saved"
+        "message" => "User was followed"
     ];
+}
+else{
+    if(isset($_POST['follow'])){
+        $userId = $_POST['userId'];
+        $follow = User::unfollowUser($userId);
+    
+        $result = [
+            "status" => "success",
+            "message" => "User was unfollowed"
+        ];
+    }
+    else{
+        $result = [
+            "status" => "error",
+            "message" => "Something went wrong"
+        ];
+    }
 }
 
 echo json_encode($result);

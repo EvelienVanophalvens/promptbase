@@ -73,9 +73,8 @@ if(!empty($_POST["reason"]) && isset($_POST["report"])) {
             </div>
         </div>-->
                 <p id="bio-text"><?php echo htmlspecialchars($user["bio"]); ?></p>
-                <div id="followerCount">
-                <button id="followButton" class="submit small follow">Follow</button>
-                </div>
+                <button id="follow-btn">Follow</button>
+
 
         </div>  
         <div class="userPrompts"><!--Hier komen de gemaakte prompts-->
@@ -128,42 +127,32 @@ if(!empty($_POST["reason"]) && isset($_POST["report"])) {
 </body>
 
 <script>
-   //add event to a button
-    document.querySelector('#followButton').addEventListener('click', function(e){
-          e.preventDefault();
-          document.querySelector('#followButton').classList.toggle('follow');
-          document.querySelector('#followButton').classList.toggle('unfollow');
-          if(document.querySelector('#followButton').classList.contains('unfollow')){
-                document.querySelector('#followButton').innerHTML = "Unfollow";
-                document.querySelector('#followButton').style.backgroundColor = "#1F2937";
-                document.querySelector('#followButton').style.color = "white";
-                console.log("following user");
-          } else {
-                document.querySelector('#followButton').innerHTML = "Follow";
-                document.querySelector('#followButton').style.backgroundColor = "#008CBA";
-                document.querySelector('#followButton').style.color = "white";
-                console.log("unfollowing user");
-          }
-     });
-     
-     //update the database follows
-        document.querySelector('#followButton').addEventListener('click', function(e){
-            e.preventDefault();
-            let follow = document.querySelector('#followButton').classList.contains('unfollow');
-            let userId = <?php echo $user["id"]?>;
-            let data = new FormData();
-            data.append('follow', follow);
-            data.append('userId', userId);
-            fetch('ajax/follow.php', {
-                method: 'POST',
-                body: data
-            })
-            .then(response => response.json())
-            .then(result => {
-                console.log(result);
-            })
-        });
-
+  
+//add a event to .follow and ajax
+   let follow = document.querySelector('#follow-btn'); 
+   //get the id of the user
+    let userId = <?php echo $user["id"]?>;
+   //fetch request (post) to '/ajax/follow.php', use formdata
+    follow.addEventListener('click', function(e){
+         e.preventDefault();
+         let formData = new FormData();
+         formData.append('userId', userId);
+         fetch('ajax/follow.php', {
+              method: 'POST',
+              body: formData
+         })
+         .then(response => response.json())
+         .then(result => {
+              console.log(result);
+              if(result.status === 'success') {
+                follow.innerHTML = 'Unfollow';
+              } else if(result.status === 'unfollow') {
+                follow.innerHTML = 'Follow';
+              }
+         })
+         
+    });
+   
 
     document.querySelector('#dots').addEventListener('click', function(e){
         e.preventDefault();
