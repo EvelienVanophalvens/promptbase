@@ -12,9 +12,9 @@ $email = isset($_POST['email']) ? htmlspecialchars($_POST['email']) : '';
 $add = User::addModerator($username, $email);
 $remove = User::removeModerator($username, $email);
 
-if(!empty($_POST) && isset($_POST["add"])){
-    $username = isset($_POST['username']) ? htmlspecialchars($_POST['username']) : '';
-    $email = isset($_POST['email']) ? htmlspecialchars($_POST['email']) : '';
+if(!empty($_GET) && isset($_GET["add"])){
+    $username = isset($_GET['username']) ? htmlspecialchars($_GET['username']) : '';
+    $email = isset($_GET['email']) ? htmlspecialchars($_GET['email']) : '';
     $add = User::addModerator($username, $email);
     header("Location: addModerator.php");
     exit;
@@ -69,12 +69,12 @@ if(!empty($_POST) && isset($_POST["remove"])){
         </table>
     
     <hr>
-    <form action="" method="POST">
+    <form action="" method="GET">
         <label for="username">Username:</label>
         <input type="text" name="username" id="usernameM" placeholder="username">
         <label for="email">Email:</label>
         <input type="email" name="email" id="emailM" placeholder="email">
-        <input type="submit" name="add" id="add" value="Add" onclick="addEventListener(event)">
+       <input type="submit" name="add" id="add" value="Add" onclick="addEventListener(event)">
     </form>
 
         
@@ -84,11 +84,10 @@ if(!empty($_POST) && isset($_POST["remove"])){
 
 
 const addBtn = document.querySelector('#add');
-addBtn.addEventListener('click', (event) => { // Change parameter name to event
+addBtn.addEventListener('click', (event) => {
     event.preventDefault();
 
-    const formData = new FormData(); // Initialize formData
-
+    const formData = new FormData();
     const username = document.querySelector('#usernameM').value;
     const email = document.querySelector('#emailM').value;
     formData.append('username', username);
@@ -102,15 +101,15 @@ addBtn.addEventListener('click', (event) => { // Change parameter name to event
         .then(response => response.json())
         .then(data => {
             console.log(data);
-        })
-})
+        });
+});
+
 
 const removeBtn = document.querySelector('#remove');
-removeBtn.addEventListener('click', (event) => { // Change parameter name to event
+removeBtn.addEventListener('click', (event) => {
     event.preventDefault();
 
-    const formData = new FormData(); // Initialize formData
-
+    const formData = new FormData();
     const username = document.querySelector('#usernameM').value;
     const email = document.querySelector('#emailM').value;
     formData.append('username', username);
@@ -124,9 +123,8 @@ removeBtn.addEventListener('click', (event) => { // Change parameter name to eve
         .then(response => response.json())
         .then(data => {
             console.log(data);
-        })
-})
-
+        });
+});
 
 </script>
 </body>
