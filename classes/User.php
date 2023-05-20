@@ -517,7 +517,7 @@ class User
 
     public static function followUser($userId)
     {
-        $conn = Db::getInstance();
+        $conn = Dbm::getInstance();
         $statement = $conn->prepare("INSERT INTO user_follow (userId, followId) VALUES (:userId, :followerId)");
         $statement->bindValue(":userId", $userId);
         $statement->bindValue(":followerId", $_SESSION['userid']);
@@ -526,10 +526,46 @@ class User
 
     public static function unfollowUser($userId)
     {
-        $conn = Db::getInstance();
+        $conn = Dbm::getInstance();
         $statement = $conn->prepare("DELETE FROM user_follow WHERE userId = :userId AND followId = :followerId");
         $statement->bindValue(":userId", $userId);
         $statement->bindValue(":followerId", $_SESSION['userid']);
         $statement->execute();
     }
+
+    public static function isFollowingUser($userId)
+    {
+        $conn = Dbm::getInstance();
+        $statement = $conn->prepare("SELECT * FROM user_follow WHERE userId = :userId");
+        $statement->bindValue(":userId", $userId);
+        $statement->execute();
+        $followers = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $followers;
+    }
+
+  public static function updateCredits($credits){
+    $conn = Db::getInstance();
+    $statement = $conn->prepare("UPDATE users SET credits = :credits WHERE id = :id");
+    $statement->bindValue(":credits", $credits);
+    $statement->bindValue(":id", $_SESSION['userid']);
+    $statement->execute();
+  }
+
+  public static function getCredit(){
+    $conn = Db::getInstance();
+    $statement = $conn->prepare("SELECT credits FROM users WHERE id = :id");
+    $statement->bindValue(":id", $_SESSION['userid']);
+    $statement->execute();
+    $credits = $statement->fetch(PDO::FETCH_ASSOC);
+    return $credits['credits'];
+  }
+
+  public static function updateCredit(){
+    $conn = Db::getInstance();
+    $statement = $conn->prepare("UPDATE users SET credits = credits + 10 WHERE id = :id");
+    $statement->bindValue(":id", $_SESSION['userid']);
+    $statement->execute();
+  }
+
+
 }

@@ -133,25 +133,30 @@ if(!empty($_POST["reason"]) && isset($_POST["report"])) {
    //get the id of the user
     let userId = <?php echo $user["id"]?>;
    //fetch request (post) to '/ajax/follow.php', use formdata
-    follow.addEventListener('click', function(e){
-         e.preventDefault();
-         let formData = new FormData();
-         formData.append('userId', userId);
-         fetch('ajax/follow.php', {
-              method: 'POST',
-              body: formData
-         })
-         .then(response => response.json())
-         .then(result => {
-              console.log(result);
-              if(result.status === 'success') {
+   follow.addEventListener('click', function(e){
+    e.preventDefault();
+    let formData = new FormData();
+    formData.append('userId', userId);
+    fetch('ajax/follow.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(result => {
+        console.log(result);
+        if (result.status === 'success') {
+            if (follow.innerHTML === 'Follow') {
                 follow.innerHTML = 'Unfollow';
-              } else if(result.status === 'unfollow') {
+                // background-color button
+                follow.style.backgroundColor = '#1F2937';
+            } else {
+               //remove follow
                 follow.innerHTML = 'Follow';
-              }
-         })
-         
+               follow.style.backgroundColor = '#0099CB';
+            }
+        }
     });
+});
    
 
     document.querySelector('#dots').addEventListener('click', function(e){
