@@ -37,6 +37,7 @@ if(!empty($_POST["reason"]) && isset($_POST["report"])) {
     }
 }
 
+
 ?>
 
 <!DOCTYPE html>
@@ -56,7 +57,7 @@ if(!empty($_POST["reason"]) && isset($_POST["report"])) {
                 <img src="<?php echo htmlspecialchars($profilePicturePath)?>" alt="profile picture">
             </div>
             <h2 class="username"><?php echo htmlspecialchars($user['username'])?></h2>
-            <div id="dottedMenu">
+           <!-- <div id="dottedMenu">
             <div class="hidden" id="promptMenu">
                 <p id="reporting">report prompt</p>
             </div>
@@ -70,9 +71,9 @@ if(!empty($_POST["reason"]) && isset($_POST["report"])) {
                     </g>
                 </svg>
             </div>
-        </div>
+        </div>-->
                 <p id="bio-text"><?php echo htmlspecialchars($user["bio"]); ?></p>
-                <button id="followButton" class="submit small follow" onclick="toggleFollow()"><a href="#">Follow</a></button>
+                <button id="follow-btn">Follow</button>
 
 
         </div>  
@@ -126,24 +127,33 @@ if(!empty($_POST["reason"]) && isset($_POST["report"])) {
 </body>
 
 <script>
-    function toggleFollow() {
-        var button = document.getElementById("followButton");
-        
-        if(button.classList.contains("follow")) {
-            button.classList.remove("follow");
-            button.classList.add("unfollow");
-            button.innerHTML = "<a href='#'>Unfollow</a>";
-            button.style.backgroundColor = "#1F2937 ";
-            button.style.color = "white";
-        } else {
-            button.classList.remove("unfollow");
-            button.classList.add("follow");
-            button.innerHTML = "<a href='#'>Follow</a>";
-            button.style.backgroundColor = "#008CBA";
-            button.style.color = "white";
-        }
+  
+//add a event to .follow and ajax
+   let follow = document.querySelector('#follow-btn'); 
+   //get the id of the user
+    let userId = <?php echo $user["id"]?>;
+   //fetch request (post) to '/ajax/follow.php', use formdata
+    follow.addEventListener('click', function(e){
+         e.preventDefault();
+         let formData = new FormData();
+         formData.append('userId', userId);
+         fetch('ajax/follow.php', {
+              method: 'POST',
+              body: formData
+         })
+         .then(response => response.json())
+         .then(result => {
+              console.log(result);
+              if(result.status === 'success') {
+                follow.innerHTML = 'Unfollow';
+              } else if(result.status === 'unfollow') {
+                follow.innerHTML = 'Follow';
+              }
+         })
+         
+    });
+   
 
-    }
     document.querySelector('#dots').addEventListener('click', function(e){
         e.preventDefault();
         document.querySelector('#promptMenu').classList.toggle('hidden');

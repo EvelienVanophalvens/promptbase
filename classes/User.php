@@ -254,6 +254,24 @@ class User
         } else {
             return false;
         }
+
+      
+    }
+
+    public static function isModeratorM()
+    {
+        $conn = Dbm::getInstance();
+        $statement = $conn->prepare("SELECT * FROM users WHERE id = :id AND moderator = 1");
+        $statement->bindValue(":id", $_SESSION['userid']);
+        $statement->execute();
+        $user = $statement->fetch(PDO::FETCH_ASSOC);
+        if($user) {
+            return true;
+        } else {
+            return false;
+        }
+
+      
     }
 
 
@@ -477,4 +495,57 @@ class User
     }
 
 
+    //credits verhogen met 25, 50 of 100
+    public static function addCredits($userId, $credits)
+    {
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("UPDATE users SET credits = credits + :credits WHERE id = :user");
+        $statement->bindValue(":credits", $credits);
+        $statement->bindValue(":user", $userId);
+        $statement->execute();
+    }
+    
+
+    public static function acceptedModerators(){
+        $conn = Dbm::getInstance();
+        $statement = $conn->prepare("SELECT * FROM users WHERE moderator = 1");
+        $statement->execute();
+        $users = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $users;
+    }
+
+    public static function addModerator($username, $email){
+        $conn = Dbm::getInstance();
+        $statement = $conn->prepare("UPDATE users SET moderator = 1 WHERE username = :username AND email = :email");
+        $statement->bindValue(":username", $username);
+        $statement->bindValue(":email", $email);
+        $statement->execute();
+    }
+
+    public static function removeModerator($username, $email){
+        $conn = Dbm::getInstance();
+        $statement = $conn->prepare("UPDATE users SET moderator = 0 WHERE username = :username AND email = :email");
+        $statement->bindValue(":username", $username);
+        $statement->bindValue(":email", $email);
+        $statement->execute();
+    }
+
+
+    public static function followUser($userId)
+    {
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("INSERT INTO user_follow (userId, followId) VALUES (:userId, :followerId)");
+        $statement->bindValue(":userId", $userId);
+        $statement->bindValue(":followerId", $_SESSION['userid']);
+        $statement->execute();
+    }
+
+    public static function unfollowUser($userId)
+    {
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("DELETE FROM user_follow WHERE userId = :userId AND followId = :followerId");
+        $statement->bindValue(":userId", $userId);
+        $statement->bindValue(":followerId", $_SESSION['userid']);
+        $statement->execute();
+    }
 }

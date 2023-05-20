@@ -36,6 +36,8 @@ if(!empty($_POST) && isset($_POST["unblock"])) {
     <title>prompts</title>
 </head>
 <body>
+<div class="content">
+<a href="../home.php" id="backbtn">< BACK TO OVERVIEW</a>
     <section class="reportedUsers">
         <h2>Reported Users</h2>
         <table>
@@ -76,6 +78,7 @@ if(!empty($_POST) && isset($_POST["unblock"])) {
             }  ?>
         </table>
     </section>
+</div>
 </body>
 
 <script>

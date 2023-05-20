@@ -457,7 +457,8 @@ class Prompts
     public static function search($search)
     {
         $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT * FROM prompts WHERE prompt LIKE '%$search%'");
+        $statement = $conn->prepare("SELECT * FROM prompts WHERE prompt LIKE :search");
+        $statement->bindValue(":search", '%'.$search.'%');
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $result;
@@ -466,7 +467,8 @@ class Prompts
      public static function filteredPromptsByCategory($category)
      {
          $conn = Db::getInstance();
-         $statement = $conn->prepare("SELECT prompts.title AS promptName, prompts.date, prompts.userId, prompts.accepted, prompts.id, users.id AS user, users.username, prompt_categories.promptId, prompt_categories.categoryId,categories.name, prompt_examples.example FROM prompts LEFT JOIN users ON prompts.userid = users.id  LEFT JOIN prompt_categories ON prompts.id = prompt_categories.promptId LEFT JOIN categories ON prompt_categories.categoryId = categories.id LEFT JOIN prompt_examples ON prompts.id = prompt_examples.promptId WHERE accepted = 1 AND categories.name LIKE '%$category%' ORDER BY prompts.date ASC;");
+         $statement = $conn->prepare("SELECT prompts.prompt AS promptName, prompts.date, prompts.userId, prompts.accepted, prompts.id, users.id AS user, users.username, prompt_categories.promptId, prompt_categories.categoryId,categories.name, prompt_examples.example FROM prompts LEFT JOIN users ON prompts.userid = users.id  LEFT JOIN prompt_categories ON prompts.id = prompt_categories.promptId LEFT JOIN categories ON prompt_categories.categoryId = categories.id LEFT JOIN prompt_examples ON prompts.id = prompt_examples.promptId WHERE accepted = 1 AND categories.name LIKE ':category' ORDER BY prompts.date ASC;");
+         $statement->bindValue(":category", '%'.$category.'%');
          $statement->execute();
          $result = $statement->fetchAll(PDO::FETCH_ASSOC);
          return $result;
@@ -569,44 +571,16 @@ if($paid_free == "free"){
         return $result["likes"];
     }
 
-    public static function addFavoritePrompt($userId, $promptId) {
-            $conn = Db::getInstance();
-            $statement = $conn->prepare("INSERT INTO favourits (userId, promptId) VALUES (:userId, :promptId)");
-            $statement->bindValue(":userId", $userId);
-            $statement->bindValue(":promptId", $promptId);
-            $statement->execute();
-      }
-
-    public static function removeFavoritePrompt($userId, $promptId) {
-            $conn = Db::getInstance();
-            $statement = $conn->prepare("DELETE FROM favourits WHERE userId = :userId AND promptId = :promptId");
-            $statement->bindValue(":userId", $userId);
-            $statement->bindValue(":promptId", $promptId);
-            $statement->execute();
-      }
-
-      public static function isPromptFavorited($userId, $promptId){
-        $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT * FROM favourits WHERE userId = :userId AND promptId = :promptId");
-        $statement->bindValue(":userId", $userId);
-        $statement->bindValue(":promptId", $promptId);
-        $statement->execute();
-        $result = $statement->fetch(PDO::FETCH_ASSOC);
-        if($result){
-          return true;
-        }else{
-          return false;
-        }
-      }
-
-      public static function getFavouritePrompt($id){
-        $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT prompts.id, title, favourits.userId FROM prompts JOIN favourits ON prompts.id = favourits.promptId WHERE favourits.userId = :userId");
-        $statement->bindValue(":userId", $id);
-        $statement->execute();
-        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-        return $result;
-      }
+    
+ /*   public function getFavourites(){
+    $conn = Db::getInstance();
+    $statement = $conn->prepare("SELECT * AS favourites FROM prompt_likes WHERE promptId = :promptId AND userId = :userId");
+    $statement->bindValue(":promptId", $this->id);
+    $statement->bindValue(":userId", $_SESSION["id"]);
+    $statement->execute();
+    $result = $statement->fetch(PDO::FETCH_ASSOC);
+    return $result["favourites"];
+}*/
 
       public static function delete ($id){
         $conn = Db::getInstance();
