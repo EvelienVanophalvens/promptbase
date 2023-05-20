@@ -12,13 +12,6 @@ $email = isset($_POST['email']) ? htmlspecialchars($_POST['email']) : '';
 $add = User::addModerator($username, $email);
 $remove = User::removeModerator($username, $email);
 
-if(!empty($_GET) && isset($_GET["add"])){
-    $username = isset($_GET['username']) ? htmlspecialchars($_GET['username']) : '';
-    $email = isset($_GET['email']) ? htmlspecialchars($_GET['email']) : '';
-    $add = User::addModerator($username, $email);
-    header("Location: addModerator.php");
-    exit;
-}
 
 if(!empty($_POST) && isset($_POST["remove"])){
     $username = isset($_POST['username']) ? htmlspecialchars($_POST['username']) : '';
@@ -27,6 +20,8 @@ if(!empty($_POST) && isset($_POST["remove"])){
     header("Location: addModerator.php");
     exit;
 }
+
+
 
 
 ?>
