@@ -571,16 +571,15 @@ if($paid_free == "free"){
         return $result["likes"];
     }
 
-    
- /*   public function getFavourites(){
+    //get the favourite prompt
+    public static function getFavouritePrompts(){
     $conn = Db::getInstance();
-    $statement = $conn->prepare("SELECT * AS favourites FROM prompt_likes WHERE promptId = :promptId AND userId = :userId");
-    $statement->bindValue(":promptId", $this->id);
-    $statement->bindValue(":userId", $_SESSION["id"]);
+    $statement = $conn->prepare("SELECT * FROM favourits WHERE :userId");
+    $statement->bindValue(":userId", $_SESSION['userid']);
     $statement->execute();
-    $result = $statement->fetch(PDO::FETCH_ASSOC);
-    return $result["favourites"];
-}*/
+    $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+    return $result;
+}
 
       public static function delete ($id){
         $conn = Db::getInstance();
@@ -674,16 +673,8 @@ if($paid_free == "free"){
         
       }
 
-<<<<<<< HEAD
-    // get the prompt that is sold
-    public static function getSold($promptId){
-    $conn = Db::getInstance();
-    $statement = $conn->prepare("SELECT prompts.id, prompt, date, userId, accepted, description, status, paid, price, modelId, model.name AS name, categories.name AS categorie FROM prompts JOIN model ON prompts.modelId = model.id LEFT JOIN prompt_categories ON prompts.id = prompt_categories.promptId LEFT JOIN categories ON prompt_categories.categoryId = categories.id  WHERE prompts.id = :promptId AND accepted = 1");
-    $statement->bindValue(":promptId", $promptId);
-    $statement->execute();
-    $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-}
-=======
+
+
       public static function addPromptToUser($userId, $promptId){
         $conn = Db::getInstance();
         $statement = $conn->prepare("INSERT INTO bought_prompts (userId, promptId) VALUES (:userId, :promptId)");
@@ -727,9 +718,4 @@ if($paid_free == "free"){
                       "examples" => $results2);
     }
 
-
-      
-
-
->>>>>>> 052caa73270089042ad8e91e27a61e6da2e38f3e
 }

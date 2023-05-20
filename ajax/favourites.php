@@ -5,27 +5,12 @@ require_once("../bootstrap.php");
 $favourits = Favourite::getFavourites($_POST['promptId'], ((int)$_SESSION["userid"]));
 
 
-if (isset($_POST)) {
-    if (!empty($_POST)) {
+
+    if(isset($_POST)){
+        //add to favourites
         $promptId = $_POST['promptId'];
         $userId = $_SESSION["userid"];
 
-        $f = new Favourite();
-        $f->setPromptId($promptId);
-        $f->setUserId($userId);
-        $f->removeFavourite();
-
-        $result = [
-            "status" => "success",
-            "message" => "Favourite was removed"
-        ];
-    }
-}else{
-    if (!isset($_POST)) {
-        $promptId = $_POST['promptId'];
-        $userId = $_SESSION['userid'];
-
-        // Add favourite
         $f = new Favourite();
         $f->setPromptId($promptId);
         $f->setUserId($userId);
@@ -35,7 +20,18 @@ if (isset($_POST)) {
             "status" => "success",
             "message" => "Favourite was saved"
         ];
+    }else{
+    //remove from favourites if already a favourite
+    if(Favourite::getFavourites($_POST['promptId'], ((int)$_SESSION["userid"]))) {
+        $promptId = $_POST['promptId'];
+        $userId = $_SESSION["userid"];
+
+        Favourite::removeFavourite($promptId, $userId);
+
+        $result = [
+            "status" => "success",
+            "message" => "Favourite was removed"
+        ];
     }
 }
-
 echo json_encode($result);

@@ -66,7 +66,7 @@ if(!empty($_POST["reason"]) && isset($_POST["report"])) {
         <div id="dottedMenu">
             <div class="hidden" id="promptMenu">
                 <p id="reporting">report prompt</p>
-            <p data-id="<?php echo $prompt["prompts"]->getId(); ?>" id="favourites" onclick="addEventListener(e)">Add to favourites</p>
+            <p data-id="<?php echo $prompt["prompts"]->getId(); ?>" id="favourites">Add to favourites</p>
             </div>
             <div id="dots">
                 <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -276,7 +276,7 @@ favourites.addEventListener('click', function(e){
     //get the id of the post
     let id = this.getAttribute('data-id');
     console.log(id);
-    //fetch request (post) to '/ajax/like.php', use formdata
+    //fetch request (post) to '/ajax/favourites.php', use formdata
     let formData = new FormData();
     formData.append('promptId', id);
     fetch('./ajax/favourites.php', {
@@ -287,11 +287,15 @@ favourites.addEventListener('click', function(e){
         return response.json();
     })
     .then(function(data){
-        //update the p tag
-        favourites.innerHTML = data.favourites;
+        //update the text
+        if(data.status == 'success'){
+            favourites.innerHTML = 'add to favourites';
+        } else {
+        favourites.innerHTML = 'remove from favourites';
+        }
     })
-    .then(favourites = true)
-
+    .then(liked = true)
+    
 });
 
     </script>

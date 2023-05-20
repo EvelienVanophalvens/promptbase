@@ -30,17 +30,18 @@ class Favourite{
 
     public function save(){
         $conn = Dbm::getInstance();
-        $statement = $conn->prepare("insert into favourits (promptId, userId) values (:promptid, :userid)");
-        $statement->bindValue(":promptid", $this->getPromptId());
+        $statement = $conn->prepare("insert into favourits (userId, promptId) values (:userid, :promptid)");
         $statement->bindValue(":userid", $this->getUserId());
+        $statement->bindValue(":promptid", $this->getPromptId());
         return $statement->execute();
     }
 
-    public function removeFavourite(){
+    public static function removeFavourite($promptId, $userId){
+       
         $conn = Dbm::getInstance();
         $statement = $conn->prepare("DELETE FROM favourits WHERE promptId = :promptid AND userId = :userid");
-        $statement->bindValue(":promptid", $this->getPromptId());
-        $statement->bindValue(":userid", $this->getUserId());
+        $statement->bindValue(":promptid", $promptId);
+        $statement->bindValue(":userid", $userId);
         return $statement->execute();
     }
 
