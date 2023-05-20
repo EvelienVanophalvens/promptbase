@@ -8,15 +8,9 @@ if($likes){
     if (!empty($_POST)) {
         $promptId = $_POST['promptId'];
         $userId = $_SESSION["userid"];
-    
-        $l = new Like();
-        $l->setPromptId($promptId);
-        $l->setUserId($userId);
-        $l->removeLike();
-    
-        $p = new Prompts();
-        $p->setId($promptId);
-        $likes = $p->getLikes();
+
+        Like::removeLike($promptId, $userId);
+        $likes = Prompts::getLikes($promptId);
     
         $result = [
             "status" => "success",
@@ -31,14 +25,15 @@ if (!empty($_POST)) {
     $promptId = $_POST['promptId'];
     $userId = $_SESSION["userid"];
 
+
+
     $l = new Like();
     $l->setPromptId($promptId);
     $l->setUserId($userId);
     $l->save();
 
-    $p = new Prompts();
-    $p->setId($promptId);
-    $likes = $p->getLikes();
+
+    $likes = Prompts::getLikes($promptId);
 
     $result = [
         "status" => "success",

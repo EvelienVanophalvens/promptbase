@@ -65,6 +65,10 @@ $personalPrompts =  Prompts::getPersonalPrompts($_SESSION['userid']);
 /*//get the favourite prompt from the database
 $favouritePrompt = Prompts::getFavouritePrompt($_SESSION['userid']);*/
 
+$boughtPrompts = Prompts::getBoughtPrompts($_SESSION['userid']);
+
+var_dump($boughtPrompts);
+
 
 ?>
 
@@ -166,6 +170,44 @@ $favouritePrompt = Prompts::getFavouritePrompt($_SESSION['userid']);*/
                                     <div class="categoryLabel">
                                         <?php if(isset($prompt["name"])) {
                                             echo htmlspecialchars($prompt["name"]);
+                                        } else {
+                                            echo "no category";
+                                        }?>
+                                    </div>
+                                </div>    
+                            </a>
+                            </div>
+                    <?php endforeach;
+                }?>
+            </div>  
+
+
+            <h3>My bought promps</h3>
+            <hr>  
+            <div class="chartContainer">
+                <?php if(!empty($boughtPrompts)) {
+                    foreach($boughtPrompts as $prompt):?>
+                        <div class="chart">
+                            <a href="promptBought.php?prompt=<?php echo $prompt["id"];?>">
+                            
+                                <div class="coverImage">
+                                    <?php if(!empty($prompt["example"])) {?>
+                                        <img src="<?php echo "uploads/".$prompt["example"]?>" alt="coverImage">
+                                    <?php ;
+                                    } elseif (!empty($prompt["image"])) {?>
+                                        <img src="<?php echo $prompt["image"]?>" alt="example">
+                                    <?php ;
+                                    }else{?>
+                                        <img src="uploads/default_image.png" alt="coverImage">
+                                    <?php ;}?>
+                                </div>
+                                <div class="promptInfo">
+                                    <?php if(isset($prompt["prompt"])) {
+                                        echo htmlspecialchars($prompt["prompt"]);
+                                    }?>  
+                                    <div class="categoryLabel">
+                                        <?php if(isset($prompt["categorie"])) {
+                                            echo htmlspecialchars($prompt["categorie"]);
                                         } else {
                                             echo "no category";
                                         }?>

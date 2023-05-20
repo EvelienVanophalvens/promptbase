@@ -167,6 +167,14 @@ input[type=submit].long{
     width: 25%;
 }
 
+input[type=submit].blue{
+    background-color: #008CBA;
+    width: 25%;
+}
+
+input[type=submit].blue:hover{
+    background-color: #00B2ED;
+}
 
 
 nav{

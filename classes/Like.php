@@ -54,12 +54,12 @@
             return $statement->execute();
         }
         
-        public function removeLike(){
+        public static function removeLike($promptId, $userId){
     
                 $conn = Dbm::getInstance();
                 $statement = $conn->prepare("DELETE FROM prompt_likes WHERE promptId = :promptid AND userId = :userid");
-                $statement->bindValue(":promptid", $this->getPromptId());
-                $statement->bindValue(":userid", $this->getUserId());
+                $statement->bindValue(":promptid", $promptId );
+                $statement->bindValue(":userid", $userId);
                 return $statement->execute();
             }
 

@@ -12,6 +12,7 @@ class Prompts
     private int $paid;
     private int $model;
     private int $price;
+    private int $title;
 
     
     /**
@@ -258,12 +259,32 @@ class Prompts
         }
     }
 
+        /**
+     * Get the value of title
+     */ 
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Set the value of title
+     *
+     * @return  self
+     */ 
+    public function setTitle($title)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
      //FUNCTIES UPLOADEN NIEUWE PROMPTS
      public function save()
      {
          $conn = Db::getInstance();
-         $statement = $conn->prepare("INSERT INTO prompts (prompt, userId, date, accepted, description, status, paid, price, modelId) VALUES (:prompt, :userId, :date, :accepted, :discription, :status, :paid, :price, :model )");
-         $statement->bindValue(":prompt", $this->getPrompt());
+         $statement = $conn->prepare("INSERT INTO prompts (title, userId, date, accepted, description, status, paid, price, modelId) VALUES (:title, :userId, :date, :accepted, :discription, :status, :paid, :price, :model )");
+         $statement->bindValue(":title", $this->getTitle());
          $statement->bindValue(":userId", $this->getAuthor());
          $statement->bindValue(":date", $this->getDate());
          $statement->bindValue(":accepted", 0);
@@ -313,7 +334,7 @@ class Prompts
     public static function getPersonalPrompts($id)
     {
         $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT prompts.prompt, prompts.date, prompts.userId, prompts.accepted, prompts.id, users.id AS user, users.username, prompt_categories.promptId, prompt_categories.categoryId,categories.name, prompt_examples.example FROM prompts LEFT JOIN users ON prompts.userid = users.id  LEFT JOIN prompt_categories ON prompts.id = prompt_categories.promptId LEFT JOIN categories ON prompt_categories.categoryId = categories.id LEFT JOIN prompt_examples ON prompts.id = prompt_examples.promptId WHERE userId = :id AND accepted = 1 ORDER BY prompts.date DESC;");
+        $statement = $conn->prepare("SELECT prompts.title, prompts.date, prompts.userId, prompts.accepted, prompts.id, users.id AS user, users.username, prompt_categories.promptId, prompt_categories.categoryId,categories.name, prompt_examples.example FROM prompts LEFT JOIN users ON prompts.userid = users.id  LEFT JOIN prompt_categories ON prompts.id = prompt_categories.promptId LEFT JOIN categories ON prompt_categories.categoryId = categories.id LEFT JOIN prompt_examples ON prompts.id = prompt_examples.promptId WHERE userId = :id AND accepted = 1 ORDER BY prompts.date DESC;");
         $statement->bindValue(":id", $id);
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -323,7 +344,7 @@ class Prompts
     public static function getUserPrompts($id)
     {
         $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT prompts.prompt AS promptName, prompts.date, prompts.userId, prompts.accepted, prompts.id, users.id AS user, users.username, prompt_categories.promptId, prompt_categories.categoryId,categories.name FROM prompts LEFT JOIN users ON prompts.userid = users.id  LEFT JOIN prompt_categories ON prompts.id = prompt_categories.promptId LEFT JOIN categories ON prompt_categories.categoryId = categories.id WHERE accepted = 1 AND users.id = :id;");
+        $statement = $conn->prepare("SELECT prompts.title AS promptName, prompts.date, prompts.userId, prompts.accepted, prompts.id, users.id AS user, users.username, prompt_categories.promptId, prompt_categories.categoryId,categories.name FROM prompts LEFT JOIN users ON prompts.userid = users.id  LEFT JOIN prompt_categories ON prompts.id = prompt_categories.promptId LEFT JOIN categories ON prompt_categories.categoryId = categories.id WHERE accepted = 1 AND users.id = :id;");
         $statement->bindValue(":id", $id);
         $statement->execute();
         $results = $statement->fetchALL(PDO::FETCH_ASSOC);
@@ -333,7 +354,7 @@ class Prompts
     public static function notAccepted()
     {
         $conn = Dbm::getInstance();
-        $statement = $conn->prepare("SELECT prompts.prompt, prompts.date, prompts.userId, prompts.accepted, prompts.id, users.id AS user, users.username FROM prompts LEFT JOIN users ON prompts.userid = users.id  WHERE accepted = 0");
+        $statement = $conn->prepare("SELECT prompts.title, prompts.date, prompts.userId, prompts.accepted, prompts.id, users.id AS user, users.username FROM prompts LEFT JOIN users ON prompts.userid = users.id  WHERE accepted = 0");
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $result;
@@ -342,7 +363,7 @@ class Prompts
     public static function accepted()
     {
         $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT prompts.prompt, prompts.date, prompts.userId, prompts.accepted, prompts.id, users.id AS user, users.username, prompt_categories.promptId, prompt_categories.categoryId,categories.name FROM prompts LEFT JOIN users ON prompts.userid = users.id  LEFT JOIN prompt_categories ON prompts.id = prompt_categories.promptId LEFT JOIN categories ON prompt_categories.categoryId = categories.id WHERE accepted = 1 ORDER BY prompts.date DESC;");
+        $statement = $conn->prepare("SELECT prompts.title, prompts.date, prompts.userId, prompts.accepted, prompts.id, users.id AS user, users.username, prompt_categories.promptId, prompt_categories.categoryId,categories.name FROM prompts LEFT JOIN users ON prompts.userid = users.id  LEFT JOIN prompt_categories ON prompts.id = prompt_categories.promptId LEFT JOIN categories ON prompt_categories.categoryId = categories.id WHERE accepted = 1 ORDER BY prompts.date DESC;");
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $result;
@@ -353,7 +374,7 @@ class Prompts
     public static function detailPromptM($id)
     {
         $conn = Dbm::getInstance();
-        $statement = $conn->prepare("SELECT prompts.prompt, prompts.date, prompts.userId, prompts.accepted, prompts.id, users.id AS user, users.username FROM prompts LEFT JOIN users ON prompts.userid = users.id LEFT JOIN prompt_examples ON prompts.id = prompt_examples.promptId  WHERE prompts.id = :id AND accepted = 0 ");
+        $statement = $conn->prepare("SELECT prompts.title, prompts.date, prompts.userId, prompts.accepted, prompts.id, users.id AS user, users.username FROM prompts LEFT JOIN users ON prompts.userid = users.id LEFT JOIN prompt_examples ON prompts.id = prompt_examples.promptId  WHERE prompts.id = :id AND accepted = 0 ");
         $statement->bindValue(":id", $id);
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
@@ -370,7 +391,7 @@ class Prompts
     public static function detailPrompt($id)
     {
         $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT prompts.prompt AS promptName, prompts.date, prompts.userId, prompts.accepted, prompts.id, prompts.description, users.id AS user, users.username, prompt_categories.promptId, prompt_categories.categoryId,categories.name FROM prompts LEFT JOIN users ON prompts.userid = users.id  LEFT JOIN prompt_categories ON prompts.id = prompt_categories.promptId LEFT JOIN categories ON prompt_categories.categoryId = categories.id WHERE accepted = 1 AND prompts.id = :id LIMIT 1;");
+        $statement = $conn->prepare("SELECT prompts.title AS promptName, prompts.date, prompts.userId, prompts.accepted, prompts.id, prompts.description, prompts.price, users.id AS user, users.username, prompt_categories.promptId, prompt_categories.categoryId,categories.name, model.name AS modelName FROM prompts LEFT JOIN users ON prompts.userid = users.id LEFT JOIN model on prompts.modelId = model.id  LEFT JOIN prompt_categories ON prompts.id = prompt_categories.promptId LEFT JOIN categories ON prompt_categories.categoryId = categories.id WHERE accepted = 1 AND prompts.id = :id LIMIT 1;");
         $statement->bindValue(":id", $id);
         $statement->execute();
         $results =$statement->fetchAll(PDO::FETCH_CLASS,  __CLASS__);
@@ -385,7 +406,6 @@ class Prompts
             return array("prompts" => $results[0],
                       "examples" => $results2);
         } else {
-            header("Location: profile.php");
         }
 
 
@@ -460,7 +480,7 @@ class Prompts
 
 if($paid_free == "free"){
     $conn = Db::getInstance();
-    $statement = $conn->prepare("SELECT prompts.id, prompt, date, userId, accepted, description, status, paid, price, modelId, name FROM prompts JOIN model ON prompts.modelId = model.id WHERE paid = :paid_free AND name = :model_choice AND accepted = 1");
+    $statement = $conn->prepare("SELECT prompts.id, title, date, userId, accepted, description, status, paid, price, modelId, name FROM prompts JOIN model ON prompts.modelId = model.id WHERE paid = :paid_free AND name = :model_choice AND accepted = 1");
     $statement->bindValue(":paid_free", 1);
     $statement->bindValue(":model_choice", $model_choice);
     $statement->execute();
@@ -468,7 +488,7 @@ if($paid_free == "free"){
     return $results;
 }else{
     $conn = Db::getInstance();
-    $statement = $conn->prepare("SELECT prompts.id, prompt, date, userId, accepted, description, status, paid, price, modelId, name FROM prompts JOIN model ON prompts.modelId = model.id WHERE paid = :paid_free AND name = :model_choice AND accepted = 1");
+    $statement = $conn->prepare("SELECT prompts.id, title, date, userId, accepted, description, status, paid, price, modelId, name FROM prompts JOIN model ON prompts.modelId = model.id WHERE paid = :paid_free AND name = :model_choice AND accepted = 1");
     $statement->bindValue(":paid_free", 0);
     $statement->bindValue(":model_choice", $model_choice);
     $statement->execute();
@@ -480,7 +500,7 @@ if($paid_free == "free"){
     public static function filterModel($model_choice)
     {
         $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT prompts.id, prompt, date, userId, accepted, description, status, paid, price, modelId, name FROM prompts JOIN model ON prompts.modelId = model.id WHERE name = :model_choice AND accepted = 1");
+        $statement = $conn->prepare("SELECT prompts.id, title, date, userId, accepted, description, status, paid, price, modelId, name FROM prompts JOIN model ON prompts.modelId = model.id WHERE name = :model_choice AND accepted = 1");
         $statement->bindValue(":model_choice", $model_choice);
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -491,7 +511,7 @@ if($paid_free == "free"){
     {
     if($paid_free == "free") {
         $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT prompts.id, prompt, date, userId, accepted, description, status, paid, price, modelId, name FROM prompts JOIN model ON prompts.modelId = model.id WHERE paid = :paid_free AND accepted = 1");
+        $statement = $conn->prepare("SELECT prompts.id, title, date, userId, accepted, description, status, paid, price, modelId, name FROM prompts JOIN model ON prompts.modelId = model.id WHERE paid = :paid_free AND accepted = 1");
         $statement->bindValue(":paid_free", 1);
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -499,7 +519,7 @@ if($paid_free == "free"){
 
     } else {
         $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT prompts.id, prompt, date, userId, accepted, description, status, paid, price, modelId, name FROM prompts JOIN model ON prompts.modelId = model.id WHERE paid = :paid_free AND accepted = 1");
+        $statement = $conn->prepare("SELECT prompts.id, title, date, userId, accepted, description, status, paid, price, modelId, name FROM prompts JOIN model ON prompts.modelId = model.id WHERE paid = :paid_free AND accepted = 1");
         $statement->bindValue(":paid_free", 0);
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -533,10 +553,10 @@ if($paid_free == "free"){
     }
 
     //geef alle likes
-    public function getLikes(){
+    public static function getLikes($id){
         $conn = Dbm::getInstance();
         $statement = $conn->prepare("SELECT count(*) AS likes FROM prompt_likes WHERE promptId = :promptId");
-        $statement->bindValue(":promptId", $this->id);
+        $statement->bindValue(":promptId", $id );
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
         return $result["likes"];
@@ -571,7 +591,7 @@ if($paid_free == "free"){
 
       public static function getRejectedPrompt($id, $userId){
         $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT prompts.id, prompt, date, userId, accepted, description, status, paid, price, modelId, model.name AS name, categories.name AS categorie FROM prompts JOIN model ON prompts.modelId = model.id LEFT JOIN prompt_categories ON prompts.id = prompt_categories.promptId LEFT JOIN categories ON prompt_categories.categoryId = categories.id  WHERE prompts.id = :promptId AND prompts.userId = :userId AND accepted = 2");
+        $statement = $conn->prepare("SELECT prompts.id, title, date, userId, accepted, description, status, paid, price, modelId, model.name AS name, categories.name AS categorie FROM prompts JOIN model ON prompts.modelId = model.id LEFT JOIN prompt_categories ON prompts.id = prompt_categories.promptId LEFT JOIN categories ON prompt_categories.categoryId = categories.id  WHERE prompts.id = :promptId AND prompts.userId = :userId AND accepted = 2");
         $statement->bindValue(":promptId", $id);
         $statement->bindValue(":userId", $userId);
         $statement->execute();
@@ -600,8 +620,8 @@ if($paid_free == "free"){
 
       public function updatePrompt($promptId){
         $conn = Db::getInstance();
-        $statement = $conn->prepare("UPDATE prompts SET prompt = :prompt, description = :description, price = :price, modelId = :modelId, accepted = 0 WHERE id = :id");
-        $statement->bindValue(":prompt", $this->prompt);
+        $statement = $conn->prepare("UPDATE prompts SET title = :title, description = :description, price = :price, modelId = :modelId, accepted = 0 WHERE id = :id");
+        $statement->bindValue(":title", $this->title);
         $statement->bindValue(":description", $this->description);
         $statement->bindValue(":price", $this->price);
         $statement->bindValue(":modelId", $this->model);
@@ -654,6 +674,7 @@ if($paid_free == "free"){
         
       }
 
+<<<<<<< HEAD
     // get the prompt that is sold
     public static function getSold($promptId){
     $conn = Db::getInstance();
@@ -662,4 +683,53 @@ if($paid_free == "free"){
     $statement->execute();
     $result = $statement->fetchAll(PDO::FETCH_ASSOC);
 }
+=======
+      public static function addPromptToUser($userId, $promptId){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("INSERT INTO bought_prompts (userId, promptId) VALUES (:userId, :promptId)");
+        $statement->bindValue(":userId", $userId);
+        $statement->bindValue(":promptId", $promptId);
+        $statement->execute();
+      }
+
+      public static function getBoughtPrompts($userId){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT prompts.id, title, date, description, status, model.name AS name, categories.name AS categorie, prompt_examples.example  FROM prompts JOIN model ON prompts.modelId = model.id LEFT JOIN prompt_categories ON prompts.id = prompt_categories.promptId LEFT JOIN categories ON prompt_categories.categoryId = categories.id LEFT JOIN prompt_examples ON prompts.id = prompt_examples.promptId  LEFT JOIN bought_prompts ON prompts.id = bought_prompts.promptId WHERE bought_prompts.userId = :userId LIMIT 1");
+        $statement->bindValue(":userId", $userId);
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+
+      }
+
+      public static function boughtPromptDetail($id){
+
+         $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT prompts.title AS promptName, prompt, prompts.date, prompts.userId, prompts.accepted, prompts.id, prompts.description, prompts.price, users.id AS user, users.username, prompt_categories.promptId, prompt_categories.categoryId,categories.name, model.name AS modelName FROM prompts LEFT JOIN users ON prompts.userid = users.id LEFT JOIN model on prompts.modelId = model.id  LEFT JOIN prompt_categories ON prompts.id = prompt_categories.promptId LEFT JOIN categories ON prompt_categories.categoryId = categories.id WHERE accepted = 1 AND prompts.id = :id LIMIT 1;");
+        $statement->bindValue(":id", $id);
+        $statement->execute();
+        $results =$statement->fetchAll(PDO::FETCH_CLASS,  __CLASS__);
+        //statement voor meerdere voorbeelden te kunnen laden
+        $statement2 = $conn->prepare("SELECT  prompt_examples.example FROM prompts LEFT JOIN prompt_examples ON prompts.id = prompt_examples.promptId WHERE prompts.id= :id; AND prompts.accepted = 1");
+        $statement2->bindValue(":id", $id);
+        $statement2->execute();
+        $results2 = $statement2->fetchALL(PDO::FETCH_ASSOC);
+        //beide resultaten worden doorgestuurd
+
+        if ($results) {
+            return array("prompts" => $results[0],
+                      "examples" => $results2);
+        } else {
+        }
+
+
+        return array("prompts" => $results,
+                      "examples" => $results2);
+    }
+
+
+      
+
+
+>>>>>>> 052caa73270089042ad8e91e27a61e6da2e38f3e
 }

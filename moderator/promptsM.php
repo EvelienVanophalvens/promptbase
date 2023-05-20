@@ -29,7 +29,7 @@ $notAccepted =  Prompts::notAccepted();
                 foreach($notAccepted as $prompt):?>
             <tr>
                 <td><?php echo htmlspecialchars($prompt["username"])?></td>
-                <td><?php echo htmlspecialchars($prompt["prompt"])?></td>
+                <td><?php echo htmlspecialchars($prompt["title"])?></td>
                 <td><a href="promptsDetailM.php?prompt=<?php echo $prompt["id"]?>">See Details</a></td>
             </tr>
             <?php endforeach;
