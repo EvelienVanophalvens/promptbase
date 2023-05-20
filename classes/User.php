@@ -460,5 +460,21 @@ class User
         $statement->execute();
     }
 
+    public static function buy($user, $credit, $userCredits){
+        $paid = $userCredits - $credit;
+
+        if($paid < 0){
+            return false;
+        }else{
+            $conn = Db::getInstance();
+            $statement = $conn->prepare("UPDATE users SET credits = :paid WHERE id = :user");
+            $statement->bindValue(":paid", $paid);
+            $statement->bindValue(":user", $user);
+            $statement->execute();
+            return true;
+        }
+
+    }
+
 
 }
