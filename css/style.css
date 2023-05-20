@@ -167,6 +167,14 @@ input[type=submit].long{
     width: 25%;
 }
 
+input[type=submit].blue{
+    background-color: #008CBA;
+    width: 25%;
+}
+
+input[type=submit].blue:hover{
+    background-color: #00B2ED;
+}
 
 
 nav{
@@ -836,4 +844,64 @@ nav ul a{
     flex-direction: row;
     gap: 10px;
     margin-bottom: 20px;
+}
+
+.images{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    gap: 10px;
+}
+
+.images img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.promptBlock{
+    background: #F5F5F5;
+    border-radius: 10px;
+    padding: 20px;
+    width: 50%;
+    justify-self: center;
+    margin: 20px;
+}
+
+ .row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.overview{
+    width: 90%;
+    background-color: #F5F5F5;
+    border-radius: 10px;
+    padding: 20px;
+    margin:20px;
+    justify-self: center;
+}
+
+.blue{
+    background: rgba(0, 140, 186, 0.32);
+    width: 100%;
+    padding-left: 20px;
+    padding-right:20px ;
+    margin-left: -20px;
+}
+
+.right{
+    float: right;
+}
+
+.spacing{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 25%;
+    height: 25%;
 }

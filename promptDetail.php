@@ -147,7 +147,7 @@ if ($isFavorite) {
                     Likes 
                 </p>
             </div>
-            <button class="submit small">Get prompt</button>
+            <button class="submit small"><a href="buyPrompt.php?prompt=<?php echo $prompt["prompts"]->getId()?>">Get prompt</a></button>
         </section>    
         </div>        
 
