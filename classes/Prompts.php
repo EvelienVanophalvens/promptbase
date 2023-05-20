@@ -654,5 +654,12 @@ if($paid_free == "free"){
         
       }
 
-      
+    // get the prompt that is sold
+    public static function getSold($promptId){
+    $conn = Db::getInstance();
+    $statement = $conn->prepare("SELECT prompts.id, prompt, date, userId, accepted, description, status, paid, price, modelId, model.name AS name, categories.name AS categorie FROM prompts JOIN model ON prompts.modelId = model.id LEFT JOIN prompt_categories ON prompts.id = prompt_categories.promptId LEFT JOIN categories ON prompt_categories.categoryId = categories.id  WHERE prompts.id = :promptId AND accepted = 1");
+    $statement->bindValue(":promptId", $promptId);
+    $statement->execute();
+    $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+}
 }
