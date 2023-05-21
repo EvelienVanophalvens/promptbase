@@ -21,9 +21,6 @@ if(!empty($_POST) && isset($_POST["remove"])){
     exit;
 }
 
-
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -50,13 +47,15 @@ if(!empty($_POST) && isset($_POST["remove"])){
             <?php if (!empty($accepted)) {
     foreach ($accepted as $moderator) : ?>
         <tr>
-            <form action="" method="POST">
-                <td><?php echo htmlspecialchars($moderator["username"]) ?></td>
-                <td><?php echo htmlspecialchars($moderator["email"]) ?></td>
-                <input type="hidden" name="username" value="<?php echo htmlspecialchars($moderator["username"]) ?>">
-                <input type="hidden" name="email" value="<?php echo htmlspecialchars($moderator["email"]) ?>">
-                <td><input type="submit" name="remove" id="remove" value="Remove" onclick="addEventListener(event)"></td>
-            </form>
+            <td><?php echo htmlspecialchars($moderator["username"]) ?></td>
+            <td><?php echo htmlspecialchars($moderator["email"]) ?></td>
+            <td>
+                <form action="" method="POST">
+                    <input type="hidden" name="username" value="<?php echo htmlspecialchars($moderator["username"]) ?>">
+                    <input type="hidden" name="email" value="<?php echo htmlspecialchars($moderator["email"]) ?>">
+                    <input type="submit" name="remove" id="remove" value="Remove">
+                </form>
+            </td>
         </tr>
     <?php endforeach;
 } ?>
@@ -64,20 +63,18 @@ if(!empty($_POST) && isset($_POST["remove"])){
         </table>
     
     <hr>
-    <form action="" method="GET">
+    <form action="" method="POST">
         <label for="username">Username:</label>
         <input type="text" name="username" id="usernameM" placeholder="username">
         <label for="email">Email:</label>
         <input type="email" name="email" id="emailM" placeholder="email">
-       <input type="submit" name="add" id="add" value="Add" onclick="addEventListener(event)">
+       <input type="submit" name="add" id="add" value="Add">
     </form>
 
         
 </div>
 
 <script>
-
-
 const addBtn = document.querySelector('#add');
 addBtn.addEventListener('click', (event) => {
     event.preventDefault();
@@ -96,9 +93,10 @@ addBtn.addEventListener('click', (event) => {
         .then(response => response.json())
         .then(data => {
             console.log(data);
+            // Reload the page to display the updated list
+            location.reload();
         });
 });
-
 
 const removeBtn = document.querySelector('#remove');
 removeBtn.addEventListener('click', (event) => {
@@ -120,7 +118,7 @@ removeBtn.addEventListener('click', (event) => {
             console.log(data);
         });
 });
-
 </script>
+
 </body>
 </html>
