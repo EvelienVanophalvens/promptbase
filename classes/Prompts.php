@@ -571,15 +571,24 @@ if($paid_free == "free"){
         return $result["likes"];
     }
 
-    //get the favourite prompt
-    public static function getFavouritePrompts(){
-    $conn = Db::getInstance();
-    $statement = $conn->prepare("SELECT * FROM favourits WHERE :userId");
-    $statement->bindValue(":userId", $_SESSION['userid']);
-    $statement->execute();
-    $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-    return $result;
-}
+    public static function getFavouritePrompts($userId) {
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT * FROM favourits WHERE userId = :userId");
+        $statement->bindValue(":userId", $userId);
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    } 
+
+    public static function isPromptFavorite($promptId, $userId){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT * FROM favourits WHERE userId = :userId AND promptId = :promptId");
+        $statement->bindValue(":userId", $userId);
+        $statement->bindValue(":promptId", $promptId);
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
 
       public static function delete ($id){
         $conn = Db::getInstance();

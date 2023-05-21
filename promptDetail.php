@@ -270,34 +270,35 @@ document.querySelector("#cancel").addEventListener('click', function(e){
 
 // add event to favourites
 
-let favourites = document.querySelector('#promptMenu #favourites');
-favourites.addEventListener('click', function(e){
-    e.preventDefault();
-    //get the id of the post
-    let id = this.getAttribute('data-id');
-    console.log(id);
-    //fetch request (post) to '/ajax/favourites.php', use formdata
-    let formData = new FormData();
-    formData.append('promptId', id);
+const favoritesButton = document.getElementById('favourites');
+
+favoritesButton.addEventListener('click', () => {
+    const promptId = favoritesButton.getAttribute('data-id');
+    const formData = new FormData();
+    formData.append('promptId', promptId);
+
     fetch('./ajax/favourites.php', {
         method: 'POST',
         body: formData
     })
-    .then(function(response){
-        return response.json();
-    })
-    .then(function(data){
-        //update the text
-        if(data.status == 'success'){
-            favourites.innerHTML = 'add to favourites';
-        } else {
-        favourites.innerHTML = 'remove from favourites';
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            if (favoritesButton.classList.contains('added')) {
+                favoritesButton.classList.remove('added');
+                console.log('Prompt removed from favorites');
+                favourites.innerHTML = 'add to favourites';
+            } else {
+                favoritesButton.classList.add('added');
+                console.log('Prompt added to favorites');
+                favourites.innerHTML = 'remove from favourites';
+            }
         }
     })
-    .then(liked = true)
-    
+    .catch(error => {
+        console.error('An error occurred:', error);
+    });
 });
-
     </script>
 
 
