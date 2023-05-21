@@ -549,14 +549,19 @@ class User
         $statement->execute();
     }
 
-    public static function isFollowingUser($userId)
+    public static function isFollowingUser($loggedInUserId, $userId)
     {
         $conn = Dbm::getInstance();
-        $statement = $conn->prepare("SELECT * FROM user_follow WHERE userId = :userId");
+        $statement = $conn->prepare("SELECT * FROM user_follow WHERE userId = :userId AND followId = :followerId");
         $statement->bindValue(":userId", $userId);
+        $statement->bindValue(":followerId", $loggedInUserId);
         $statement->execute();
-        $followers = $statement->fetchAll(PDO::FETCH_ASSOC);
-        return $followers;
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        if($result) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
   public static function updateCredits($credits){

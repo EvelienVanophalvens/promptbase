@@ -38,6 +38,26 @@ if(!empty($_POST["reason"]) && isset($_POST["report"])) {
 }
 
 
+// ...
+
+$isFollowing = false; // Initialize the variable
+
+
+
+
+// Check if the authenticated user is following the displayed user
+if (authenticated()) {
+    $loggedInUserId = $_SESSION['userid'];
+    // Assuming you have a function to get the ID of the logged-in user
+    $isFollowing = User::isFollowingUser($loggedInUserId, $userId);
+}
+
+
+
+
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -73,7 +93,7 @@ if(!empty($_POST["reason"]) && isset($_POST["report"])) {
             </div>
         </div>-->
                 <p id="bio-text"><?php echo htmlspecialchars($user["bio"]); ?></p>
-                <button id="follow-btn">Follow</button>
+                <button id="follow-btn"><?php echo $isFollowing ? 'Unfollow' : 'Follow'; ?></button>
 
 
         </div>  
@@ -128,36 +148,43 @@ if(!empty($_POST["reason"]) && isset($_POST["report"])) {
 
 <script>
   
-//add a event to .follow and ajax
-   let follow = document.querySelector('#follow-btn'); 
-   //get the id of the user
-    let userId = <?php echo $user["id"]?>;
-   //fetch request (post) to '/ajax/follow.php', use formdata
-   follow.addEventListener('click', function(e){
-    e.preventDefault();
-    let formData = new FormData();
-    formData.append('userId', userId);
-    fetch('ajax/follow.php', {
-        method: 'POST',
-        body: formData
-    })
+  let follow = document.querySelector('#follow-btn');
+let userId = <?php echo $user["id"]; ?>;
+
+// Check if the follow status is stored in local storage
+let followStatus = localStorage.getItem('followStatus-' + userId);
+if (followStatus === 'unfollow') {
+  follow.innerHTML = 'Unfollow';
+  follow.style.backgroundColor = '#1F2937';
+}
+
+follow.addEventListener('click', function(e) {
+  e.preventDefault();
+  let formData = new FormData();
+  formData.append('userId', userId);
+  fetch('ajax/follow.php', {
+    method: 'POST',
+    body: formData
+  })
     .then(response => response.json())
     .then(result => {
-        console.log(result);
-        if (result.status === 'success') {
-            if (follow.innerHTML === 'Follow') {
-                follow.innerHTML = 'Unfollow';
-                // background-color button
-                follow.style.backgroundColor = '#1F2937';
-            } else {
-               //remove follow
-                follow.innerHTML = 'Follow';
-               follow.style.backgroundColor = '#0099CB';
-            }
+      console.log(result);
+      if (result.status === 'success') {
+        if (follow.innerHTML === 'Follow') {
+          follow.innerHTML = 'Unfollow';
+          follow.style.backgroundColor = '#1F2937';
+          // Store the follow status in local storage
+          localStorage.setItem('followStatus-' + userId, 'unfollow');
+        } else {
+          follow.innerHTML = 'Follow';
+          follow.style.backgroundColor = '#0099CB';
+          // Remove the follow status from local storage
+          localStorage.removeItem('followStatus-' + userId);
         }
+      }
     });
 });
-   
+
 
     document.querySelector('#dots').addEventListener('click', function(e){
         e.preventDefault();
