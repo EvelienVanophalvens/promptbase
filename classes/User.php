@@ -531,7 +531,7 @@ class User
     }
 
 
-    public static function followUser($userId)
+    public static function getFollow($userId, $loggedInUserId)
     {
         $conn = Dbm::getInstance();
         $statement = $conn->prepare("INSERT INTO user_follow (userId, followId) VALUES (:userId, :followerId)");
@@ -540,7 +540,7 @@ class User
         $statement->execute();
     }
 
-    public static function unfollowUser($userId)
+    public static function removeFollow($userId, $loggedInUserId)
     {
         $conn = Dbm::getInstance();
         $statement = $conn->prepare("DELETE FROM user_follow WHERE userId = :userId AND followId = :followerId");
@@ -587,6 +587,13 @@ class User
     $statement->bindValue(":id", $_SESSION['userid']);
     $statement->execute();
   }
+
+  public static function updateCreditsOwner($userId) {
+    $conn = Db::getInstance();
+    $statement = $conn->prepare("UPDATE users SET credits = credits + 5 WHERE id = :id");
+    $statement->bindParam(':id', $userId);
+    $statement->execute();
+}
 
 
 }

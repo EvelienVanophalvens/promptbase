@@ -727,4 +727,13 @@ if($paid_free == "free"){
                       "examples" => $results2);
     }
 
+    //select the userid from the prompt
+    public static function getUserId(){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT userId FROM prompts WHERE id = :id");
+        $statement->bindValue(":id", $_GET["id"]);
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        return $result["userId"];
+    }
 }

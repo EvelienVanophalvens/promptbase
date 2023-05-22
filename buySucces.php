@@ -6,6 +6,14 @@ authenticated();
 $prompts = Prompts::detailPrompt($_POST["prompt"]);
 $user = User::getUser($_SESSION['userid']);
 
+//get user id from the owner of the prompt
+$userId = $prompts['prompts']->user;
+//update the credits of the owner of the prompt
+
+User::updateCreditsOwner($userId);
+
+
+
 
 if(!empty($_POST)){
     $buy = User::buy($_SESSION['userid'], $prompts["prompts"]->getPrice(), $user["credits"]);
@@ -13,6 +21,7 @@ if(!empty($_POST)){
 
 if($buy == true){
     Prompts::addPromptToUser($_SESSION['userid'], $_POST["prompt"]);
+    
 }
 
 ?>
