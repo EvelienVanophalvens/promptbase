@@ -35,7 +35,7 @@ if(!empty($_POST) && isset($_POST["delete"])){
 
 
 
-$favourites = Prompts::addFavoritePrompt($userId, $promptId);
+//$favourites = Prompts::addFavoritePrompt($userId, $promptId);
 //$favourites = Prompts::removeFavoritePrompt($userId, $promptId);
 
 

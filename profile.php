@@ -67,7 +67,7 @@ $favouritePrompt = Prompts::getFavouritePrompts($_SESSION['userid']);
 
 $boughtPrompts = Prompts::getBoughtPrompts($_SESSION['userid']);
 
-var_dump($boughtPrompts);
+//var_dump($boughtPrompts);
 
 
 ?>
