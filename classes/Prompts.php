@@ -457,7 +457,7 @@ class Prompts
     public static function search($search)
     {
         $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT * FROM prompts WHERE prompt LIKE :search");
+        $statement = $conn->prepare("SELECT prompts.id AS promptId, title, date, userId, accepted, description, status, paid, price, modelId, categoryId, categories.name AS category FROM prompts LEFT JOIN prompt_categories ON prompts.id = prompt_categories.promptId LEFT JOIN categories ON prompt_categories.categoryId = categories.id WHERE title LIKE :search");
         $statement->bindValue(":search", '%'.$search.'%');
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);

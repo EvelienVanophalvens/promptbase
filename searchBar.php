@@ -30,10 +30,10 @@ if(!empty($_GET['search'])) {
                     <?php if(!empty($results)) {
                         foreach($results as $prompt){
                             //get the right first example for each prompt
-                            $example = Prompts::getPromptExample($prompt["id"]);
+                            $example = Prompts::getPromptExample($prompt["promptId"]);
                             $picture = $example["example"];?>
                             <div class="chart">
-                                <a href="promptDetail.php?prompt=<?php echo $prompt["id"];?>"> 
+                                <a href="promptDetail.php?prompt=<?php echo $prompt["promptId"];?>"> 
                                     <div class="coverImage">
                                         <?php if(!empty($picture)) {?>
                                             <img src="uploads/<?php echo htmlspecialchars($picture)?>" alt="coverImage">
@@ -43,13 +43,13 @@ if(!empty($_GET['search'])) {
                                     </div>
                                     <div class="promptInfo">
                                         <!--The prompt title-->
-                                        <?php if(isset($prompt["prompt"])) {
-                                            echo htmlspecialchars($prompt["prompt"]);
+                                        <?php if(isset($prompt["title"])) {
+                                            echo htmlspecialchars($prompt["title"]);
                                         }?>
                                         <!--The right category label-->  
                                         <div class="categoryLabel">
-                                            <?php if(isset($prompt["name"])) {
-                                                echo htmlspecialchars($prompt["name"]);
+                                            <?php if(isset($prompt["category"])) {
+                                                echo htmlspecialchars($prompt["category"]);
                                             } else {
                                                 echo "no category";
                                             }?>
