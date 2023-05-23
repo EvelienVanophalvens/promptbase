@@ -137,8 +137,8 @@ if (isset($_SESSION['auth_user'])) {
                                         <?php }?>
                                     </div>
                                     <div class="promptInfo">
-                                        <?php if(isset($prompt["prompt"])) {
-                                            echo htmlspecialchars($prompt["prompt"]);
+                                        <?php if(isset($prompt["title"])) {
+                                            echo htmlspecialchars($prompt["title"]);
                                         }?>  
                                         <div class="categoryLabel">
                                             <?php if(isset($prompt["name"])) {
