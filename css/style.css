@@ -1080,3 +1080,19 @@ nav ul a{
     cursor: pointer;
     border-radius: 3px;
 }
+.statement{
+    border: 1px solid #d1d1d1;
+    border-radius: 10px;
+    background-color: #fafafa;
+    text-align: center;
+    width: 22%;
+    padding: 24px 6px;
+}
+#creditsPayment{
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+}
+#creditPayment input{
+    border-radius: 10px;
+}
