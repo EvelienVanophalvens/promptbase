@@ -9,6 +9,6 @@
 <body>
     <h1>error</h1>
     <p>You are not allowed on this page</p>
-    <a href="home.php">go back to the home page</a>
+    <a href="index.php">go back to the home page</a>
 </body>
 </html>

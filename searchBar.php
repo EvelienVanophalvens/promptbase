@@ -2,8 +2,6 @@
 include_once(__DIR__."/bootstrap.php");
 include_once(__DIR__."/navbar.php");
 
-authenticated();
-
 //getting the result of the search
 if(!empty($_GET['search'])) {
     $search = $_GET['search'];

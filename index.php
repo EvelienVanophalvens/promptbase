@@ -87,7 +87,7 @@ if (isset($_SESSION['auth_user'])) {
             </div>
         </div>
         <div id="filter">
-        <form method="GET" action="home.php">
+        <form method="GET" action="index.php">
     <label for="paid_free">Paid/Free:</label>
     <select id="paid_free" name="paid_free">
         <option value=""<?php if ($paid_free_selected == "") {

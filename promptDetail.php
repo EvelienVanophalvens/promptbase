@@ -48,7 +48,7 @@ if(!empty($_POST["reason"]) && isset($_POST["report"])) {
 </head>
 <body>
     <div class="content">
-        <a href="home.php" id="backbtn">< BACK TO OVERVIEW</a>
+        <a href="index.php" id="backbtn">< BACK TO OVERVIEW</a>
         <?php if(!empty($message)):?><p><?php echo $message ?></p><?php endif?>
         <?php if(!empty($error)):?><p><?php echo $error ?></p><?php endif;?>
         <div class="container">

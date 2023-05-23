@@ -3,7 +3,7 @@ include_once(__DIR__."/bootstrap.php");
 
 if(isset($_SESSION['authenticated'])) {
     $_SESSION['status'] = "You are already Logged In";
-    header("Location: home.php");
+    header("Location: index.php");
 
 }
 //kijken of post niet leeg is
@@ -26,7 +26,7 @@ if(!empty($_POST)) {
         $password = $_POST['password'];
         $userid = User::login($username, $password);
             if($userid) {
-                header("Location: home.php");
+                header("Location: index.php");
                 session_start();
                 $_SESSION['userid'] = $userid ;
                 $_SESSION['authenticated'] = true;

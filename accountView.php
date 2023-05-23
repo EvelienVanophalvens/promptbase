@@ -6,7 +6,7 @@ authenticated();
 $userId = filter_input(INPUT_GET, 'user', FILTER_VALIDATE_INT);
 var_dump($userId);
 if($userId === false) {
-    header("Location: home.php");
+    header("Location: index.php");
     exit;
 }
 $user = User::getUser($userId);
