@@ -571,16 +571,24 @@ if($paid_free == "free"){
         return $result["likes"];
     }
 
-    
- /*   public function getFavourites(){
-    $conn = Db::getInstance();
-    $statement = $conn->prepare("SELECT * AS favourites FROM prompt_likes WHERE promptId = :promptId AND userId = :userId");
-    $statement->bindValue(":promptId", $this->id);
-    $statement->bindValue(":userId", $_SESSION["id"]);
-    $statement->execute();
-    $result = $statement->fetch(PDO::FETCH_ASSOC);
-    return $result["favourites"];
-}*/
+    public static function getFavouritePrompts($userId) {
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT * FROM favourits WHERE userId = :userId");
+        $statement->bindValue(":userId", $userId);
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    } 
+
+    public static function isPromptFavorite($promptId, $userId){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT * FROM favourits WHERE userId = :userId AND promptId = :promptId");
+        $statement->bindValue(":userId", $userId);
+        $statement->bindValue(":promptId", $promptId);
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
 
       public static function delete ($id){
         $conn = Db::getInstance();
@@ -674,6 +682,8 @@ if($paid_free == "free"){
         
       }
 
+
+
       public static function addPromptToUser($userId, $promptId){
         $conn = Db::getInstance();
         $statement = $conn->prepare("INSERT INTO bought_prompts (userId, promptId) VALUES (:userId, :promptId)");
@@ -717,8 +727,13 @@ if($paid_free == "free"){
                       "examples" => $results2);
     }
 
-
-      
-
-
+    //select the userid from the prompt
+    public static function getUserId(){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT userId FROM prompts WHERE id = :id");
+        $statement->bindValue(":id", $_GET["id"]);
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        return $result["userId"];
+    }
 }

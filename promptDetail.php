@@ -25,15 +25,15 @@ if(!empty($_POST["reason"]) && isset($_POST["report"])) {
     $userId = $_SESSION['userid'];
     $promptId = $_GET["prompt"];
 
-    // Check if the prompt is already a favorite
-    $isFavorite = Favourite::getFavouritePrompt($userId, $promptId);
-    if($isFavorite) {
-        $favourites = "Remove from favourites";
-    } else {
-        $favourites = "Add to favourites";
-    }
+   /* //if the prompt is sold the maker of the prompt should receive 10 credits
+    $isSold = Prompts::getSold($promptId);
+    if($isSold) {
+        $credits = User::getCredit($prompt["prompts"]->user);
+        $newCredits = $credits + 10;
+        User::updateCredit($prompt["prompts"]->user, $newCredits);
+    }*/
     
-
+    
 
 ?>
 
@@ -66,7 +66,7 @@ if(!empty($_POST["reason"]) && isset($_POST["report"])) {
         <div id="dottedMenu">
             <div class="hidden" id="promptMenu">
                 <p id="reporting">report prompt</p>
-               <form action="" method="POST"><p id="favourites" onclick="addEventListener(e)">Add to favourites</p></form>
+            <p data-id="<?php echo $prompt["prompts"]->getId(); ?>" id="favourites">Add to favourites</p>
             </div>
             <div id="dots">
                 <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -270,23 +270,36 @@ document.querySelector("#cancel").addEventListener('click', function(e){
 
 // add event to favourites
 
-let favourites = document.querySelector('#promptMenu #favourites');
-favourites.addEventListener('click', function(e){
-    e.preventDefault();
-    let id = this.getAttribute('data-id');
-    console.log(id);
-    //fetch request (post) to '/ajax/favourites.php', use formdata
-    let formData = new FormData();
-    formData.append('promptId', id);
+const favoritesButton = document.getElementById('favourites');
+
+favoritesButton.addEventListener('click', () => {
+    const promptId = favoritesButton.getAttribute('data-id');
+    const formData = new FormData();
+    formData.append('promptId', promptId);
+
     fetch('./ajax/favourites.php', {
         method: 'POST',
         body: formData
     })
-    .then(function(response){
-        return response.json();
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            if (favoritesButton.classList.contains('added')) {
+                favoritesButton.classList.remove('added');
+                console.log('Prompt removed from favorites');
+                favourites.innerHTML = 'add to favourites';
+            } else {
+                favoritesButton.classList.add('added');
+                console.log('Prompt added to favorites');
+                favourites.innerHTML = 'remove from favourites';
+            }
+        }
     })
+    .catch(error => {
+        console.error('An error occurred:', error);
+    });
 });
-
+    </script>
 
 
 </script>

@@ -1,42 +1,29 @@
 <?php
 require_once("../bootstrap.php");
 
-//config file
-require_once("../config/config.ini");
-
-//favourites
-$favourites = Favourite::getFavouritePrompt($userId, $promptId);
-
-//add favourites
-
-if (isset($_POST['add_favourite'])) {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $promptId = $_POST['promptId'];
-    $userId = $_SESSION['userid'];
+    $userId = $_SESSION["userid"];
 
-    $f = new Favourite();
-    $f->setPromptId($promptId);
-    $f->setUserId($userId);
-    $f->save();
+    // Check if the prompt is already added as a favorite
+    if (Favourite::getFavourites($promptId, $userId)) {
+        Favourite::removeFavourite($promptId, $userId);
+        $result = [
+            "status" => "success",
+            "message" => "Favourite was removed"
+        ];
+    } else {
+        // Add the prompt as a favorite
+        $f = new Favourite();
+        $f->setPromptId($promptId);
+        $f->setUserId($userId);
+        $f->save();
 
-    $result = [
-        "status" => "success",
-        "message" => "Favourite was saved"
-    ];
-}
-//delete favourites
-if (isset($_POST['delete_favourite'])) {
-    $promptId = $_POST['promptId'];
-    $userId = $_SESSION['userid'];
-
-    $f = new Favourite();
-    $f->setPromptId($promptId);
-    $f->setUserId($userId);
-    $f->removeFavourite();
-
-    $result = [
-        "status" => "success",
-        "message" => "Favourite was removed"
-    ];
+        $result = [
+            "status" => "success",
+            "message" => "Favourite was saved"
+        ];
+    }
 }
 
-echo json_encode($result);
+    echo json_encode($result);

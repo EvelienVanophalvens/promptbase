@@ -29,32 +29,28 @@ class Favourite{
     }
 
     public function save(){
-        $conn = Db::getInstance();
+        $conn = Dbm::getInstance();
         $statement = $conn->prepare("insert into favourits (userId, promptId) values (:userid, :promptid)");
         $statement->bindValue(":userid", $this->getUserId());
         $statement->bindValue(":promptid", $this->getPromptId());
         return $statement->execute();
     }
 
-    public function removeFavourite(){
-        $conn = Db::getInstance();
-        $statement = $conn->prepare("DELETE FROM favourits WHERE userId = :userid AND promptId = :promptid");
-        $statement->bindValue(":userid", $this->getUserId());
-        $statement->bindValue(":promptid", $this->getPromptId());
+    public static function removeFavourite($promptId, $userId){
+       
+        $conn = Dbm::getInstance();
+        $statement = $conn->prepare("DELETE FROM favourits WHERE promptId = :promptid AND userId = :userid");
+        $statement->bindValue(":promptid", $promptId);
+        $statement->bindValue(":userid", $userId);
         return $statement->execute();
     }
 
-    public static function getFavouritePrompt($userId, $promptId){
-        $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT * FROM favourits WHERE userId = :userid AND promptId = :promptid");
-        $statement->bindValue(":userid", $userId);
+    public static function getFavourites($promptId, $userId){
+        $conn = Dbm::getInstance();
+        $statement = $conn->prepare("SELECT * FROM favourits WHERE promptId = :promptid AND userId = :userid");
         $statement->bindValue(":promptid", $promptId);
+        $statement->bindValue(":userid", $userId);
         $statement->execute();
-        $result = $statement->fetch(PDO::FETCH_ASSOC);
-        if($result){
-            return true;
-        }else{
-            return false;
-        }
+        return $statement->fetch(PDO::FETCH_ASSOC);
     }
 }
