@@ -6,7 +6,6 @@ authenticated();
 $prompt =  Prompts::detailPrompt($_GET["prompt"]);
 $comment = Comment::getAllComments($_GET["prompt"]);
 
-
 if(!empty($_POST["reason"]) && isset($_POST["report"])) {
     try{
     $report = new Reports();
@@ -55,8 +54,8 @@ if(!empty($_POST["reason"]) && isset($_POST["report"])) {
         <div class="title">
             <h2><?php echo htmlspecialchars($prompt['prompts']->promptName)?></h2>  
             <p class="categoryLabel dark left">
-            <?php if(isset($prompt["name"])) {
-                echo htmlspecialchars($prompt["prompts"]["name"]);
+            <?php if(isset($prompt["prompts"]->name)) {
+                echo htmlspecialchars($prompt["prompts"]->name);
             } else {
                 echo "no category";
             }?>
