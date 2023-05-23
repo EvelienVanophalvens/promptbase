@@ -3,6 +3,20 @@
 include_once(__DIR__."/bootstrap.php");
 include_once(__DIR__."/navbar.php");
 
+
+require_once(__DIR__ . '/vendor/autoload.php');
+
+use Cloudinary\Cloudinary;
+
+
+
+
+
+
+  
+
+
+
 //get user id
 if (isset($_SESSION['userid'])) {
     // get user id
@@ -20,8 +34,11 @@ $categories = Prompts::categories();
 
 $promptId = "";
 
-$message = "";
-if(!empty($_POST) && empty(((int) $_POST['status']))) {
+$message = ""; 
+
+
+
+if(!empty($_POST) && !empty(((int) $_POST['status']))) {
     if($_POST['paid'] == 0) {
 
     
@@ -41,7 +58,7 @@ if(!empty($_POST) && empty(((int) $_POST['status']))) {
         $message = $e->getMessage();
     }
 } elseif(!empty($_POST) && $_POST['paid'] == 1) {
-    $message = "Your price will be set to 0 because you have chosen to make this prompt free";
+    $message2 = "Your price will be set to 0 because you have chosen to make this prompt free";
     $prompt = new Prompts();
     $prompt->setPrompt($_POST['title']);
     $prompt->setAuthor($user);
@@ -57,7 +74,6 @@ if(!empty($_POST) && empty(((int) $_POST['status']))) {
     $message = "Please fill in all the fields";
 }
 }else{
-    $message = "Please fill in all the fields";
 
 }
 
@@ -68,14 +84,31 @@ $statusMsg = '';
 ;
 
 
+
+
 $targetDir = "uploads/";
 
-if(!empty($_FILES) && empty($message)) {
+if (!empty($_FILES) && empty($message)) {
+    $cloudinary = new Cloudinary([
+        'cloud' => [
+            'cloud_name' => 'dbbz2g87h',
+            'api_key'    => '263637247196311',
+            'api_secret' => 'cOrwpgG-ICTXLSYVCQJisbZb0x8',
+        ],
+    ]);
 
-    foreach($_FILES['files']['name'] as $key=>$val) {
+    foreach ($_FILES['files']['name'] as $key => $val) {
+        var_dump($_FILES['files']['name'][$key]);
+        $fileName = basename($_FILES['files']['name'][$key]);
+        $publicId = time() . '_' . $fileName; // Generate unique public_id
+
+        $cloudinary->uploadApi()->upload(
+            $_FILES['files']['tmp_name'][$key],
+            ['public_id' => $publicId, 'folder' => 'prompts']
+        );
 
         // File upload path
-        $fileName = basename($_FILES['files']['name'][$key]);
+
 
         $targetFilePath = $targetDir . $fileName;
 
@@ -124,6 +157,9 @@ if(!empty($_FILES) && empty($message)) {
         <?php if(!empty($message)) { ?>
             <p class="statusMsg"> <?php echo $message; ?> </p> 
             <?php } ?>
+        <?php if(!empty($message2)) { ?>
+            <p class="statusMsg"> <?php echo $message2; ?> </p> 
+        <?php } ?>
     <h1>Upload your prompt</h1>
     <form  action="upload.php" method="POST" enctype="multipart/form-data">
     <label for="file">Upload example:</label>
