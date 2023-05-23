@@ -12,7 +12,7 @@ class Prompts
     private int $paid;
     private int $model;
     private int $price;
-    private int $title;
+    private string $title;
 
     
     /**
@@ -226,7 +226,7 @@ class Prompts
      */
     public function setModel($model)
     {
-        if(empty($model)) {
+        if(is_null($model)) {
             throw new Exception("Please fill in a model");
         } else {
             $this->model = $model;
@@ -252,7 +252,7 @@ class Prompts
      */
     public function setPrice($price)
     {
-        if(empty($price)) {
+        if(is_null($price)) {
             throw new Exception("Please fill in a price");
         } else {
             $this->price = $price;
@@ -457,7 +457,7 @@ class Prompts
     public static function search($search)
     {
         $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT prompts.id AS promptId, title, date, userId, accepted, description, status, paid, price, modelId, categoryId, categories.name AS category FROM prompts LEFT JOIN prompt_categories ON prompts.id = prompt_categories.promptId LEFT JOIN categories ON prompt_categories.categoryId = categories.id WHERE title LIKE :search");
+        $statement = $conn->prepare("SELECT * FROM prompts WHERE prompt LIKE :search");
         $statement->bindValue(":search", '%'.$search.'%');
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);

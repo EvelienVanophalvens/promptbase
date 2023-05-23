@@ -38,13 +38,13 @@ $message = "";
 
 
 
-if(!empty($_POST) && !empty(((int) $_POST['status']))) {
+if(!empty($_POST) && !is_null(((int) $_POST['status']))) {
     if($_POST['paid'] == 0) {
 
     
     try {
         $prompt = new Prompts();
-        $prompt->setPrompt($_POST['title']);
+        $prompt->setTitle($_POST['title']);
         $prompt->setAuthor($user);
         $prompt->setDate(date("Y-m-d"));
         $prompt->setDescription($_POST['description']);
@@ -60,7 +60,7 @@ if(!empty($_POST) && !empty(((int) $_POST['status']))) {
 } elseif(!empty($_POST) && $_POST['paid'] == 1) {
     $message2 = "Your price will be set to 0 because you have chosen to make this prompt free";
     $prompt = new Prompts();
-    $prompt->setPrompt($_POST['title']);
+    $prompt->setTitle($_POST['title']);
     $prompt->setAuthor($user);
     $prompt->setDate(date("Y-m-d"));
     $prompt->setDescription($_POST['description']);
@@ -98,45 +98,19 @@ if (!empty($_FILES) && empty($message)) {
     ]);
 
     foreach ($_FILES['files']['name'] as $key => $val) {
-        var_dump($_FILES['files']['name'][$key]);
         $fileName = basename($_FILES['files']['name'][$key]);
         $publicId = time() . '_' . $fileName; // Generate unique public_id
 
+        if(
         $cloudinary->uploadApi()->upload(
             $_FILES['files']['tmp_name'][$key],
             ['public_id' => $publicId, 'folder' => 'prompts']
-        );
-
-        // File upload path
-
-
-        $targetFilePath = $targetDir . $fileName;
-
-        // Check whether file type is valid
-        $fileExt = explode(".", $fileName);
-        $fileActualExt = strtolower(end($fileExt));
-        var_dump($fileActualExt);
-        $allowTypes = array('jpg','png','jpeg','gif','pdf');
-        if(in_array($fileActualExt, $allowTypes)) {
-            // Upload file to server
-            if(move_uploaded_file($_FILES["files"]["tmp_name"][$key], $targetFilePath)) {
-                // Insert image file name into database
-                $insert = Prompts::addExample($promptId, $fileName);
-                if($insert) {
-                    $statusMsg = "The file ".$fileName. " has been uploaded successfully.";
-                } else {
-                    $statusMsg = "File upload failed, please try again.";
-                }
-            } else {
-                $statusMsg = "Sorry, there was an error uploading your file.";
-            }
-        } else {
-            $statusMsg = 'Sorry, only JPG, JPEG, PNG, GIF, & PDF files are allowed to upload.';
+        )){
+            Prompts::addExample($promptId, $publicId);
         }
     }
 }
-
-
+      
 
 ?>
 <!DOCTYPE html>
