@@ -226,7 +226,7 @@ class User
                     ];
                     $_SESSION['userid'] = $user['id'] ;
                     $_SESSION['status'] = "Login Successfull";
-                    header("Location: home.php");
+                    header("Location: index.php");
                 } else {
                     $_SESSION['status'] = "Please Verify your Email Address to Login.";
                     header("Location: login.php");
