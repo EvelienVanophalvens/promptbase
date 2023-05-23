@@ -9,10 +9,16 @@ if(!empty($_POST)) {
   $credits = $_POST['credits'];
   $update = User::updateCredits($credits);
 }
-var_dump($credits);
+ // Controleer of de credits parameter is doorgegeven in de URL
+ if(isset($_GET['credits'])) {
+  $credits = $_GET['credits'];
+  $melding =  "<p class='statement'>U koopt <strong>" . $credits . " </strong> credits.</p>";
+} else {
+  $melding =  "<p class='statement error'>Er is een fout opgetreden. Probeer het later opnieuw.</p>";
+}
 
-
-?><!DOCTYPE html>
+?>
+<!DOCTYPE html>
 <html>
 <head>
 	<title>Payment page</title>
@@ -24,43 +30,27 @@ var_dump($credits);
 <body>
 <div class="content">
   <a href="buyCredits.php" id="backbtn">< BACK TO OVERVIEW</a>
-</div>
-
   <div class="container2">
-	<h1>Payment page</h1>
-    <?php
-			// Controleer of de credits parameter is doorgegeven in de URL
-			if(isset($_GET['credits'])) {
-				$credits = $_GET['credits'];
-				echo "<p>U koopt " . $credits . " credits.</p>";
-			} else {
-				echo "<p>Er is een fout opgetreden. Probeer het later opnieuw.</p>";
-			}
-		?>
-
-<div class="payment">
-
-        <form action="creditsPayment.php" method="POST">
+	  <h1>Payment page</h1>
+    <?php echo $melding;?>
+    <div class="payment">
+        <form action="creditsPayment.php" method="POST" id="creditsPayment">
               <h3>Billing Address</h3>
-       
               <label for="cardname">Name on Card</label>
-              <input type="text" id="cardname" name="cardname">
+              <input type="text" id="cardname" name="cardname"><br>
               <label for="cardnumber">Credit card number</label>
-              <input type="text" id="cardnumber" name="cardnumber">
+              <input type="text" id="cardnumber" name="cardnumber"><br>
               <label for="expmonth">Exp Month</label>
-              <input type="text" id="expmonth" name="expmonth">
-                  <label for="expyear">Exp Year</label>
-                  <input type="text" id="expyear" name="expyear">
-
-
-                  <label for="cvv">CVV</label>
-                  <input type="text" id="cvv" name="cvv">
-    
-                
+              <input type="text" id="expmonth" name="expmonth"><br>
+              <label for="expyear">Exp Year</label>
+              <input type="text" id="expyear" name="expyear"><br>
+              <label for="cvv">CVV</label>
+              <input type="text" id="cvv" name="cvv">
+              <button class="submit">Pay</button>
+        </form>
+      </div>
+  </div>
 </div>
-<button>Pay</button>
-        </div>
-
       
 </body>
 </html>
