@@ -3,6 +3,20 @@
 include_once(__DIR__."/bootstrap.php");
 include_once(__DIR__."/navbar.php");
 
+
+require_once(__DIR__ . '/vendor/autoload.php');
+
+use Cloudinary\Cloudinary;
+
+
+
+
+
+
+  
+
+
+
 //get user id
 if (isset($_SESSION['userid'])) {
     // get user id
@@ -20,14 +34,17 @@ $categories = Prompts::categories();
 
 $promptId = "";
 
-$message = "";
-if(!empty($_POST) && empty(((int) $_POST['status']))) {
+$message = ""; 
+
+
+
+if(!empty($_POST) && !is_null(((int) $_POST['status']))) {
     if($_POST['paid'] == 0) {
 
     
     try {
         $prompt = new Prompts();
-        $prompt->setPrompt($_POST['title']);
+        $prompt->setTitle($_POST['title']);
         $prompt->setAuthor($user);
         $prompt->setDate(date("Y-m-d"));
         $prompt->setDescription($_POST['description']);
@@ -41,9 +58,9 @@ if(!empty($_POST) && empty(((int) $_POST['status']))) {
         $message = $e->getMessage();
     }
 } elseif(!empty($_POST) && $_POST['paid'] == 1) {
-    $message = "Your price will be set to 0 because you have chosen to make this prompt free";
+    $message2 = "Your price will be set to 0 because you have chosen to make this prompt free";
     $prompt = new Prompts();
-    $prompt->setPrompt($_POST['title']);
+    $prompt->setTitle($_POST['title']);
     $prompt->setAuthor($user);
     $prompt->setDate(date("Y-m-d"));
     $prompt->setDescription($_POST['description']);
@@ -57,7 +74,6 @@ if(!empty($_POST) && empty(((int) $_POST['status']))) {
     $message = "Please fill in all the fields";
 }
 }else{
-    $message = "Please fill in all the fields";
 
 }
 
@@ -68,42 +84,33 @@ $statusMsg = '';
 ;
 
 
+
+
 $targetDir = "uploads/";
 
-if(!empty($_FILES) && empty($message)) {
+if (!empty($_FILES) && empty($message)) {
+    $cloudinary = new Cloudinary([
+        'cloud' => [
+            'cloud_name' => 'dbbz2g87h',
+            'api_key'    => '263637247196311',
+            'api_secret' => 'cOrwpgG-ICTXLSYVCQJisbZb0x8',
+        ],
+    ]);
 
-    foreach($_FILES['files']['name'] as $key=>$val) {
-
-        // File upload path
+    foreach ($_FILES['files']['name'] as $key => $val) {
         $fileName = basename($_FILES['files']['name'][$key]);
+        $publicId = time() . '_' . $fileName; // Generate unique public_id
 
-        $targetFilePath = $targetDir . $fileName;
-
-        // Check whether file type is valid
-        $fileExt = explode(".", $fileName);
-        $fileActualExt = strtolower(end($fileExt));
-        var_dump($fileActualExt);
-        $allowTypes = array('jpg','png','jpeg','gif','pdf');
-        if(in_array($fileActualExt, $allowTypes)) {
-            // Upload file to server
-            if(move_uploaded_file($_FILES["files"]["tmp_name"][$key], $targetFilePath)) {
-                // Insert image file name into database
-                $insert = Prompts::addExample($promptId, $fileName);
-                if($insert) {
-                    $statusMsg = "The file ".$fileName. " has been uploaded successfully.";
-                } else {
-                    $statusMsg = "File upload failed, please try again.";
-                }
-            } else {
-                $statusMsg = "Sorry, there was an error uploading your file.";
-            }
-        } else {
-            $statusMsg = 'Sorry, only JPG, JPEG, PNG, GIF, & PDF files are allowed to upload.';
+        if(
+        $cloudinary->uploadApi()->upload(
+            $_FILES['files']['tmp_name'][$key],
+            ['public_id' => $publicId, 'folder' => 'prompts']
+        )){
+            Prompts::addExample($promptId, $publicId);
         }
     }
 }
-
-
+      
 
 ?>
 <!DOCTYPE html>
@@ -124,6 +131,9 @@ if(!empty($_FILES) && empty($message)) {
         <?php if(!empty($message)) { ?>
             <p class="statusMsg"> <?php echo $message; ?> </p> 
             <?php } ?>
+        <?php if(!empty($message2)) { ?>
+            <p class="statusMsg"> <?php echo $message2; ?> </p> 
+        <?php } ?>
     <h1>Upload your prompt</h1>
     <form  action="upload.php" method="POST" enctype="multipart/form-data">
     <label for="file">Upload example:</label>

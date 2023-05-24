@@ -2,6 +2,20 @@
 include_once(__DIR__."/bootstrap.php");
 include_once(__DIR__."/navbar.php");
 
+require_once(__DIR__ . '/vendor/autoload.php');
+
+use Cloudinary\Cloudinary;
+
+
+$cloudinary = new Cloudinary([
+    'cloud' => [
+        'cloud_name' => 'dbbz2g87h',
+        'api_key'    => '263637247196311',
+        'api_secret' => 'cOrwpgG-ICTXLSYVCQJisbZb0x8',
+    ],
+]);
+
+
 authenticated();
 $prompt =  Prompts::detailPrompt($_GET["prompt"]);
 
@@ -81,10 +95,12 @@ if(!empty($_POST) && isset($_POST["delete"])){
         </div>
         </div>
         <section id="exampleBox">
-        <?php if(!empty($prompt["examples"] && $prompt["examples"] === true)) { ?>
-            <?php foreach($prompt["examples"] as $example):?>
+        <?php if(!empty($prompt["examples"])) { ?>
+            <?php foreach($prompt["examples"] as $example):
+                $image = $cloudinary->image('v1684860061/prompts/' . $example["example"])->toUrl();
+                $image = str_replace('?_a=AAFIKDQ', '.jpg', $image); ?>
                 <div class="imageExample">
-                        <img src="<?php echo "uploads/".htmlspecialchars($example["example"])?>" alt="example">  
+                        <img src="<?php echo $image?>" alt="example">  
                 </div>
             <?php endforeach; ?>
         <?php } else {?>  

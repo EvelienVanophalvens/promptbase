@@ -12,7 +12,7 @@ class Prompts
     private int $paid;
     private int $model;
     private int $price;
-    private int $title;
+    private string $title;
 
     
     /**
@@ -226,7 +226,7 @@ class Prompts
      */
     public function setModel($model)
     {
-        if(empty($model)) {
+        if(is_null($model)) {
             throw new Exception("Please fill in a model");
         } else {
             $this->model = $model;
@@ -252,7 +252,7 @@ class Prompts
      */
     public function setPrice($price)
     {
-        if(empty($price)) {
+        if(is_null($price)) {
             throw new Exception("Please fill in a price");
         } else {
             $this->price = $price;

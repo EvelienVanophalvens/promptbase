@@ -2,9 +2,11 @@
 
 session_start();
 
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
+
 
 //Load Composer's autoloader
 //require 'vendor/autoload.php';
@@ -56,3 +58,4 @@ function authenticated()
         exit(0);
     }
 }
+

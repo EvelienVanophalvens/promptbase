@@ -18,10 +18,9 @@ if(!empty($_POST)) {
   $update = User::updateCredits($credits);
 }
 var_dump($credits);
-var_dump($price);
 
-
-?><!DOCTYPE html>
+?>
+<!DOCTYPE html>
 <html>
 <head>
 	<title>Payment page</title>
@@ -33,38 +32,30 @@ var_dump($price);
 <body>
 <div class="content">
   <a href="buyCredits.php" id="backbtn">< BACK TO OVERVIEW</a>
-</div>
-
   <div class="container2">
 	<h1>Payment page</h1>
     <?php
 			// Controleer of de credits parameter is doorgegeven in de URL
-if(isset($_GET['credits'])) {
-    $credits = $_GET['credits'];
-    
-    // Controleer of de credits geldig zijn
-    if($credits == 25 || $credits == 50 || $credits == 100) {
-        echo "<p>U koopt " . $credits . " credits.</p>";
-        echo "<p>De prijs is €" . $price . ".</p>";
-    } else {
-        echo "<p>Er is een fout opgetreden. Probeer het later opnieuw.</p>";
-    }
-}
+			if(isset($_GET['credits'])) {
+				$credits = $_GET['credits'];
+				echo "<p>U koopt " . $credits . " credits.</p>";
+			} else {
+				echo "<p>Er is een fout opgetreden. Probeer het later opnieuw.</p>";
+			}
 		?>
 
 <div class="payment">
 
         <form action="creditsPayment.php" method="POST">
               <h3>Billing Address</h3>
-       
               <label for="cardname">Name on Card</label>
-              <input type="text" id="cardname" name="cardname" required>
+              <input type="text" id="cardname" name="cardname">
               <label for="cardnumber">Credit card number</label>
-              <input type="text" id="cardnumber" name="cardnumber" required>
+              <input type="text" id="cardnumber" name="cardnumber">
               <label for="expmonth">Exp Month</label>
-              <input type="text" id="expmonth" name="expmonth" required>
+              <input type="text" id="expmonth" name="expmonth">
                   <label for="expyear">Exp Year</label>
-                  <input type="text" id="expyear" name="expyear" required>
+                  <input type="text" id="expyear" name="expyear">
 
 
                   <label for="cvv">CVV</label>
@@ -72,7 +63,7 @@ if(isset($_GET['credits'])) {
     
                 
 </div>
-<button><a href="paymentSucces.php">Pay</a></button>
+<button>Pay</button>
         </div>
 
       

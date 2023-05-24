@@ -67,7 +67,6 @@ $favouritePrompt = Prompts::getFavouritePrompts($_SESSION['userid']);
 
 $boughtPrompts = Prompts::getBoughtPrompts($_SESSION['userid']);
 
-//var_dump($boughtPrompts);
 
 
 ?>
@@ -128,8 +127,8 @@ $boughtPrompts = Prompts::getBoughtPrompts($_SESSION['userid']);
                                     <?php ;}?>
                                 </div>
                                 <div class="promptInfo">
-                                    <?php if(isset($prompt["prompt"])) {
-                                        echo htmlspecialchars($prompt["prompt"]);
+                                    <?php if(isset($prompt["title"])) {
+                                        echo htmlspecialchars($prompt["title"]);
                                     }?>  
                                     <div class="categoryLabel">
                                         <?php if(isset($prompt["name"])) {
@@ -164,8 +163,8 @@ $boughtPrompts = Prompts::getBoughtPrompts($_SESSION['userid']);
                                     <?php ;}?>
                                 </div>
                                 <div class="promptInfo">
-                                    <?php if(isset($prompt["prompt"])) {
-                                        echo htmlspecialchars($prompt["prompt"]);
+                                    <?php if(isset($prompt["title"])) {
+                                        echo htmlspecialchars($prompt["title"]);
                                     }?>  
                                     <div class="categoryLabel">
                                         <?php if(isset($prompt["name"])) {
@@ -202,8 +201,8 @@ $boughtPrompts = Prompts::getBoughtPrompts($_SESSION['userid']);
                                     <?php ;}?>
                                 </div>
                                 <div class="promptInfo">
-                                    <?php if(isset($prompt["prompt"])) {
-                                        echo htmlspecialchars($prompt["prompt"]);
+                                    <?php if(isset($prompt["title"])) {
+                                        echo htmlspecialchars($prompt["title"]);
                                     }?>  
                                     <div class="categoryLabel">
                                         <?php if(isset($prompt["categorie"])) {
