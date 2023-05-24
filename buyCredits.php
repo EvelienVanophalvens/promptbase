@@ -26,7 +26,10 @@ include_once(__DIR__."/navbar.php");
   <img class="creditsImg" src="uploads/credits.png" alt="credits">
   <div class="credit">
     <h2>25 credits</h2>
-    <h4>Prijs: €10</h4>              
+    <div class="price">
+      <h4>Prijs: €10</h4>
+    </div>
+                  
     <a id="credit" href="creditsPayment.php?credits=25">Buy credits</a>
   </div>
 </div>

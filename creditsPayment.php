@@ -3,6 +3,14 @@ include_once(__DIR__."/bootstrap.php");
 include_once(__DIR__."/navbar.php");
 
 $credits = $_GET['credits'];
+//get the price
+if($credits == 25) {
+    $price = 10;
+} else if($credits == 50) {
+    $price = 35;
+} else if($credits == 100) {
+    $price = 85;
+}
 
 //add the credits to the database
 if(!empty($_POST)) {
@@ -10,6 +18,7 @@ if(!empty($_POST)) {
   $update = User::updateCredits($credits);
 }
 var_dump($credits);
+var_dump($price);
 
 
 ?><!DOCTYPE html>
@@ -30,12 +39,17 @@ var_dump($credits);
 	<h1>Payment page</h1>
     <?php
 			// Controleer of de credits parameter is doorgegeven in de URL
-			if(isset($_GET['credits'])) {
-				$credits = $_GET['credits'];
-				echo "<p>U koopt " . $credits . " credits.</p>";
-			} else {
-				echo "<p>Er is een fout opgetreden. Probeer het later opnieuw.</p>";
-			}
+if(isset($_GET['credits'])) {
+    $credits = $_GET['credits'];
+    
+    // Controleer of de credits geldig zijn
+    if($credits == 25 || $credits == 50 || $credits == 100) {
+        echo "<p>U koopt " . $credits . " credits.</p>";
+        echo "<p>De prijs is €" . $price . ".</p>";
+    } else {
+        echo "<p>Er is een fout opgetreden. Probeer het later opnieuw.</p>";
+    }
+}
 		?>
 
 <div class="payment">
@@ -44,13 +58,13 @@ var_dump($credits);
               <h3>Billing Address</h3>
        
               <label for="cardname">Name on Card</label>
-              <input type="text" id="cardname" name="cardname">
+              <input type="text" id="cardname" name="cardname" required>
               <label for="cardnumber">Credit card number</label>
-              <input type="text" id="cardnumber" name="cardnumber">
+              <input type="text" id="cardnumber" name="cardnumber" required>
               <label for="expmonth">Exp Month</label>
-              <input type="text" id="expmonth" name="expmonth">
+              <input type="text" id="expmonth" name="expmonth" required>
                   <label for="expyear">Exp Year</label>
-                  <input type="text" id="expyear" name="expyear">
+                  <input type="text" id="expyear" name="expyear" required>
 
 
                   <label for="cvv">CVV</label>
@@ -58,7 +72,7 @@ var_dump($credits);
     
                 
 </div>
-<button>Pay</button>
+<button><a href="paymentSucces.php">Pay</a></button>
         </div>
 
       
