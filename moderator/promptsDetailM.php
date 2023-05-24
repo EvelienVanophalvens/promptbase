@@ -2,6 +2,19 @@
 include_once(__DIR__."/../bootstrap.php");
 include_once(__DIR__."/navbarM.php");
 
+require_once(__DIR__ . '/../vendor/autoload.php');
+
+use Cloudinary\Cloudinary;
+
+
+$cloudinary = new Cloudinary([
+    'cloud' => [
+        'cloud_name' => 'dbbz2g87h',
+        'api_key'    => '263637247196311',
+        'api_secret' => 'cOrwpgG-ICTXLSYVCQJisbZb0x8',
+    ],
+]);
+
 
 $prompt = Prompts::detailPromptM($_GET["prompt"]);
 if ($prompt) {
@@ -56,8 +69,10 @@ if(!empty($_POST) && isset($_POST["accept"])) {
         <div>
             <p class="title">examples</p>
             <div class="img">
-            <?php foreach($prompt["examples"] as $example):?>
-            <img src = "<?php echo "../uploads/".htmlspecialchars($example["example"])?>" >
+            <?php foreach($prompt["examples"] as $example):
+                $image = $cloudinary->image('v1684860061/prompts/' . $example["example"])->toUrl();
+                $image = str_replace('?_a=AAFIKDQ', '.jpg', $image); ?>
+            <img src = "<?php echo $image?>" >
 
             <?php endforeach; ?>
         </div>
