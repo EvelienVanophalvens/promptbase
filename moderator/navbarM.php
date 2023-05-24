@@ -13,7 +13,7 @@
         <div>
             <ul class="logo">
                 <li>
-                    <a href="../home.php">
+                    <a href="../index.php">
                         <img src="../uploads/logo.png" alt="collectivePrompts">
                     </a>
                 </li>
