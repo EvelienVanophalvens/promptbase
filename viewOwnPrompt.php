@@ -2,9 +2,10 @@
 include_once(__DIR__."/bootstrap.php");
 include_once(__DIR__."/navbar.php");
 
-require_once(__DIR__ . '/vendor/autoload.php');
 
 use Cloudinary\Cloudinary;
+
+require 'vendor/autoload.php';
 
 
 $cloudinary = new Cloudinary([
