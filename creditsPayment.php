@@ -2,7 +2,9 @@
 include_once(__DIR__."/bootstrap.php");
 include_once(__DIR__."/navbar.php");
 
-$credits = $_GET['credits'];
+
+    $credits = $_GET['credits'];
+
 //get the price
 if($credits == 25) {
     $price = 10;
@@ -12,12 +14,6 @@ if($credits == 25) {
     $price = 85;
 }
 
-//add the credits to the database
-if(!empty($_POST)) {
-  $credits = $_POST['credits'];
-  $update = User::updateCredits($credits);
-}
-var_dump($credits);
 
 ?>
 <!DOCTYPE html>
@@ -39,6 +35,8 @@ var_dump($credits);
 			if(isset($_GET['credits'])) {
 				$credits = $_GET['credits'];
 				echo "<p>U koopt " . $credits . " credits.</p>";
+      //toon de prijs
+      echo "<p>De prijs is " . $price . " euro.</p>";
 			} else {
 				echo "<p>Er is een fout opgetreden. Probeer het later opnieuw.</p>";
 			}
@@ -63,7 +61,7 @@ var_dump($credits);
     
                 
 </div>
-<button>Pay</button>
+<button><a href="paymentSucces.php?credits" . $credits>Pay</a> </button>
         </div>
 
       

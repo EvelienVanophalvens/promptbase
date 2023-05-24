@@ -581,12 +581,13 @@ class User
     return $credits['credits'];
   }
 
-  public static function updateCredit(){
+  public static function updateBuyCredit($credits){
     $conn = Db::getInstance();
-    $statement = $conn->prepare("UPDATE users SET credits = credits + 10 WHERE id = :id");
+    $statement = $conn->prepare("UPDATE users SET credits = credits + :credits WHERE id = :id");
+    $statement->bindValue(":credits", $credits);
     $statement->bindValue(":id", $_SESSION['userid']);
     $statement->execute();
-  }
+}
 
   public static function updateCreditsOwner($userId) {
     $conn = Db::getInstance();
