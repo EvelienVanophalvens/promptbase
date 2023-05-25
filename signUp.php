@@ -92,21 +92,21 @@ if(!empty($_POST)) {
             <div class="form-element">
                 <div class="login-input">
                     <?php if(!empty($usernameError)) { ?>
-                        <p class="error"><?php echo $usernameError; ?></p>
+                        <p class="alert rejected"><?php echo $usernameError; ?></p>
                     <?php } ?>
                     <label for="username" class="hidden">Username</label>
                     <input id="username" name="username" type="text" autocomplete="username" placeholder="Username">
                 </div>
                 <div class="login-input">
                     <?php if(!empty($emailError)) { ?>
-                        <p class="error"><?php echo $emailError; ?></p>
+                        <p class="alert rejected"><?php echo $emailError; ?></p>
                     <?php } ?>
                     <label for="email-address" class="hidden">Email address</label>
                     <input id="email-address" name="email" type="email" autocomplete="email" placeholder="Email address">
                 </div>
                 <div class="login-input">
                     <?php if(!empty($passwordError)) { ?>
-                        <p class="error"><?php echo $passwordError; ?></p>
+                        <p class="alert rejected"><?php echo $passwordError; ?></p>
                     <?php } ?>
                     <label for="password" class="hidden">Password</label>
                     <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Password">
