@@ -59,7 +59,7 @@ a:visited { text-decoration: none; color:black }
 .title h2{
     font-size: 32px;
     font-weight: 400;
-    margin-bottom: 0px;
+    margin-bottom: 20px;
 }
 .hidden{
     display: none;
@@ -86,14 +86,14 @@ input#comment{
     width: 30%;
 }
 .login-input input{
-    width: 100%;
+    width: 96%;
     padding-top: 12px;
     padding-bottom: 12px;
     border: 1px solid #d1d1d1;
+    padding-left: 12px;
 }
 .login-input input::placeholder{
     color: #afafaf;
-    padding-left: 8px;
 }
 .passwordChange-input input#password{
     margin-top: 4px;
