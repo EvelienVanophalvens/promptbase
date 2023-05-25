@@ -4,7 +4,6 @@ include_once(__DIR__."/navbar.php");
 
 authenticated();
 $userId = filter_input(INPUT_GET, 'user', FILTER_VALIDATE_INT);
-var_dump($userId);
 if($userId === false) {
     header("Location: index.php");
     exit;
@@ -55,60 +54,57 @@ if(!empty($_POST["reason"]) && isset($_POST["report"])) {
            <div id="userProfilePicture">
                 <img src="<?php echo htmlspecialchars($profilePicturePath)?>" alt="profile picture">
             </div>
-            <h2 class="username"><?php echo htmlspecialchars($user['username'])?></h2>
-            <div id="dottedMenu">
-            <div class="hidden" id="promptMenu">
-                <p id="reporting">report prompt</p>
+            <div class="user">
+                <h2 class="username"><?php echo htmlspecialchars($user['username'])?></h2>
+                <div id="dottedMenu">
+                    <div class="hidden" id="promptMenu">
+                        <p id="reporting">report prompt</p>
+                    </div>
+                    <div id="dots">
+                        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <mask id="mask0_45_131" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="64" height="64">
+                                <rect width="64" height="64" fill="#D9D9D9"/>
+                            </mask>
+                            <g mask="url(#mask0_45_131)">
+                                <path d="M32.0003 53.3333C30.5337 53.3333 29.2781 52.8111 28.2337 51.7666C27.1892 50.7222 26.667 49.4666 26.667 48C26.667 46.5333 27.1892 45.2777 28.2337 44.2333C29.2781 43.1889 30.5337 42.6666 32.0003 42.6666C33.467 42.6666 34.7225 43.1889 35.767 44.2333C36.8114 45.2777 37.3337 46.5333 37.3337 48C37.3337 49.4666 36.8114 50.7222 35.767 51.7666C34.7225 52.8111 33.467 53.3333 32.0003 53.3333ZM32.0003 37.3333C30.5337 37.3333 29.2781 36.8111 28.2337 35.7666C27.1892 34.7222 26.667 33.4666 26.667 32C26.667 30.5333 27.1892 29.2777 28.2337 28.2333C29.2781 27.1888 30.5337 26.6666 32.0003 26.6666C33.467 26.6666 34.7225 27.1888 35.767 28.2333C36.8114 29.2777 37.3337 30.5333 37.3337 32C37.3337 33.4666 36.8114 34.7222 35.767 35.7666C34.7225 36.8111 33.467 37.3333 32.0003 37.3333ZM32.0003 21.3333C30.5337 21.3333 29.2781 20.8111 28.2337 19.7666C27.1892 18.7222 26.667 17.4666 26.667 16C26.667 14.5333 27.1892 13.2777 28.2337 12.2333C29.2781 11.1888 30.5337 10.6666 32.0003 10.6666C33.467 10.6666 34.7225 11.1888 35.767 12.2333C36.8114 13.2777 37.3337 14.5333 37.3337 16C37.3337 17.4666 36.8114 18.7222 35.767 19.7666C34.7225 20.8111 33.467 21.3333 32.0003 21.3333Z" fill="#1C1B1F"/>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
             </div>
-            <div id="dots">
-                <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <mask id="mask0_45_131" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="64" height="64">
-                        <rect width="64" height="64" fill="#D9D9D9"/>
-                    </mask>
-                    <g mask="url(#mask0_45_131)">
-                        <path d="M32.0003 53.3333C30.5337 53.3333 29.2781 52.8111 28.2337 51.7666C27.1892 50.7222 26.667 49.4666 26.667 48C26.667 46.5333 27.1892 45.2777 28.2337 44.2333C29.2781 43.1889 30.5337 42.6666 32.0003 42.6666C33.467 42.6666 34.7225 43.1889 35.767 44.2333C36.8114 45.2777 37.3337 46.5333 37.3337 48C37.3337 49.4666 36.8114 50.7222 35.767 51.7666C34.7225 52.8111 33.467 53.3333 32.0003 53.3333ZM32.0003 37.3333C30.5337 37.3333 29.2781 36.8111 28.2337 35.7666C27.1892 34.7222 26.667 33.4666 26.667 32C26.667 30.5333 27.1892 29.2777 28.2337 28.2333C29.2781 27.1888 30.5337 26.6666 32.0003 26.6666C33.467 26.6666 34.7225 27.1888 35.767 28.2333C36.8114 29.2777 37.3337 30.5333 37.3337 32C37.3337 33.4666 36.8114 34.7222 35.767 35.7666C34.7225 36.8111 33.467 37.3333 32.0003 37.3333ZM32.0003 21.3333C30.5337 21.3333 29.2781 20.8111 28.2337 19.7666C27.1892 18.7222 26.667 17.4666 26.667 16C26.667 14.5333 27.1892 13.2777 28.2337 12.2333C29.2781 11.1888 30.5337 10.6666 32.0003 10.6666C33.467 10.6666 34.7225 11.1888 35.767 12.2333C36.8114 13.2777 37.3337 14.5333 37.3337 16C37.3337 17.4666 36.8114 18.7222 35.767 19.7666C34.7225 20.8111 33.467 21.3333 32.0003 21.3333Z" fill="#1C1B1F"/>
-                    </g>
-                </svg>
-            </div>
-        </div>
                 <p id="bio-text"><?php echo htmlspecialchars($user["bio"]); ?></p>
                 <button id="followButton" class="submit small follow" onclick="toggleFollow()"><a href="#">Follow</a></button>
-
-
         </div>  
         <div class="userPrompts"><!--Hier komen de gemaakte prompts-->
             <h3>Made prompts</h3>
             <hr>
             <div class="chartContainer">
                 <?php if(!empty($prompts)) {
-                    foreach($prompts as $prompt):?>
+                   foreach($prompts as $prompt):
+                    $example = Prompts::getPromptExample($prompt["id"]);
+                    $picture = $example["example"];?>
                     <div class="chart">
-                        <div class="promptInfo">
-                            <a href="promptDetail.php?prompt=<?php echo $prompt["id"]?>">
-                            <p><?php echo htmlspecialchars($prompt["promptName"])?></p>
-                            </a>
-                            <div class="categoryLabel">
-                                <?php if(isset($prompt["name"])) {
-                                    echo htmlspecialchars($prompt["name"]);
-                                } else {
-                                    echo "no category";
-                                }?>
+                        <a href="promptDetail.php?prompt=<?php echo $prompt["id"];?>"> 
+                            <div class="coverImage">
+                                <?php if(!empty($picture)) {?>
+                                    <img src=" uploads/<?php echo htmlspecialchars($picture)?>" alt="coverImage">
+                                <?php } else {?>
+                                    <img src="uploads/default_image.png" alt="example">
+                                <?php }?>
                             </div>
-                        </div>
-                        <div class="coverImage">
-                            <?php if(!empty($allExamples)) {?>
-                                <?php foreach($allExamples[$prompt["id"]] as $example):?>
-                                        <img class="imageExample" src="<?php echo "uploads/".htmlspecialchars($example["example"])?>" alt="coverImage">
-                                <?php endforeach; ?>
-                            <?php ;
-                            } elseif(!($prompt['prompt'] == NULL)) { ?>
-                                <img src="uploads/<?= htmlspecialchars($prompt['prompt']); ?>" alt="prompt">
-                            <?php ;
-                            } else {?>
-                                <img src="uploads/default_image.png" alt="default img">
-                            <?php ;
-                            }?>
-                        </div>
+                            <div class="promptInfo">
+                                <?php if(isset($prompt["promptName"])) {
+                                    echo htmlspecialchars($prompt["promptName"]);
+                                }?>  
+                                <div class="categoryLabel">
+                                    <?php if(isset($prompt["name"])) {
+                                        echo htmlspecialchars($prompt["name"]);
+                                    } else {
+                                        echo "no category";
+                                    }?>
+                                </div>
+                            </div>
+                        </a>
                     </div>
                     <?php endforeach;
                 }  ?>

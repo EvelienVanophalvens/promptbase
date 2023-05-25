@@ -752,9 +752,10 @@ nav ul a{
     display: flex;
     justify-content: space-around;
     width: 25%;
-    height: 25%;
-
-
+}
+.user{
+    display: flex;
+    justify-content: space-between;
 }
 
 #promptMenu{
