@@ -101,35 +101,32 @@ if (authenticated()) {
             <hr>
             <div class="chartContainer">
                 <?php if(!empty($prompts)) {
-                    foreach($prompts as $prompt):?>
-                    <div class="chart">
-                        <div class="promptInfo">
-                            <a href="promptDetail.php?prompt=<?php echo $prompt["id"]?>">
-                            <p><?php echo htmlspecialchars($prompt["promptName"])?></p>
+                     foreach($prompts as $prompt):
+                        $example = Prompts::getPromptExample($prompt["id"]);
+                        $picture = $example["example"];?>
+                        <div class="chart">
+                            <a href="promptDetail.php?prompt=<?php echo $prompt["id"];?>"> 
+                                <div class="coverImage">
+                                    <?php if(!empty($picture)) {?>
+                                        <img src=" uploads/<?php echo htmlspecialchars($picture)?>" alt="coverImage">
+                                    <?php } else {?>
+                                        <img src="uploads/default_image.png" alt="example">
+                                    <?php }?>
+                                </div>
+                                <div class="promptInfo">
+                                    <?php if(isset($prompt["promptName"])) {
+                                        echo htmlspecialchars($prompt["promptName"]);
+                                    }?>  
+                                    <div class="categoryLabel">
+                                        <?php if(isset($prompt["name"])) {
+                                            echo htmlspecialchars($prompt["name"]);
+                                        } else {
+                                            echo "no category";
+                                        }?>
+                                    </div>
+                                </div>
                             </a>
-                            <div class="categoryLabel">
-                                <?php if(isset($prompt["name"])) {
-                                    echo htmlspecialchars($prompt["name"]);
-                                } else {
-                                    echo "no category";
-                                }?>
-                            </div>
                         </div>
-                        <div class="coverImage">
-                            <?php if(!empty($allExamples)) {?>
-                                <?php foreach($allExamples[$prompt["id"]] as $example):?>
-                                        <img class="imageExample" src="<?php echo "uploads/".htmlspecialchars($example["example"])?>" alt="coverImage">
-                                <?php endforeach; ?>
-                            <?php ;
-                            } elseif(!($prompt['prompt'] == NULL)) { ?>
-                                <img src="uploads/<?= htmlspecialchars($prompt['prompt']); ?>" alt="prompt">
-                            <?php ;
-                            } else {?>
-                                <img src="uploads/default_image.png" alt="default img">
-                            <?php ;
-                            }?>
-                        </div>
-                    </div>
                     <?php endforeach;
                 }  ?>
             </div>
