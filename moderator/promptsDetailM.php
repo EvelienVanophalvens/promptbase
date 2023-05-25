@@ -56,7 +56,7 @@ if(!empty($_POST) && isset($_POST["accept"])) {
     <form class="promptDetails" method="POST">
         <div>
             <p class="title">prompt</p>
-            <p><?php echo htmlspecialchars($prompt["prompts"]["prompt"])?></p>
+            <p><?php echo htmlspecialchars($prompt["prompts"]["title"])?></p>
         </div>
         <div>
             <p class="title">user</p>
