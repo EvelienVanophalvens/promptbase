@@ -1101,3 +1101,9 @@ nav ul a{
 #creditPayment input{
     border-radius: 10px;
 }
+input[name="accept"]{
+    background-color: #0CBC8B;
+}
+input[name="reject"]{
+    background-color: #EA394A;
+}

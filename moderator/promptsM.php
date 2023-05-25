@@ -17,27 +17,29 @@ $notAccepted =  Prompts::notAccepted();
     <title>prompts</title>
 </head>
 <body>
-    <section class="askedPrompts">
-        <h2>New sended prompts</h2>
-        <table>
-            <tr>
-                <th>user</th>
-                <th>prompt</th>
-                <th>action</th>
-            </tr>
-            <?php if(!empty($notAccepted)) {
-                foreach($notAccepted as $prompt):?>
-            <tr>
-                <td><?php echo htmlspecialchars($prompt["username"])?></td>
-                <td><?php echo htmlspecialchars($prompt["title"])?></td>
-                <td><a href="promptsDetailM.php?prompt=<?php echo $prompt["id"]?>">See Details</a></td>
-            </tr>
-            <?php endforeach;
-            }  ?>
-        </table>
-    </section>
-    <section class="reportedPrompts">
-        <h2>ReportedPrompts</h2>
-    </section>
+    <div class="content">
+        <section class="askedPrompts">
+            <h2>New sended prompts</h2>
+            <table>
+                <tr>
+                    <th>user</th>
+                    <th>prompt</th>
+                    <th>action</th>
+                </tr>
+                <?php if(!empty($notAccepted)) {
+                    foreach($notAccepted as $prompt):?>
+                <tr>
+                    <td><?php echo htmlspecialchars($prompt["username"])?></td>
+                    <td><?php echo htmlspecialchars($prompt["title"])?></td>
+                    <td><a href="promptsDetailM.php?prompt=<?php echo $prompt["id"]?>">See Details</a></td>
+                </tr>
+                <?php endforeach;
+                }  ?>
+            </table>
+        </section>
+        <section class="reportedPrompts">
+            <h2>ReportedPrompts</h2>
+        </section>
+    </div>
 </body>
 </html>

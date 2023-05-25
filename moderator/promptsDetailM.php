@@ -52,36 +52,38 @@ if(!empty($_POST) && isset($_POST["accept"])) {
     <title>promptdetail</title>
 </head>
 <body>
-    <h2>prompt details</h2>
-    <form class="promptDetails" method="POST">
-        <div>
-            <p class="title">prompt</p>
-            <p><?php echo htmlspecialchars($prompt["prompts"]["title"])?></p>
-        </div>
-        <div>
-            <p class="title">user</p>
-            <p><?php echo htmlspecialchars($prompt["prompts"]["username"])?></p>
-        </div>
-        <div>
-            <p class="title">date</p>
-            <p><?php echo htmlspecialchars($prompt["prompts"]["date"])?></p>
-        </div>
-        <div>
-            <p class="title">examples</p>
-            <div class="img">
-            <?php foreach($prompt["examples"] as $example):
-                $image = 'https://res.cloudinary.com/dbbz2g87h/image/upload/'. $example["example"];?>
-            <img src = "<?php echo $image?>" >
+    <div class="content">
+        <h2>Prompt details</h2>
+        <form class="promptDetails" method="POST">
+            <div>
+                <p class="title">prompt</p>
+                <p><?php echo htmlspecialchars($prompt["prompts"]["title"])?></p>
+            </div>
+            <div>
+                <p class="title">user</p>
+                <p><?php echo htmlspecialchars($prompt["prompts"]["username"])?></p>
+            </div>
+            <div>
+                <p class="title">date</p>
+                <p><?php echo htmlspecialchars($prompt["prompts"]["date"])?></p>
+            </div>
+            <div>
+                <p class="title">examples</p>
+                <div class="img">
+                <?php foreach($prompt["examples"] as $example):
+                    $image = 'https://res.cloudinary.com/dbbz2g87h/image/upload/'. $example["example"];?>
+                <img src = "<?php echo $image?>" >
 
-            <?php endforeach; ?>
-        </div>
-        </div>
-        
-        <input type="hidden" name="id" value="<?php echo htmlspecialchars($prompt["prompts"]["id"])?>">
-        <div>
-        <input type="submit" name="accept" value="accept">
-        <input type="submit" name="reject"value="don't accept">
-        </div>
-    </form>
+                <?php endforeach; ?>
+            </div>
+            </div>
+            
+            <input type="hidden" name="id" value="<?php echo htmlspecialchars($prompt["prompts"]["id"])?>">
+            <div>
+            <input type="submit" name="accept" value="accept">
+            <input type="submit" name="reject"value="don't accept">
+            </div>
+        </form>
+    </div>
 </body>
 </html>
