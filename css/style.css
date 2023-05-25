@@ -1103,7 +1103,9 @@ nav ul a{
 }
 input[name="accept"]{
     background-color: #0CBC8B;
+    width: 200px;
 }
 input[name="reject"]{
     background-color: #EA394A;
+    width: 200px;
 }

@@ -374,7 +374,7 @@ class Prompts
     public static function detailPromptM($id)
     {
         $conn = Dbm::getInstance();
-        $statement = $conn->prepare("SELECT prompts.title, prompts.date, prompts.userId, prompts.accepted, prompts.id, users.id AS user, users.username FROM prompts LEFT JOIN users ON prompts.userid = users.id LEFT JOIN prompt_examples ON prompts.id = prompt_examples.promptId  WHERE prompts.id = :id AND accepted = 0 ");
+        $statement = $conn->prepare("SELECT prompts.title, prompts.date, prompts.description, prompts.userId, prompts.accepted, prompts.id, users.id AS user, users.username , prompt_categories.promptId, prompt_categories.categoryId,categories.name AS category FROM prompts LEFT JOIN users ON prompts.userid = users.id LEFT JOIN prompt_examples ON prompts.id = prompt_examples.promptId  LEFT JOIN prompt_categories ON prompts.id = prompt_categories.promptId LEFT JOIN categories ON prompt_categories.categoryId = categories.id WHERE prompts.id = :id AND accepted = 0 ");
         $statement->bindValue(":id", $id);
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);

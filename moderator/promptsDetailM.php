@@ -20,7 +20,6 @@ $prompt = Prompts::detailPromptM($_GET["prompt"]);
 if ($prompt) {
     $userId = $prompt["prompts"]["userId"];
     // Doe iets met $userId
-    //var_dump($userId);
 
 } else {
     // Doe iets anders als $prompt false is
@@ -53,37 +52,65 @@ if(!empty($_POST) && isset($_POST["accept"])) {
 </head>
 <body>
     <div class="content">
-        <h2>Prompt details</h2>
-        <form class="promptDetails" method="POST">
-            <div>
-                <p class="title">prompt</p>
-                <p><?php echo htmlspecialchars($prompt["prompts"]["title"])?></p>
+        <?php if(!empty($message)):?><p><?php echo $message ?></p><?php endif?>
+        <?php if(!empty($error)):?><p><?php echo $error ?></p><?php endif;?>
+        <div class="container">
+        <div class="title">
+            <h2><?php echo htmlspecialchars($prompt["prompts"]["title"])?></h2>  
+            <p class="categoryLabel dark left">
+            <?php if(isset($prompt["prompts"]["category"])) {
+                echo htmlspecialchars($prompt["prompts"]["category"]);
+            } else {
+                echo "no category";
+            }?>
+            </p>
+            <br>
+        </div>
+        </div>
+        <section id="exampleBox">
+        <?php if(!empty($prompt["examples"])) {?>
+            <?php foreach($prompt["examples"] as $example):?>
+                <div class="imageExample">
+                    <div class="img">
+                    <?php foreach($prompt["examples"] as $example):
+                        $image = 'https://res.cloudinary.com/dbbz2g87h/image/upload/'. $example["example"];?>
+                        <img src = "<?php echo $image?>" >
+                    <?php endforeach; ?>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        <?php } else {?>  
+            <div class="imageExample">
+                <img src="/uploads/default_image.png" alt="example">  
+            </div>  
+        <?php ;
+        }?>
+        </section>
+        <div class="container">
+        <section class="leftContainer" >
+            <div class="promptUserInfo">
+                <div class="half">
+                    <p><strong>Made by </strong><a href="../accountView.php?user=<?php echo htmlspecialchars($prompt['prompts']["userId"])?>" ><?php echo htmlspecialchars($prompt['prompts']['username'])?></a></p>
+                    <p><strong>Date:</strong> <?php echo htmlspecialchars($prompt["prompts"]["date"])?></p>
+                </div>
             </div>
+            <div class="promptPromptInfo">
+                <p class="title">
+                    <h3>Description</h3>
+                </p>
+                <p class="half"><?php echo htmlspecialchars($prompt["prompts"]["description"]);?></p>
+             </div>  
+        </section>
+        <section class="rightContainer">
             <div>
-                <p class="title">user</p>
-                <p><?php echo htmlspecialchars($prompt["prompts"]["username"])?></p>
+                <input type="submit" name="accept" value="accept">
+                <input type="submit" name="reject"value="don't accept">
             </div>
-            <div>
-                <p class="title">date</p>
-                <p><?php echo htmlspecialchars($prompt["prompts"]["date"])?></p>
-            </div>
-            <div>
-                <p class="title">examples</p>
-                <div class="img">
-                <?php foreach($prompt["examples"] as $example):
-                    $image = 'https://res.cloudinary.com/dbbz2g87h/image/upload/'. $example["example"];?>
-                <img src = "<?php echo $image?>" >
+        </section>    
+        </div>        
 
-                <?php endforeach; ?>
-            </div>
-            </div>
-            
-            <input type="hidden" name="id" value="<?php echo htmlspecialchars($prompt["prompts"]["id"])?>">
-            <div>
-            <input type="submit" name="accept" value="accept">
-            <input type="submit" name="reject"value="don't accept">
-            </div>
-        </form>
     </div>
+    </div>
+
 </body>
 </html>
