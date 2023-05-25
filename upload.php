@@ -41,48 +41,46 @@ $message = "";
 
 
 
-if(!empty($_POST) && !is_null(((int) $_POST['status']))) {
-    if($_POST['paid'] == 0) {
-
-    
-    try {
+if (!empty($_POST) && !is_null(((int) $_POST['status']))) {
+    if ($_POST['paid'] == 0) {
+        try {
+            $prompt = new Prompts();
+            $prompt->setTitle($_POST['title']);
+            $prompt->setAuthor($user);
+            $prompt->setDate(date("Y-m-d"));
+            $prompt->setDescription($_POST['description']);
+            $prompt->setStatus(((int) $_POST['status']));
+            $prompt->setPaid(((int) $_POST['paid']));
+            $prompt->setPrice(((int) $_POST['price']));
+            $prompt->setCategories($_POST['categories']);
+            $prompt->setModel($_POST['model_choice']);
+            $prompt->setPrompt($_FILES['files']);
+            $message = "Your prompt has been uploaded";
+            $promptId = $prompt->save();
+        } catch (Throwable $e) {
+            $message = $e->getMessage();
+        }
+    } elseif (!empty($_POST) && $_POST['paid'] == 1) {
+        $message2 = "Your price will be set to 0 because you have chosen to make this prompt free";
         $prompt = new Prompts();
-
         $prompt->setTitle($_POST['title']);
         $prompt->setAuthor($user);
         $prompt->setDate(date("Y-m-d"));
         $prompt->setDescription($_POST['description']);
         $prompt->setStatus(((int) $_POST['status']));
         $prompt->setPaid(((int) $_POST['paid']));
-        $prompt->setPrice(((int) $_POST['price']));
+        $prompt->setPrice(((int) 0));
         $prompt->setCategories($_POST['categories']);
         $prompt->setModel($_POST['model_choice']);
-       
+        $prompt->setPrompt($_FILES['files']);
         $message = "Your prompt has been uploaded";
         $promptId = $prompt->save();
-    } catch(Throwable $e) {
-        $message = $e->getMessage();
+    } else {
+        $message = "Please fill in all the fields";
     }
-} elseif(!empty($_POST) && $_POST['paid'] == 1) {
-    $message2 = "Your price will be set to 0 because you have chosen to make this prompt free";
-    $prompt = new Prompts();
-    $prompt->setTitle($_POST['title']);
-    $prompt->setAuthor($user);
-    $prompt->setDate(date("Y-m-d"));
-    $prompt->setDescription($_POST['description']);
-    $prompt->setStatus(((int) $_POST['status']));
-    $prompt->setPaid(((int) $_POST['paid']));
-    $prompt->setPrice(((int) 0));
-    $prompt->setCategories($_POST['categories']);
-    $prompt->setModel($_POST['model_choice']);
-    $promptId = $prompt->save();
 } else {
-    $message = "Please fill in all the fields";
+    $prompt = new Prompts(); // Initialize $prompt before accessing it
 }
-}else{
-
-}
-
 
 
 
@@ -119,7 +117,7 @@ if (!empty($_FILES) && empty($message)) {
     }
 }
       
-var_dump($prompt);
+
 
 ?>
 <!DOCTYPE html>
