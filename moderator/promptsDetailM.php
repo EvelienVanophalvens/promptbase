@@ -52,6 +52,7 @@ if(!empty($_POST) && isset($_POST["accept"])) {
 </head>
 <body>
     <div class="content">
+        <a href="promptsM.php" id="backbtn">< BACK TO OVERVIEW</a>
         <?php if(!empty($message)):?><p><?php echo $message ?></p><?php endif?>
         <?php if(!empty($error)):?><p><?php echo $error ?></p><?php endif;?>
         <div class="container">
