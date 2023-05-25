@@ -2,6 +2,19 @@
 include_once(__DIR__."/bootstrap.php");
 include_once(__DIR__."/navbar.php");
 
+use Cloudinary\Cloudinary;
+
+require 'vendor/autoload.php';
+
+
+$cloudinary = new Cloudinary([
+    'cloud' => [
+        'cloud_name' => 'dbbz2g87h',
+        'api_key'    => '263637247196311',
+        'api_secret' => 'cOrwpgG-ICTXLSYVCQJisbZb0x8',
+    ],
+]);
+
 authenticated();
 $prompt =  Prompts::detailPrompt($_GET["prompt"]);
 $comment = Comment::getAllComments($_GET["prompt"]);
@@ -81,9 +94,11 @@ if(!empty($_POST["reason"]) && isset($_POST["report"])) {
         </div>
         <section id="exampleBox">
         <?php if(!empty($prompt["examples"])) {?>
-            <?php foreach($prompt["examples"] as $example):?>
+            <?php foreach($prompt["examples"] as $example):
+                $image = 'https://res.cloudinary.com/dbbz2g87h/image/upload/'. $example["example"];?>
+                <img src = "<?php echo $image?>" >
                 <div class="imageExample">
-                        <img src="<?php echo "uploads/".htmlspecialchars($example["example"])?>" alt="example">  
+                        <img src="<?php echo $image?>" alt="example">  
                 </div>
             <?php endforeach; ?>
         <?php } else {?>  
