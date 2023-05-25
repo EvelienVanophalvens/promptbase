@@ -59,9 +59,9 @@ include_once(__DIR__."/bootstrap.php");
                     <div class="alert-succes">
                         <h5><?php echo $_SESSION['status'];?></h5>
                     </div>
-                    <div>
+                    <button class="submit"> 
                         <a href="login.php">Opnieuw inloggen</a>
-                    </div>
+                    </button>
                     <?php
                     unset($_SESSION['status']);
                 }
