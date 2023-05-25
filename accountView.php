@@ -4,7 +4,6 @@ include_once(__DIR__."/navbar.php");
 
 authenticated();
 $userId = filter_input(INPUT_GET, 'user', FILTER_VALIDATE_INT);
-var_dump($userId);
 if($userId === false) {
     header("Location: index.php");
     exit;
