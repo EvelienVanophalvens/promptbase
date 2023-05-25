@@ -27,6 +27,7 @@ if (isset($_SESSION['userid'])) {
 }
 
 
+
 //get model for prompts
 $models = Prompts::getModules();
 
@@ -38,12 +39,15 @@ $message = "";
 
 
 
+
+
 if(!empty($_POST) && !is_null(((int) $_POST['status']))) {
     if($_POST['paid'] == 0) {
 
     
     try {
         $prompt = new Prompts();
+
         $prompt->setTitle($_POST['title']);
         $prompt->setAuthor($user);
         $prompt->setDate(date("Y-m-d"));
@@ -53,6 +57,8 @@ if(!empty($_POST) && !is_null(((int) $_POST['status']))) {
         $prompt->setPrice(((int) $_POST['price']));
         $prompt->setCategories($_POST['categories']);
         $prompt->setModel($_POST['model_choice']);
+       
+        $message = "Your prompt has been uploaded";
         $promptId = $prompt->save();
     } catch(Throwable $e) {
         $message = $e->getMessage();
@@ -113,6 +119,7 @@ if (!empty($_FILES) && empty($message)) {
     }
 }
       
+var_dump($prompt);
 
 ?>
 <!DOCTYPE html>
@@ -146,13 +153,13 @@ if (!empty($_FILES) && empty($message)) {
     <input type="text" id="title" name="title" >
     <br>
     <br>
-    <input type="radio" id="private" name="status" value="1">
+    <input type="radio" id="private" name="status" value="1" checked>
     <label for="private">Private</label>
     <input type="radio" id="public" name="status" value="0">
     <label for="public">Public</label>
     <br>
     <br>
-    <input type="radio" id="paid" name="paid" value="0">
+    <input type="radio" id="paid" name="paid" value="0" checked>
     <label for="paid">Paid</label>
     <input type="radio" id="free" name="paid" value="1">
     <label for="free">Free</label>
