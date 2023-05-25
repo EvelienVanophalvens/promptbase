@@ -66,6 +66,7 @@ if(!empty($_POST) && isset($_POST["accept"])) {
             </p>
             <br>
         </div>
+        <form method="POST">
         </div>
         <section id="exampleBox">
         <?php if(!empty($prompt["examples"])) {?>
@@ -103,14 +104,15 @@ if(!empty($_POST) && isset($_POST["accept"])) {
         </section>
         <section class="rightContainer">
             <div>
+                <input type="hidden" name="id" value="<?php echo htmlspecialchars($prompt["prompts"]["id"])?>">
                 <input type="submit" name="accept" value="accept">
-                <input type="submit" name="reject"value="don't accept">
+                <input type="submit" name="reject" value="don't accept">
             </div>
         </section>    
         </div>        
 
     </div>
     </div>
-
+    </form>
 </body>
 </html>
