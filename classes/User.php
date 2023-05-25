@@ -203,8 +203,6 @@ class User
 
     public static function login($username, $password)
     {
-        var_dump("hello");
-
         //checken of de gebruiker bestaat
         $conn = Db::getInstance();
         $statement = $conn->prepare("SELECT * FROM users WHERE username = :username");

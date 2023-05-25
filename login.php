@@ -73,18 +73,18 @@ if(!empty($_POST)) {
       
         <div class="form-element">
             <?php if(!empty($loginError)) { ?>
-                <p class="error"><?php echo $loginError; ?></p>
+                <p class="errormessage"><?php echo $loginError; ?></p>
             <?php } ?>
             <div class="login-input">
                 <?php if(!empty($usernameError)) { ?>
-                    <p class="error"><?php echo $usernameError; ?></p>
+                    <p class="errormessage"><?php echo $usernameError; ?></p>
                 <?php } ?>
             <label for="username" class="hidden">Username</label>
             <input type="text" id="username" name="username" placeholder="Username">
             </div>
             <div class="login-input">
                 <?php if(!empty($passwordError)) { ?>
-                    <p class="error"><?php echo $passwordError; ?></p>
+                    <p class="errormessage"><?php echo $passwordError; ?></p>
                 <?php } ?>
             <label for="password" class="hidden">Password</label>
             <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Password">

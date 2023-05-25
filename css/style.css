@@ -549,7 +549,12 @@ nav ul a{
   .error input[type="email"] {
     color: #ff0000;
   }
-
+  .errormessage{
+    border: 3px solid red;
+    border-radius: 8px;
+    padding: 20px;
+    background-color: lightcoral;
+  }
   .blackBtn{
     background-color: #1f2937;
     border: none;
