@@ -79,7 +79,7 @@ if(!empty($_POST)) {
         <div class="title">
             <h2>Make your account</h2>
         </div>
-        <div class="alert">
+        <div class="alert hidden">
             <?php
                 if(isset($_SESSION['status'])) {
                     echo '<h4>'.$_SESSION['status'].'</h4>';
@@ -92,21 +92,21 @@ if(!empty($_POST)) {
             <div class="form-element">
                 <div class="login-input">
                     <?php if(!empty($usernameError)) { ?>
-                        <p class="error"><?php echo $usernameError; ?></p>
+                        <p class="alert rejected"><?php echo $usernameError; ?></p>
                     <?php } ?>
                     <label for="username" class="hidden">Username</label>
                     <input id="username" name="username" type="text" autocomplete="username" placeholder="Username">
                 </div>
                 <div class="login-input">
                     <?php if(!empty($emailError)) { ?>
-                        <p class="error"><?php echo $emailError; ?></p>
+                        <p class="alert rejected"><?php echo $emailError; ?></p>
                     <?php } ?>
                     <label for="email-address" class="hidden">Email address</label>
                     <input id="email-address" name="email" type="email" autocomplete="email" placeholder="Email address">
                 </div>
                 <div class="login-input">
                     <?php if(!empty($passwordError)) { ?>
-                        <p class="error"><?php echo $passwordError; ?></p>
+                        <p class="alert rejected"><?php echo $passwordError; ?></p>
                     <?php } ?>
                     <label for="password" class="hidden">Password</label>
                     <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Password">
@@ -154,10 +154,14 @@ if(!empty($_POST)) {
                 if(result.status === "error") {
                     typedEmail.classList.add("error");
                     errorMessage.innerText = result.message;
+                    errorMessage.classList.remove("hidden");
+                    errorMessage.classList.add("warning");
                 }
                 else {
                     typedEmail.classList.remove("error");
                     errorMessage.innerText = "";
+                    errorMessage.classList.add("hidden");
+                    errorMessage.classList.remove("warning");
                 }
             }
         };
