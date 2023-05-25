@@ -42,21 +42,21 @@ if(isset($_GET['credits'])) {
             <form action="creditsPayment.php" method="POST" id="creditsPayment">
                 <h3>Billing Address</h3>
                 <label for="cardname">Name on Card</label>
-                <input type="text" id="cardname" name="cardname"><br>
+                <input type="text" id="cardname" name="cardname" required><br>
                 
                 <label for="cardnumber">Credit card number</label>
-                <input type="text" id="cardnumber" name="cardnumber"><br>
+                <input type="text" id="cardnumber" name="cardnumber" required><br>
                 
                 <label for="expmonth">Exp Month</label>
-                <input type="text" id="expmonth" name="expmonth"><br>
+                <input type="text" id="expmonth" name="expmonth" required><br>
 
                 <label for="expyear">Exp Year</label>
-                <input type="text" id="expyear" name="expyear"><br>
+                <input type="text" id="expyear" name="expyear" required><br>
                     
                 <label for="cvv">CVV</label>
-                <input type="text" id="cvv" name="cvv">
+                <input type="text" id="cvv" name="cvv" required>
         
-                <button class="submit">Pay</button>
+                <button class="submit"><a href="paymentSucces.php?credits" . $credits>Pay</a></button>
 
             </form>
         </div>
