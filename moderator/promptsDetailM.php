@@ -70,8 +70,7 @@ if(!empty($_POST) && isset($_POST["accept"])) {
             <p class="title">examples</p>
             <div class="img">
             <?php foreach($prompt["examples"] as $example):
-                $image = $cloudinary->image('v1684860061/prompts/' . $example["example"])->toUrl();
-                $image = str_replace('?_a=AAFIKDQ', '.jpg', $image); ?>
+                $image = 'https://res.cloudinary.com/dbbz2g87h/image/upload/'. $example["example"];?>
             <img src = "<?php echo $image?>" >
 
             <?php endforeach; ?>

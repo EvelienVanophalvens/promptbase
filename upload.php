@@ -101,12 +101,14 @@ if (!empty($_FILES) && empty($message)) {
         $fileName = basename($_FILES['files']['name'][$key]);
         $publicId = time() . '_' . $fileName; // Generate unique public_id
 
+        $file = "prompts/" . $publicId . ".jpg";
+
         if(
         $cloudinary->uploadApi()->upload(
             $_FILES['files']['tmp_name'][$key],
             ['public_id' => $publicId, 'folder' => 'prompts']
         )){
-            Prompts::addExample($promptId, $publicId);
+            Prompts::addExample($promptId, $file);
         }
     }
 }
