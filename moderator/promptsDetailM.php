@@ -20,7 +20,7 @@ $prompt = Prompts::detailPromptM($_GET["prompt"]);
 if ($prompt) {
     $userId = $prompt["prompts"]["userId"];
     // Doe iets met $userId
-    var_dump($userId);
+    //var_dump($userId);
 
 } else {
     // Doe iets anders als $prompt false is
