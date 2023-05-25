@@ -3,7 +3,7 @@ include_once(__DIR__."/bootstrap.php");
 include_once(__DIR__."/navbar.php");
 
 
-    $credits = $_GET['credits'];
+ $credits = $_GET['credits'];
 
 //get the price
 if($credits == 25) {
@@ -14,6 +14,13 @@ if($credits == 25) {
     $price = 85;
 }
 
+// Controleer of de credits parameter is doorgegeven in de URL
+if(isset($_GET['credits'])) {
+    $credits = $_GET['credits'];
+     $melding = "<p class = 'statement' >U koopt " . $credits . " credits. Hiervoor moet u " . $price . " euro betalen.</p>";
+} else {
+    $melding = "<p class = 'statement error '>Er is een fout opgetreden. Probeer het later opnieuw.</p>";
+}
 
 ?>
 <!DOCTYPE html>
@@ -27,42 +34,33 @@ if($credits == 25) {
 </head>
 <body>
 <div class="content">
-  <a href="buyCredits.php" id="backbtn">< BACK TO OVERVIEW</a>
-  <div class="container2">
-	<h1>Payment page</h1>
-    <?php
-			// Controleer of de credits parameter is doorgegeven in de URL
-			if(isset($_GET['credits'])) {
-				$credits = $_GET['credits'];
-				echo "<p>U koopt " . $credits . " credits.</p>";
-      //toon de prijs
-      echo "<p>De prijs is " . $price . " euro.</p>";
-			} else {
-				echo "<p>Er is een fout opgetreden. Probeer het later opnieuw.</p>";
-			}
-		?>
-
-<div class="payment">
-
-        <form action="creditsPayment.php" method="POST">
-              <h3>Billing Address</h3>
-              <label for="cardname">Name on Card</label>
-              <input type="text" id="cardname" name="cardname">
-              <label for="cardnumber">Credit card number</label>
-              <input type="text" id="cardnumber" name="cardnumber">
-              <label for="expmonth">Exp Month</label>
-              <input type="text" id="expmonth" name="expmonth">
-                  <label for="expyear">Exp Year</label>
-                  <input type="text" id="expyear" name="expyear">
-
-
-                  <label for="cvv">CVV</label>
-                  <input type="text" id="cvv" name="cvv">
-    
+    <a href="buyCredits.php" id="backbtn">< BACK TO OVERVIEW</a>
+    <div class="container2">
+        <h1>Payment page</h1>
+        <?php echo $melding;?>
+        <div class="payment">
+            <form action="creditsPayment.php" method="POST" id="creditsPayment">
+                <h3>Billing Address</h3>
+                <label for="cardname">Name on Card</label>
+                <input type="text" id="cardname" name="cardname"><br>
                 
-</div>
-<button><a href="paymentSucces.php?credits" . $credits>Pay</a> </button>
+                <label for="cardnumber">Credit card number</label>
+                <input type="text" id="cardnumber" name="cardnumber"><br>
+                
+                <label for="expmonth">Exp Month</label>
+                <input type="text" id="expmonth" name="expmonth"><br>
+
+                <label for="expyear">Exp Year</label>
+                <input type="text" id="expyear" name="expyear"><br>
+                    
+                <label for="cvv">CVV</label>
+                <input type="text" id="cvv" name="cvv">
+        
+                <button class="submit">Pay</button>
+
+            </form>
         </div>
+    </div>
 
       
 </body>
