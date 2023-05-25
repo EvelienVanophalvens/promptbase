@@ -79,7 +79,7 @@ if(!empty($_POST)) {
         <div class="title">
             <h2>Make your account</h2>
         </div>
-        <div class="alert">
+        <div class="alert hidden">
             <?php
                 if(isset($_SESSION['status'])) {
                     echo '<h4>'.$_SESSION['status'].'</h4>';
@@ -154,10 +154,14 @@ if(!empty($_POST)) {
                 if(result.status === "error") {
                     typedEmail.classList.add("error");
                     errorMessage.innerText = result.message;
+                    errorMessage.classList.remove("hidden");
+                    errorMessage.classList.add("warning");
                 }
                 else {
                     typedEmail.classList.remove("error");
                     errorMessage.innerText = "";
+                    errorMessage.classList.add("hidden");
+                    errorMessage.classList.remove("warning");
                 }
             }
         };
