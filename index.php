@@ -2,6 +2,20 @@
 include_once(__DIR__."/bootstrap.php");
 include_once(__DIR__."/navbar.php");
 
+
+use Cloudinary\Cloudinary;
+
+require 'vendor/autoload.php';
+
+
+$cloudinary = new Cloudinary([
+    'cloud' => [
+        'cloud_name' => 'dbbz2g87h',
+        'api_key'    => '263637247196311',
+        'api_secret' => 'cOrwpgG-ICTXLSYVCQJisbZb0x8',
+    ],
+]);
+
 //authenticated();
 $accepted =  Prompts::accepted();
 
@@ -126,12 +140,16 @@ if (isset($_SESSION['auth_user'])) {
                     <?php if(!empty($accepted)):
                         foreach($accepted as $prompt):
                             $example = Prompts::getPromptExample($prompt["id"]);
-                            $picture = $example["example"];?>
+                            $picture = $example["example"];
+                            $image = 'https://res.cloudinary.com/dbbz2g87h/image/upload/'. $picture;?>
+
+
+                            
                             <div class="chart">
                                 <a href="promptDetail.php?prompt=<?php echo $prompt["id"];?>"> 
                                     <div class="coverImage">
                                         <?php if(!empty($picture)) {?>
-                                            <img src=" uploads/<?php echo htmlspecialchars($picture)?>" alt="coverImage">
+                                            <img src="<?php echo htmlspecialchars($image)?>" alt="coverImage">
                                         <?php } else {?>
                                             <img src="uploads/default_image.png" alt="example">
                                         <?php }?>

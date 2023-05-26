@@ -1,6 +1,21 @@
 <?php
 include_once(__DIR__."/bootstrap.php");
 include_once(__DIR__."/navbar.php");
+
+
+use Cloudinary\Cloudinary;
+
+require 'vendor/autoload.php';
+
+
+$cloudinary = new Cloudinary([
+    'cloud' => [
+        'cloud_name' => 'dbbz2g87h',
+        'api_key'    => '263637247196311',
+        'api_secret' => 'cOrwpgG-ICTXLSYVCQJisbZb0x8',
+    ],
+]);
+
 authenticated();
 $error = "";
 if(!empty($_FILES)) {
@@ -116,8 +131,10 @@ $boughtPrompts = Prompts::getBoughtPrompts($_SESSION['userid']);
                         <div class="chart">
                             <a href="viewOwnPrompt.php?prompt=<?php echo $prompt["id"];?>">
                                 <div class="coverImage">
-                                    <?php if(!empty($prompt["example"])) {?>
-                                        <img src="<?php echo "uploads/".$prompt["example"]?>" alt="coverImage">
+                                    <?php if(!empty($prompt["example"])) {
+                                        $picture = $prompt["example"];
+                                        $image = 'https://res.cloudinary.com/dbbz2g87h/image/upload/'. $picture;?>
+                                        <img src="<?php echo $image;?>" alt="coverImage">
                                     <?php ;
                                     } elseif (!empty($prompt["image"])) {?>
                                         <img src="<?php echo $prompt["image"]?>" alt="example">
@@ -181,7 +198,7 @@ $boughtPrompts = Prompts::getBoughtPrompts($_SESSION['userid']);
             </div>  
 
 
-            <h3>My bought promps</h3>
+            <h3>My bought prompts</h3>
             <hr>  
             <div class="chartContainer">
                 <?php if(!empty($boughtPrompts)) {
@@ -190,11 +207,15 @@ $boughtPrompts = Prompts::getBoughtPrompts($_SESSION['userid']);
                             <a href="promptBought.php?prompt=<?php echo $prompt["id"];?>">
                             
                                 <div class="coverImage">
-                                    <?php if(!empty($prompt["example"])) {?>
-                                        <img src="<?php echo "uploads/".$prompt["example"]?>" alt="coverImage">
+                                    <?php if(!empty($prompt["example"])) {
+                                       ?>
+                                        
+
                                     <?php ;
-                                    } elseif (!empty($prompt["image"])) {?>
-                                        <img src="<?php echo $prompt["image"]?>" alt="example">
+                                    } elseif (!empty($prompt["image"])) {
+                                        $picture = $prompt["image"];
+                                        $image = 'https://res.cloudinary.com/dbbz2g87h/image/upload/'. $picture;?>
+                                        <img src="<?php echo $image;?>" alt="coverImage">
                                     <?php ;
                                     }else{?>
                                         <img src="uploads/default_image.png" alt="coverImage">
