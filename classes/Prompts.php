@@ -49,16 +49,17 @@ class Prompts
      * @return  self
      */
     public function setPrompt($prompt)
-    {
-        if(empty($prompt)) {
-            throw new Exception("Please fill in a title");
-        } else {
-            $this->prompt = $prompt;
-        }
-
-        return $this;
+{
+    if (empty($prompt)) {
+        throw new Exception("Please fill in a title");
+    } elseif (is_array($prompt)) {
+        $this->prompt = implode(' ', $prompt);
+    } else {
+        $this->prompt = $prompt;
     }
 
+    return $this;
+}
     /**
      * Get the value of author
      */
@@ -257,6 +258,7 @@ class Prompts
         } else {
             $this->price = $price;
         }
+        
     }
 
         /**
@@ -281,30 +283,33 @@ class Prompts
 
      //FUNCTIES UPLOADEN NIEUWE PROMPTS
      public function save()
-     {
-         $conn = Db::getInstance();
-         $statement = $conn->prepare("INSERT INTO prompts (title, userId, date, accepted, description, status, paid, price, modelId) VALUES (:title, :userId, :date, :accepted, :discription, :status, :paid, :price, :model )");
-         $statement->bindValue(":title", $this->getTitle());
-         $statement->bindValue(":userId", $this->getAuthor());
-         $statement->bindValue(":date", $this->getDate());
-         $statement->bindValue(":accepted", 0);
-         $statement->bindValue(":discription", $this->getDescription());
-         $statement->bindValue(":status", $this->getStatus());
-         $statement->bindValue(":paid", $this->getPaid());
-         $statement->bindValue(":price", $this->getPrice());
-         $statement->bindValue(":model", $this->getModel());
-         $statement->execute();
+{
+    $conn = Db::getInstance();
+    $statement = $conn->prepare("INSERT INTO prompts (title, userId, date, accepted, description, status, paid, price, modelId, prompt) VALUES (:title, :userId, :date, :accepted, :description, :status, :paid, :price, :model, :prompt)");
+    $statement->bindValue(":title", $this->getTitle());
+    $statement->bindValue(":userId", $this->getAuthor());
+    $statement->bindValue(":date", $this->getDate());
+    $statement->bindValue(":accepted", 0);
+    $statement->bindValue(":description", $this->getDescription());
+    $statement->bindValue(":status", $this->getStatus());
+    $statement->bindValue(":paid", $this->getPaid());
+    $statement->bindValue(":price", $this->getPrice());
+    $statement->bindValue(":model", $this->getModel());
+    $statement->bindValue(":prompt", $this->getPrompt());
+    $statement->execute();
 
-         $lastId = $conn->lastInsertId();
-         return $lastId;
+    $lastId = $conn->lastInsertId();
 
-         foreach($this->getCategories() as $category) {
-             $statement3 = $conn->prepare("INSERT INTO prompt_categories (promptId, categoryId) VALUES (:promptId, :categoryId)");
-             $statement3->bindValue(":promptId", $lastId);
-             $statement3->bindValue(":categoryId", $category);
-             $statement3->execute();
-         }
-     }
+    foreach ($this->getCategories() as $category) {
+        $statement3 = $conn->prepare("INSERT INTO prompt_categories (promptId, categoryId) VALUES (:promptId, :categoryId)");
+        $statement3->bindValue(":promptId", $lastId);
+        $statement3->bindValue(":categoryId", $category);
+        $statement3->execute();
+    }
+
+    return $lastId;
+}
+
     public static function addExample($id, $example)
     {
         $conn = Db::getInstance();
@@ -327,7 +332,27 @@ class Prompts
         $statement = $conn->prepare("SELECT * FROM categories");
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-        return $result;
+        return [
+            // Sample categories array
+            [
+                "id" => 1,
+                "name" => "line-art",
+            ],
+            [
+                "id" => 2,
+                "name" => "3D",
+            ],
+            [
+                "id" => 3,
+                "name" => "animation",
+            ],
+           
+            [
+                "id" => 4,
+                "name" => "animals",
+            ] 
+        ];
+    
     }
     //LIJSTEN PROMPTS:
     //Geeft alle prompts van een user accepted of niet (enkel zichtbaar voor de user zelf)
@@ -457,7 +482,7 @@ class Prompts
     public static function search($search)
     {
         $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT * FROM prompts WHERE prompt LIKE :search");
+        $statement = $conn->prepare("SELECT prompts.id AS promptId, title, date, userId, accepted, description, status, paid, price, modelId, categoryId, categories.name AS category FROM prompts LEFT JOIN prompt_categories ON prompts.id = prompt_categories.promptId LEFT JOIN categories ON prompt_categories.categoryId = categories.id WHERE title LIKE :search OR description LIKE :search");
         $statement->bindValue(":search", '%'.$search.'%');
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -573,7 +598,7 @@ if($paid_free == "free"){
 
     public static function getFavouritePrompts($userId) {
         $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT * FROM favourits WHERE userId = :userId");
+        $statement = $conn->prepare("SELECT prompts.id, prompt, favourits.userId FROM prompts JOIN favourits ON prompts.id = favourits.promptId WHERE favourits.userId = :userId");
         $statement->bindValue(":userId", $userId);
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);

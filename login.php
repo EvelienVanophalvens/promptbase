@@ -2,7 +2,7 @@
 include_once(__DIR__."/bootstrap.php");
 
 if(isset($_SESSION['authenticated'])) {
-    $_SESSION['status'] = "You are already Logged In";
+    $_SESSION['status'] = "You are already logged in";
     header("Location: index.php");
 
 }
@@ -63,7 +63,7 @@ if(!empty($_POST)) {
         <div class="title">
         <h2>Log in to your account</h2> 
         <?php if(isset($_SESSION['status'])) { ?>
-    <div class="alert">
+    <div class="alert succes">
         <h5><?= $_SESSION['status']; ?></h5>
     </div>
     <?php unset($_SESSION['status']); ?>

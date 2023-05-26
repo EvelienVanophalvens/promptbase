@@ -78,7 +78,9 @@ authenticated();
 $personalPrompts =  Prompts::getPersonalPrompts($_SESSION['userid']);
 
 //get the favourite prompt from the database
-$favouritePrompt = Prompts::getFavouritePrompts($_SESSION['userid']);
+$userId = $_SESSION['userid'];
+
+$favouritePrompt = Prompts::getFavouritePrompts($userId);
 
 $boughtPrompts = Prompts::getBoughtPrompts($_SESSION['userid']);
 

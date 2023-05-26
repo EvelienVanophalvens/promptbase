@@ -59,10 +59,13 @@ a:visited { text-decoration: none; color:black }
 .title h2{
     font-size: 32px;
     font-weight: 400;
-    margin-bottom: 0px;
+    margin-bottom: 20px;
 }
 .hidden{
     display: none;
+    clip: rect(0 0 0 0);
+    visibility: none;
+    position: absolute; left: -9999px;
 }
 input#username{
     border-bottom: none;
@@ -86,14 +89,14 @@ input#comment{
     width: 30%;
 }
 .login-input input{
-    width: 100%;
+    width: 96%;
     padding-top: 12px;
     padding-bottom: 12px;
     border: 1px solid #d1d1d1;
+    padding-left: 12px;
 }
 .login-input input::placeholder{
     color: #afafaf;
-    padding-left: 8px;
 }
 .passwordChange-input input#password{
     margin-top: 4px;
@@ -351,14 +354,34 @@ nav ul a{
     padding-left: 200px;
   }
 
-
-.alert-succes{
-    border: 2px solid #2b975a;
-    background-color: #b5eacc;
+.alert{
+    border: 2px solid;
     border-radius: 4px;
-    color: #2b975a;
+    height: 30px;
+    width: 100%;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
+.succes{
+    border-color: #2b975a;
+    background-color: #b5eacc;
+    color: #2b975a;
+}
+.warning{
+    border-color: #EEA248;
+    background-color: #FBE9D4;
+    color: #EEA248;
+}
+.rejected{
+    border-color: #EA394A;
+    background-color: #F9C3C8;
+    color: #EA394A;
+}
 .promptDetails{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 3fr 1fr;
@@ -388,10 +411,6 @@ nav ul a{
     height: 50%;
     justify-self: center;
     align-self: end;
-}
-
-.hidden{
-    opacity: 0;
 }
 
 .faded{
@@ -752,9 +771,10 @@ nav ul a{
     display: flex;
     justify-content: space-around;
     width: 25%;
-    height: 25%;
-
-
+}
+.user{
+    display: flex;
+    justify-content: space-between;
 }
 
 #promptMenu{
@@ -1108,4 +1128,20 @@ input[name="accept"]{
 input[name="reject"]{
     background-color: #EA394A;
     width: 200px;
+}
+.statement{
+    border: 1px solid #d1d1d1;
+    border-radius: 10px;
+    background-color: #fafafa;
+    text-align: center;
+    width: 22%;
+    padding: 24px 6px;
+}
+#creditsPayment{
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+}
+#creditPayment input{
+    border-radius: 10px;
 }
