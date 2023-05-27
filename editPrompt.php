@@ -8,6 +8,14 @@
 
     use Cloudinary\Cloudinary;
 
+    $cloudinary = new Cloudinary([
+        'cloud' => [
+            'cloud_name' => 'dbbz2g87h',
+            'api_key'    => '263637247196311',
+            'api_secret' => 'cOrwpgG-ICTXLSYVCQJisbZb0x8',
+        ],
+    ]);
+
 
 
 
@@ -95,8 +103,12 @@
                 $_FILES['files']['tmp_name'][$key],
                 ['public_id' => $publicId, 'folder' => 'prompts']
             )){
-                Prompts::updateExamples($promptId, $file);
+                Prompts::updateExamples($_GET['prompt'], $file);
             }
+        }
+    }else if(empty($_FILES) && !empty($message)){
+        foreach($prompt["examples"] as $example){
+            Prompts::updateExamples($_GET['prompt'], $example["example"]);
         }
     }
 
@@ -153,9 +165,10 @@
                     <p>Upload example<p>
                     <p>ctrl+shift to select multiple picture</p>
                     <div class="coverImages">
-                        <?php if(!empty($prompt["examples"])): foreach($prompt["examples"] as $example):?>
+                        <?php if(!empty($prompt["examples"])): foreach($prompt["examples"] as $example):
+                             $image = 'https://res.cloudinary.com/dbbz2g87h/image/upload/'. $example["example"];?>
                             <div class="coverImage">
-                            <img src="<?php echo "uploads/".$example["example"]?>" alt="<?php echo $example["example"]?>">
+                            <img src="<?php echo htmlSpecialChars($image)?>" alt="<?php echo $example["example"]?>">
                             </div>
                         <?php endforeach; endif;?>
                     </div>

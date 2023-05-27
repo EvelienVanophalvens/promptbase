@@ -676,7 +676,7 @@ if($paid_free == "free"){
 
       }
 
-      public static function updateExamples($file, $promptId){
+      public static function updateExamples( $promptId, $file){
         $conn = Db::getInstance();
         $statement = $conn->prepare("DELETE FROM prompt_examples WHERE promptId = :promptId");
         $statement->bindValue(":promptId", $promptId);
