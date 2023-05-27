@@ -39,7 +39,7 @@ $favouritePrompt = Prompts::getFavouritePrompts($userId);
 
 $boughtPrompts = Prompts::getBoughtPrompts($_SESSION['userid']);
 
-if(!empty($_FILES) && $_FILES['profilePicture']["size"] > 600000) {
+if(!empty($_FILES) && $_FILES['profilePicture']["size"] > 1000000) {
 
     $fileName = "profilePicture" . $_SESSION['auth_user']['username'] ;
     $publicId = time() . '_' . $fileName; // Generate unique public_id
