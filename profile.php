@@ -114,8 +114,10 @@ $boughtPrompts = Prompts::getBoughtPrompts($_SESSION['userid']);
                                         $image = 'https://res.cloudinary.com/dbbz2g87h/image/upload/'. $picture;?>
                                         <img src="<?php echo $image;?>" alt="coverImage">
                                     <?php ;
-                                    } elseif (!empty($prompt["image"])) {?>
-                                        <img src="<?php echo $prompt["image"]?>" alt="example">
+                                    } elseif (!empty($prompt["image"])) {
+                                        $picture = $prompt["image"];
+                                        $image = 'https://res.cloudinary.com/dbbz2g87h/image/upload/'. $picture;?>
+                                        <img src="<?php echo $image?>" alt="example">
                                     <?php ;
                                     } else {?>
                                         <img src="uploads/default_image.png" alt="coverImage">

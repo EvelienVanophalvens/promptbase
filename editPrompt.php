@@ -168,7 +168,7 @@
                         <?php if(!empty($prompt["examples"])): foreach($prompt["examples"] as $example):
                              $image = 'https://res.cloudinary.com/dbbz2g87h/image/upload/'. $example["example"];?>
                             <div class="coverImage">
-                            <img src="<?php echo htmlSpecialChars($image)?>" alt="<?php echo $example["example"]?>">
+                            <img src="<?php echo $image?>" alt="<?php echo $example["example"]?>">
                             </div>
                         <?php endforeach; endif;?>
                     </div>
