@@ -40,7 +40,9 @@ $message = "";
 
 
 
-
+if(!empty($_FILES) && $_FILES['files']["size"] > 600000) {
+    $message = "File is too large";
+}else
 if (!empty($_POST) && !is_null(((int) $_POST['status']))) {
     if ($_POST['paid'] == 0) {
         try {
@@ -103,6 +105,10 @@ if (!empty($_FILES) && empty($message)) {
     ]);
 
     foreach ($_FILES['files']['name'] as $key => $val) {
+        
+            $message = "File is too large";
+            break;
+        }
         $fileName = "promptExample" . $key . $promptId;
         $publicId = time() . '_' . $fileName; // Generate unique public_id
 
@@ -116,7 +122,7 @@ if (!empty($_FILES) && empty($message)) {
             Prompts::addExample($promptId, $file);
         }
     }
-}
+
       
 
 
