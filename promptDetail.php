@@ -37,14 +37,7 @@ if(!empty($_POST["reason"]) && isset($_POST["report"])) {
     $userId = $_SESSION['userid'];
     $promptId = $_GET["prompt"];
 
-   /* //if the prompt is sold the maker of the prompt should receive 10 credits
-    $isSold = Prompts::getSold($promptId);
-    if($isSold) {
-        $credits = User::getCredit($prompt["prompts"]->user);
-        $newCredits = $credits + 10;
-        User::updateCredit($prompt["prompts"]->user, $newCredits);
-    }*/
-    
+
     
 
 ?>
@@ -284,7 +277,27 @@ document.querySelector("#cancel").addEventListener('click', function(e){
 
 // add event to favourites
 
+
 const favoritesButton = document.getElementById('favourites');
+// Get the 'favourites' element
+const favourites = document.getElementById('favourites');
+
+// Check if the 'favourites' element exists
+if (favourites) {
+  // Check if the 'favourites' value is stored in local storage
+  const isFavourite = localStorage.getItem('favourites') === 'true';
+
+  // Set the initial text content based on the stored value
+  favourites.innerHTML = isFavourite ?   'add to favourites' : 'remove from favourites';
+
+  // Add a click event listener to toggle the 'favourites' value
+  favourites.addEventListener('click', function () {
+    const newIsFavourite = !isFavourite;
+    localStorage.setItem('favourites', newIsFavourite);
+    favourites.innerHTML = newIsFavourite ?  'add to favourites' : 'remove from favourites';
+  });
+}
+
 
 favoritesButton.addEventListener('click', () => {
     const promptId = favoritesButton.getAttribute('data-id');
