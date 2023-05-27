@@ -213,9 +213,8 @@ $boughtPrompts = Prompts::getBoughtPrompts($_SESSION['userid']);
                             
                                 <div class="coverImage">
                                     <?php if(!empty($prompt["example"])) {
-                                       ?>
-                                        
-
+                                        $image = 'https://res.cloudinary.com/dbbz2g87h/image/upload/'. $prompt["example"];?>
+                                        <img src="<?php echo $image?>" alt="coverImage">
                                     <?php ;
                                     } elseif (!empty($prompt["image"])) {
                                         $picture = $prompt["image"];
