@@ -676,36 +676,16 @@ if($paid_free == "free"){
 
       }
 
-      public static function updateExamples($files, $promptId){
+      public static function updateExamples($file, $promptId){
         $conn = Db::getInstance();
         $statement = $conn->prepare("DELETE FROM prompt_examples WHERE promptId = :promptId");
         $statement->bindValue(":promptId", $promptId);
         $statement->execute();
 
-        $targetDir = "uploads/";
-        foreach($files["files"]["name"] as $key => $val){
-            $fileName = basename($files["files"]["name"][$key]);
-            $targetFilePath = $targetDir . $fileName;
-            //check wheter file type is valid
-            $fileExt = explode('.', $fileName);
-            $fileActualExt = strtolower(end($fileExt));
-            $allowed = array('jpg', 'jpeg', 'png', 'pdf');
-            if(in_array($fileActualExt, $allowed)){
-                if(move_uploaded_file($files["files"]["tmp_name"][$key], $targetFilePath)){
-                    $statement2 = $conn->prepare("INSERT INTO prompt_examples (promptId, example) VALUES (:promptId, :example)");
-                    $statement2->bindValue(":promptId", $promptId);
-                    $statement2->bindValue(":example", $fileName);
-                    $statement2->execute();
-                }else{
-                    return "error";
-                }
-            }else{
-                return "sorry this file type is not allowed";
-            }
-
-        }
-
-        header("Location: notifications.php");
+        $statement2 = $conn->prepare("INSERT INTO prompt_examples (promptId, example) VALUES (:promptId, :example)");
+        $statement2->bindValue(":promptId", $promptId);
+        $statement2->bindValue(":example", $file);
+        $statement2->execute();
         
       }
 

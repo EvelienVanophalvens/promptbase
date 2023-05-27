@@ -2,6 +2,20 @@
 include_once(__DIR__."/bootstrap.php");
 include_once(__DIR__."/navbar.php");
 
+use Cloudinary\Cloudinary;
+
+require 'vendor/autoload.php';
+
+
+$cloudinary = new Cloudinary([
+    'cloud' => [
+        'cloud_name' => 'dbbz2g87h',
+        'api_key'    => '263637247196311',
+        'api_secret' => 'cOrwpgG-ICTXLSYVCQJisbZb0x8',
+    ],
+]);
+
+
 authenticated();
 $userId = filter_input(INPUT_GET, 'user', FILTER_VALIDATE_INT);
 if($userId === false) {
@@ -86,8 +100,9 @@ if(!empty($_POST["reason"]) && isset($_POST["report"])) {
                     <div class="chart">
                         <a href="promptDetail.php?prompt=<?php echo $prompt["id"];?>"> 
                             <div class="coverImage">
-                                <?php if(!empty($picture)) {?>
-                                    <img src=" uploads/<?php echo htmlspecialchars($picture)?>" alt="coverImage">
+                                <?php if(!empty($picture)) {
+                                    $image = 'https://res.cloudinary.com/dbbz2g87h/image/upload/'. $picture;?>
+                                    <img src="<?php echo $picture?>" alt="coverImage">
                                 <?php } else {?>
                                     <img src="uploads/default_image.png" alt="example">
                                 <?php }?>

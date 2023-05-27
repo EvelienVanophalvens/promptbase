@@ -100,7 +100,7 @@ if(!empty($_POST) && isset($_POST["delete"])){
             <?php foreach($prompt["examples"] as $example):
                 $image = 'https://res.cloudinary.com/dbbz2g87h/image/upload/'. $example["example"];?>
                 <div class="imageExample">
-                        <img src="<?php echo $image?>" alt="example">  
+                        <img src="<?php echo htmlspecialchars($image)?>" alt="example">  
                 </div>
             <?php endforeach; ?>
         <?php } else {?>  

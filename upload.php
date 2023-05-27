@@ -92,7 +92,6 @@ $statusMsg = '';
 
 
 
-$targetDir = "uploads/";
 
 if (!empty($_FILES) && empty($message)) {
     $cloudinary = new Cloudinary([

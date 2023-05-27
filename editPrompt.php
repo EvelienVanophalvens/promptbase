@@ -3,6 +3,14 @@
     include_once(__DIR__."/navbar.php");
     authenticated();
 
+    
+    require_once(__DIR__ . '/vendor/autoload.php');
+
+    use Cloudinary\Cloudinary;
+
+
+
+
     $prompt = Prompts::getRejectedPrompt($_GET['prompt'], $_SESSION['userid']);
 
 
@@ -67,9 +75,29 @@
     }
 
 
-    if(!empty($_FILES) && empty($message) ){
-        $file = $_FILES;
-        Prompts::updateExamples($file, $_GET['prompt']);
+    if (!empty($_FILES) && empty($message)) {
+        $cloudinary = new Cloudinary([
+            'cloud' => [
+                'cloud_name' => 'dbbz2g87h',
+                'api_key'    => '263637247196311',
+                'api_secret' => 'cOrwpgG-ICTXLSYVCQJisbZb0x8',
+            ],
+        ]);
+    
+        foreach ($_FILES['files']['name'] as $key => $val) {
+            $fileName = basename($_FILES['files']['name'][$key]);
+            $publicId = time() . '_' . $fileName; // Generate unique public_id
+    
+            $file = "prompts/" . $publicId . ".jpg";
+    
+            if(
+            $cloudinary->uploadApi()->upload(
+                $_FILES['files']['tmp_name'][$key],
+                ['public_id' => $publicId, 'folder' => 'prompts']
+            )){
+                Prompts::updateExamples($promptId, $file);
+            }
+        }
     }
 
 
