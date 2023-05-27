@@ -123,7 +123,7 @@ if (authenticated()) {
                                 <div class="coverImage">
                                     <?php if(!empty($picture)) {
                                           $image = 'https://res.cloudinary.com/dbbz2g87h/image/upload/'. $picture;?>
-                                        <img src="<?php echo htmlspecialchars($picture)?>" alt="coverImage">
+                                        <img src="<?php echo htmlspecialchars($image)?>" alt="coverImage">
                                     <?php } else {?>
                                         <img src="uploads/default_image.png" alt="example">
                                     <?php }?>
