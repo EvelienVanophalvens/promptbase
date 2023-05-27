@@ -1,41 +1,30 @@
 <?php
-
 require_once("../bootstrap.php");
-
-//follow/unfollow user
-
-$result = [
-    "status" => "error",
-    "message" => "Something went wrong"
-];
 
 if (isset($_POST['userId'])) {
     $userId = $_POST['userId'];
+    $loggedInUserId = $_SESSION["userid"];
 
-    if (!isset($_POST['follow'])) {
-        // Follow user
-        $follow = User::followUser($userId);
+    $isFollowing = User::isFollowingUser($loggedInUserId, $userId);
+
+    if ($isFollowing) {
+        // Remove the follow if already following
+        Follow::removeFollow($userId, $loggedInUserId);
+        $result = [
+            "status" => "success",
+            "message" => "Follow was removed"
+        ];
+    } else {
+        $f = new Follow();
+        $f->setUserId($userId);
+        $f->setFollowerId($loggedInUserId);
+        $f->save();
 
         $result = [
             "status" => "success",
-            "message" => "User was followed"
+            "message" => "Follow was saved"
         ];
-    } else {
-        // Unfollow user if already followed
-        if (User::isFollowingUser($userId)) {
-            $unfollow = User::unfollowUser($userId);
-
-            $result = [
-                "status" => "success",
-                "message" => "User was unfollowed"
-            ];
-        } else {
-            $result = [
-                "status" => "error",
-                "message" => "User is not currently followed"
-            ];
-        }
     }
-}
 
-echo json_encode($result);
+    echo json_encode($result);
+}

@@ -538,14 +538,7 @@ class User
         $statement->execute();
     }
 
-    public static function removeFollow($userId, $loggedInUserId)
-    {
-        $conn = Db::getInstance();
-        $statement = $conn->prepare("DELETE FROM user_follow WHERE userId = :userId AND followId = :followerId");
-        $statement->bindValue(":userId", $userId);
-        $statement->bindValue(":followerId", $_SESSION['userid']);
-        $statement->execute();
-    }
+ 
 
     public static function isFollowingUser($loggedInUserId, $userId)
     {

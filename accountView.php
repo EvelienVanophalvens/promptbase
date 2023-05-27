@@ -108,7 +108,7 @@ if (authenticated()) {
                 </div>
                 </div>
                 <p id="bio-text"><?php echo htmlspecialchars($user["bio"]); ?></p>
-                <button id="follow-btn"><?php echo $isFollowing ? 'Unfollow' : 'Follow'; ?></button>
+                <button id="follow-btn" data-userid="<?php echo $user['id']; ?>"><?php echo $isFollowing ? 'Unfollow' : 'Follow'; ?></button>
 
 
         </div>  
@@ -164,41 +164,47 @@ if (authenticated()) {
 <script>
   
   let follow = document.querySelector('#follow-btn');
-let userId = <?php echo $user["id"]; ?>;
+let userId = follow.getAttribute('data-userid');
 
 // Check if the follow status is stored in local storage
 let followStatus = localStorage.getItem('followStatus-' + userId);
+
+// Set the initial button state based on the follow status
 if (followStatus === 'unfollow') {
-  follow.innerHTML = 'Unfollow';
-  follow.style.backgroundColor = '#1F2937';
+    follow.innerHTML = 'Unfollow';
+    follow.style.backgroundColor = '#1F2937';
 }
 
-follow.addEventListener('click', function(e) {
-  e.preventDefault();
-  let formData = new FormData();
-  formData.append('userId', userId);
-  fetch('ajax/follow.php', {
-    method: 'POST',
-    body: formData
-  })
+// Remove any existing event listeners for the follow button
+follow.removeEventListener('click', followButtonClickHandler);
+
+// Attach the event listener for the follow button click
+follow.addEventListener('click', followButtonClickHandler);
+
+function followButtonClickHandler(e) {
+    e.preventDefault();
+    let formData = new FormData();
+    formData.append('userId', userId);
+    fetch('ajax/follow.php', {
+        method: 'POST',
+        body: formData
+    })
     .then(response => response.json())
     .then(result => {
-      console.log(result);
-      if (result.status === 'success') {
-        if (follow.innerHTML === 'Follow') {
-          follow.innerHTML = 'Unfollow';
-          follow.style.backgroundColor = '#1F2937';
-          // Store the follow status in local storage
-          localStorage.setItem('followStatus-' + userId, 'unfollow');
-        } else {
-          follow.innerHTML = 'Follow';
-          follow.style.backgroundColor = '#0099CB';
-          // Remove the follow status from local storage
-          localStorage.removeItem('followStatus-' + userId);
+        console.log(result);
+        if (result.status === 'success') {
+            if (follow.innerHTML === 'Follow') {
+                follow.innerHTML = 'Unfollow';
+                follow.style.backgroundColor = '#1F2937';
+                localStorage.setItem('followStatus-' + userId, 'unfollow');
+            } else {
+                follow.innerHTML = 'Follow';
+                follow.style.backgroundColor = '#0099CB';
+                localStorage.removeItem('followStatus-' + userId);
+            }
         }
-      }
     });
-});
+}
 
 
     document.querySelector('#dots').addEventListener('click', function(e){
