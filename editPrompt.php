@@ -27,6 +27,21 @@
 
     $categories = Prompts::categories();
 
+    
+    $fileSize = true;
+
+
+    if(!empty($_FILES)) {
+        foreach($_FILES['files']['name'] as $key => $val){
+            if($_FILES['files']['size'][$key] > 1000000){
+                $fileSize = false;
+
+            }
+        }
+    }
+
+    
+    
     if(!empty($_POST) && empty(((int) $_POST['status'])) && isset($_POST["submit"])) {
         $user = $_SESSION['userid'];
 
@@ -83,7 +98,7 @@
     }
 
 
-    if (!empty($_FILES) && empty($message)) {
+    if (!empty($_FILES) && empty($message) && $fileSize == true) {
         $cloudinary = new Cloudinary([
             'cloud' => [
                 'cloud_name' => 'dbbz2g87h',
@@ -93,7 +108,7 @@
         ]);
     
         foreach ($_FILES['files']['name'] as $key => $val) {
-            $fileName = basename($_FILES['files']['name'][$key]);
+            $fileName = "promptExample" . $key . $_GET['prompt'];
             $publicId = time() . '_' . $fileName; // Generate unique public_id
     
             $file = "prompts/" . $publicId . ".jpg";
@@ -110,6 +125,8 @@
         foreach($prompt["examples"] as $example){
             Prompts::updateExamples($_GET['prompt'], $example["example"]);
         }
+    }else if($fileSize == false ){
+        $error = "File is too large";
     }
 
 

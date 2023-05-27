@@ -37,10 +37,22 @@ $promptId = "";
 
 $message = ""; 
 
+$fileSize = true;
 
 
+if(!empty($_FILES)) {
+    foreach($_FILES['files']['name'] as $key => $val){
+        if($_FILES['files']['size'][$key] > 1000000){
+            $fileSize = false;
+
+        }
+    }
+}
 
 
+if($fileSize == false) {
+    $message = "File is too large";
+}else
 if (!empty($_POST) && !is_null(((int) $_POST['status']))) {
     if ($_POST['paid'] == 0) {
         try {
@@ -103,7 +115,9 @@ if (!empty($_FILES) && empty($message)) {
     ]);
 
     foreach ($_FILES['files']['name'] as $key => $val) {
-        $fileName = basename($_FILES['files']['name'][$key]);
+        
+    
+        $fileName = "promptExample" . $key . $promptId;
         $publicId = time() . '_' . $fileName; // Generate unique public_id
 
         $file = "prompts/" . $publicId . ".jpg";

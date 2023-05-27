@@ -18,30 +18,9 @@ $cloudinary = new Cloudinary([
 
 authenticated();
 $error = "";
-if(!empty($_FILES)) {
 
-        $fileName = basename($_FILES['profilePicture']['name']);
-        $publicId = time() . '_' . $fileName; // Generate unique public_id
-
-        $file = "profilePicture/" . $publicId . ".jpg";
-
-        if(
-        $cloudinary->uploadApi()->upload(
-            $_FILES['profilePicture']['tmp_name'],
-            ['public_id' => $publicId, 'folder' => 'profilePicture']
-        )){
-            User::updateProfilePicture($file, $_SESSION['userid']);
-        }
-    
-
-}
 //get the profile picture from the database
-$profilePicture = User::getProfilePicture();
-if(!empty($profilePicture)) {
-    $profilePicturePath = 'https://res.cloudinary.com/dbbz2g87h/image/upload/'. $profilePicture;
-} else {
-    $profilePicturePath = "uploads/default_profile.png";
-}
+
 //get the bio from the database
 if(!empty($_POST)) {
     $bio = $_POST['new_bio'];
@@ -59,6 +38,33 @@ $userId = $_SESSION['userid'];
 $favouritePrompt = Prompts::getFavouritePrompts($userId);
 
 $boughtPrompts = Prompts::getBoughtPrompts($_SESSION['userid']);
+
+if(!empty($_FILES) && $_FILES['profilePicture']["size"] > 1000000) {
+
+    $fileName = "profilePicture" . $_SESSION['auth_user']['username'] ;
+    $publicId = time() . '_' . $fileName; // Generate unique public_id
+
+    $file = "profilePicture/" . $publicId . ".jpg";
+
+    if(
+    $cloudinary->uploadApi()->upload(
+        $_FILES['profilePicture']['tmp_name'],
+        ['public_id' => $publicId, 'folder' => 'profilePicture']
+    )){
+        User::updateProfilePicture($file, $_SESSION['userid']);
+    }
+
+
+}else{
+    $error = "File is too large";
+}
+
+$profilePicture = User::getProfilePicture();
+if(!empty($profilePicture)) {
+    $profilePicturePath = 'https://res.cloudinary.com/dbbz2g87h/image/upload/'. $profilePicture;
+} else {
+    $profilePicturePath = "uploads/default_profile.png";
+}
 
 
 
