@@ -149,7 +149,7 @@ if (isset($_SESSION['auth_user'])) {
                                 <a href="promptDetail.php?prompt=<?php echo $prompt["id"];?>"> 
                                     <div class="coverImage">
                                         <?php if(!empty($picture)) {?>
-                                            <img src="<?php echo htmlspecialchars($image)?>" alt="coverImage">
+                                            <img src="<?php echo htmlspecialchars('https://res.cloudinary.com/dbbz2g87h/image/upload/'. $picture)?>" alt="coverImage">
                                         <?php } else {?>
                                             <img src="uploads/default_image.png" alt="example">
                                         <?php }?>
