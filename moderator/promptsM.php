@@ -5,6 +5,8 @@ include_once(__DIR__."/navbarM.php");
 
 $notAccepted =  Prompts::notAccepted();
 
+$reported = Reports::getReportedPrompts();
+
 
 ?>
 
@@ -24,7 +26,6 @@ $notAccepted =  Prompts::notAccepted();
                 <tr>
                     <th>user</th>
                     <th>prompt</th>
-                    <th>action</th>
                 </tr>
                 <?php if(!empty($notAccepted)) {
                     foreach($notAccepted as $prompt):?>
@@ -38,7 +39,24 @@ $notAccepted =  Prompts::notAccepted();
             </table>
         </section>
         <section class="reportedPrompts">
-            <h2>ReportedPrompts</h2>
+            <h2>Reported Prompts</h2>
+            <table>
+                <tr>
+                    <th>user</th>
+                    <th>prompt</th>
+
+                </tr>
+                <?php if(!empty($reported)) {
+                    foreach($reported as $prompt):?>
+                <tr>
+                    <td><?php echo htmlspecialchars($prompt["username"])?></td>
+                    <td><?php echo htmlspecialchars($prompt["title"])?></td>
+                    <td><a href="reportedPrompt.php?prompt=<?php echo $prompt["id"]?>">See Details</a></td>
+                </tr>
+                <?php endforeach;
+                }  ?>
+            </table>
+
         </section>
     </div>
 </body>

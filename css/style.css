@@ -1129,6 +1129,14 @@ input[name="reject"]{
     background-color: #EA394A;
     width: 200px;
 }
+input[name="dontBlock"]{
+    background-color: #0CBC8B;
+    width: 200px;
+}
+input[name="block"]{
+    background-color: #EA394A;
+    width: 200px;
+}
 .statement{
     border: 1px solid #d1d1d1;
     border-radius: 10px;
