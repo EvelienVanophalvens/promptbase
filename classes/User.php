@@ -540,7 +540,7 @@ class User
 
     public static function removeFollow($userId, $loggedInUserId)
     {
-        $conn = Dbm::getInstance();
+        $conn = Db::getInstance();
         $statement = $conn->prepare("DELETE FROM user_follow WHERE userId = :userId AND followId = :followerId");
         $statement->bindValue(":userId", $userId);
         $statement->bindValue(":followerId", $_SESSION['userid']);
@@ -579,13 +579,15 @@ class User
     return $credits['credits'];
   }
 
-  public static function updateBuyCredit($credits){
+  //update the credits by adding 25, 50 or 100
+  public static function updateBuyCredit($credits) {
     $conn = Db::getInstance();
     $statement = $conn->prepare("UPDATE users SET credits = credits + :credits WHERE id = :id");
     $statement->bindValue(":credits", $credits);
     $statement->bindValue(":id", $_SESSION['userid']);
     $statement->execute();
 }
+
 
   public static function updateCreditsOwner($userId) {
     $conn = Db::getInstance();
