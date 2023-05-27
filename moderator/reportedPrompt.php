@@ -33,6 +33,7 @@ if(!empty($_POST) && isset($_POST["dontBlock"])) {
     header("Location: promptsM.php");
 } elseif(!empty($_POST) && isset($_POST["block"])) {
     Prompts::rejectPrompt($_POST["id"]);
+    Reports::deleteReport($_POST["id"]);
     $Notifications = new Notifications();
     $Notifications->setReceiverId($prompt["prompts"]["user"]);
     $Notifications->setTitle("Prompt blocked");
