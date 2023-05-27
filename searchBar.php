@@ -2,6 +2,19 @@
 include_once(__DIR__."/bootstrap.php");
 include_once(__DIR__."/navbar.php");
 
+use Cloudinary\Cloudinary;
+
+require 'vendor/autoload.php';
+
+
+$cloudinary = new Cloudinary([
+    'cloud' => [
+        'cloud_name' => 'dbbz2g87h',
+        'api_key'    => '263637247196311',
+        'api_secret' => 'cOrwpgG-ICTXLSYVCQJisbZb0x8',
+    ],
+]);
+
 //getting the result of the search
 if(!empty($_GET['search'])) {
     $search = $_GET['search'];
@@ -35,8 +48,10 @@ if(!empty($_GET['search'])) {
                             <div class="chart">
                                 <a href="promptDetail.php?prompt=<?php echo $prompt["promptId"];?>"> 
                                     <div class="coverImage">
-                                        <?php if(!empty($picture)) {?>
-                                            <img src="uploads/<?php echo htmlspecialchars($picture)?>" alt="coverImage">
+                                        <?php if(!empty($picture)) {
+                                              $image = 'https://res.cloudinary.com/dbbz2g87h/image/upload/'. $picture;?>
+                  ?>
+                                            <img src="<?php echo $image?>" alt="coverImage">
                                         <?php } else {?>
                                             <img src="uploads/default_image.png" alt="example">
                                         <?php }?>

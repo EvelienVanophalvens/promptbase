@@ -16,6 +16,7 @@ $notifications = Notifications::getNotifications($_SESSION['userid']);
     <title>Notifications</title>
 </head>
 <body>
+    <div class= "content">
     <h2>Your notifications</h2>
     <?php if(!empty($notifications)):
         foreach($notifications as $notification):?>
@@ -28,5 +29,6 @@ $notifications = Notifications::getNotifications($_SESSION['userid']);
     <?php else:?>
     <p>You have no notifications</p>
     <?php endif;?>
+    </div>
 </body>
 </html>

@@ -166,13 +166,16 @@ $boughtPrompts = Prompts::getBoughtPrompts($_SESSION['userid']);
             <hr>  
             <div class="chartContainer">
                 <?php if(!empty($favouritePrompt)) {
-                    foreach($favouritePrompt as $prompt):?>
+                    foreach($favouritePrompt as $prompt): ?>
                         <div class="chart">
                             <a href="promptDetail.php?prompt=<?php echo $prompt["id"];?>">
                             
                                 <div class="coverImage">
-                                    <?php if(!empty($prompt["example"])) {?>
-                                        <img src="<?php echo "uploads/".$prompt["example"]?>" alt="coverImage">
+                                    <?php if(!empty($prompt["example"])) {
+                                        
+                                        $picture = $prompt["example"];
+                                        $image = 'https://res.cloudinary.com/dbbz2g87h/image/upload/'. $picture;?>
+                                        <img src="<?php echo $image?>" alt="coverImage">
                                     <?php ;
                                     } elseif (!empty($prompt["image"])) {?>
                                         <img src="<?php echo $prompt["image"]?>" alt="example">

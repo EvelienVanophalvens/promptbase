@@ -51,7 +51,7 @@
 
 
                         <?php if(!empty($_SESSION) && User::isModeratorM()) {
-                            echo "<a href='./moderator/moderator.php'>Moderator</a>";
+                            echo "<a href='./moderator.php'>Moderator</a>";
                         } else {
                             echo "";
                         }?>

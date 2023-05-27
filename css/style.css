@@ -1145,3 +1145,10 @@ input[name="reject"]{
 #creditPayment input{
     border-radius: 10px;
 }
+
+.notification{
+    background-color: #E8E7E7;
+    padding: 8px 24px;
+    margin: 20px 0;
+    border-radius: 10px;
+}

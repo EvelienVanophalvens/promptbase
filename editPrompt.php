@@ -5,6 +5,8 @@
 
     $prompt = Prompts::getRejectedPrompt($_GET['prompt'], $_SESSION['userid']);
 
+
+
     $models = Prompts::getModules();
 
     $categories = Prompts::categories();
@@ -17,7 +19,7 @@
         
         try {
             $prompt = new Prompts();
-            $prompt->setPrompt($_POST['title']);
+            $prompt->setTitle($_POST['title']);
             $prompt->setAuthor($user);
             $prompt->setDate(date("Y-m-d"));
             $prompt->setDescription($_POST['description']);
@@ -26,7 +28,9 @@
             $prompt->setPrice(((int) $_POST['credits']));
             $prompt->setCategories($_POST['categories']);
             $prompt->setModel($_POST['modelType']);
+            $prompt->setPrompt($_POST["prompt"]);
             $prompt->updatePrompt($_GET['prompt']);
+            header("Location: profile.php");
         } catch(Throwable $e) {
             $message = $e->getMessage();
         }
@@ -36,7 +40,7 @@
     } elseif(!empty($_POST) && $_POST['paid'] == 1  && isset($_POST["submit"])) {
         try {
             $prompt = new Prompts();
-            $prompt->setPrompt($_POST['title']);
+            $prompt->setTitle($_POST['title']);
             $prompt->setAuthor($user);
             $prompt->setDate(date("Y-m-d"));
             $prompt->setDescription($_POST['description']);
@@ -45,7 +49,11 @@
             $prompt->setPrice(((int) 0));
             $prompt->setCategories($_POST['categories']);
             $prompt->setModel($_POST['modelType']);
+            $prompt->setPrompt($_POST["prompt"]);
+
             $prompt->updatePrompt($_GET['prompt']);
+            header("Location: profile.php");
+
         } catch(Throwable $e) {
             $message = $e->getMessage();
         }
@@ -87,11 +95,15 @@
         <div class="formContainer">
             <div class="formContainerLeft">
                 <div class="input">
-                    <label for="title">title</label>
-                    <input type="text" name="title" id="title" value="<?php echo htmlspecialchars($prompt['prompt'][0]["prompt"])?>">
+                    <label for="title">Title</label>
+                    <input type="text" name="title" id="title" value="<?php echo htmlspecialchars($prompt['prompt'][0]["title"])?>">
                 </div>
                 <div class="input">
-                    <label for="modelType">modelType</label>
+                    <label for="title">Prompt</label>
+                    <input type="text" name="prompt" id="prompt" value="<?php echo htmlspecialchars($prompt['prompt'][0]["prompt"])?>">
+                </div>
+                <div class="input">
+                    <label for="modelType">ModelType</label>
                     <select name="modelType">
                         <?php foreach($models as $model):?>
                             <option value="<?php echo $model["id"]?>" <?php if($model["name"] == $prompt["prompt"][0]["name"]) echo "selected"?>><?php echo $model["name"]?></option>
@@ -99,7 +111,7 @@
                     </select>
                 </div>
                 <div class="input">      
-                <label for="categorie">categorie</label>
+                <label for="categorie">Categorie</label>
                     <div id="list1" class="dropdown-check-list" tabindex="100">
                         <span class="anchor">Select categories</span>
                         <ul class="items">

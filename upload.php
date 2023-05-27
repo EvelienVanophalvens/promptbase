@@ -47,15 +47,16 @@ if (!empty($_POST) && !is_null(((int) $_POST['status']))) {
             $prompt = new Prompts();
             $prompt->setTitle($_POST['title']);
             $prompt->setAuthor($user);
-            $prompt->setDate(date("Y-m-d"));
+            $prompt->setDate(date("Y-m-d H:i:s"));
             $prompt->setDescription($_POST['description']);
             $prompt->setStatus(((int) $_POST['status']));
             $prompt->setPaid(((int) $_POST['paid']));
             $prompt->setPrice(((int) $_POST['price']));
             $prompt->setCategories($_POST['categories']);
             $prompt->setModel($_POST['model_choice']);
-            $prompt->setPrompt($_FILES['files']);
-            $message = "Your prompt has been uploaded";
+            $prompt->setPrompt($_POST["prompt"]);
+
+            $message2 = "Your prompt has been uploaded";
             $promptId = $prompt->save();
         } catch (Throwable $e) {
             $message = $e->getMessage();
@@ -72,8 +73,9 @@ if (!empty($_POST) && !is_null(((int) $_POST['status']))) {
         $prompt->setPrice(((int) 0));
         $prompt->setCategories($_POST['categories']);
         $prompt->setModel($_POST['model_choice']);
-        $prompt->setPrompt($_FILES['files']);
-        $message = "Your prompt has been uploaded";
+        $prompt->setPrompt($_POST["prompt"]);
+
+        $message2 = "Your prompt has been uploaded";
         $promptId = $prompt->save();
     } else {
         $message = "Please fill in all the fields";
@@ -150,6 +152,8 @@ if (!empty($_FILES) && empty($message)) {
     <label for="title">Title:</label>
     <input type="text" id="title" name="title" >
     <br>
+    <label for="title">Prompt:</label>
+    <input type="text" id="prompt" name="prompt" >
     <br>
     <input type="radio" id="private" name="status" value="1" checked>
     <label for="private">Private</label>

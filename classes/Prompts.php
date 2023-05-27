@@ -482,7 +482,7 @@ class Prompts
     public static function search($search)
     {
         $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT prompts.id AS promptId, title, date, userId, accepted, description, status, paid, price, modelId, categoryId, categories.name AS category FROM prompts LEFT JOIN prompt_categories ON prompts.id = prompt_categories.promptId LEFT JOIN categories ON prompt_categories.categoryId = categories.id WHERE title LIKE :search OR description LIKE :search");
+        $statement = $conn->prepare("SELECT prompts.id AS promptId, title, date, userId, accepted, description, status, paid, price, modelId, categoryId, categories.name AS category FROM prompts LEFT JOIN prompt_categories ON prompts.id = prompt_categories.promptId LEFT JOIN categories ON prompt_categories.categoryId = categories.id WHERE title LIKE :search OR description LIKE :search AND accepted = 1 ORDER BY date DESC");
         $statement->bindValue(":search", '%'.$search.'%');
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -598,8 +598,8 @@ if($paid_free == "free"){
 
     public static function getFavouritePrompts($userId) {
         $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT prompts.id, prompt, favourits.userId FROM prompts JOIN favourits ON prompts.id = favourits.promptId WHERE favourits.userId = :userId");
-        $statement->bindValue(":userId", $userId);
+        $statement = $conn->prepare("SELECT prompts.title, prompts.date, prompts.userId, prompts.accepted, prompts.id, users.id AS user, users.username, prompt_categories.promptId, prompt_categories.categoryId,categories.name, prompt_examples.example FROM prompts LEFT JOIN users ON prompts.userid = users.id  LEFT JOIN prompt_categories ON prompts.id = prompt_categories.promptId LEFT JOIN categories ON prompt_categories.categoryId = categories.id LEFT JOIN prompt_examples ON prompts.id = prompt_examples.promptId LEFT JOIN favourits ON prompts.id = favourits.promptId WHERE favourits.userId = :id AND accepted = 1 ORDER BY prompts.date DESC;");
+        $statement->bindValue(":id", $userId);
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $result;
@@ -624,7 +624,7 @@ if($paid_free == "free"){
 
       public static function getRejectedPrompt($id, $userId){
         $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT prompts.id, title, date, userId, accepted, description, status, paid, price, modelId, model.name AS name, categories.name AS categorie FROM prompts JOIN model ON prompts.modelId = model.id LEFT JOIN prompt_categories ON prompts.id = prompt_categories.promptId LEFT JOIN categories ON prompt_categories.categoryId = categories.id  WHERE prompts.id = :promptId AND prompts.userId = :userId AND accepted = 2");
+        $statement = $conn->prepare("SELECT prompts.prompt, prompts.id, title, date, userId, accepted, description, status, paid, price, modelId, model.name AS name, categories.name AS categorie FROM prompts JOIN model ON prompts.modelId = model.id LEFT JOIN prompt_categories ON prompts.id = prompt_categories.promptId LEFT JOIN categories ON prompt_categories.categoryId = categories.id  WHERE prompts.id = :promptId AND prompts.userId = :userId AND accepted = 2");
         $statement->bindValue(":promptId", $id);
         $statement->bindValue(":userId", $userId);
         $statement->execute();
@@ -653,11 +653,13 @@ if($paid_free == "free"){
 
       public function updatePrompt($promptId){
         $conn = Db::getInstance();
-        $statement = $conn->prepare("UPDATE prompts SET title = :title, description = :description, price = :price, modelId = :modelId, accepted = 0 WHERE id = :id");
-        $statement->bindValue(":title", $this->title);
-        $statement->bindValue(":description", $this->description);
-        $statement->bindValue(":price", $this->price);
-        $statement->bindValue(":modelId", $this->model);
+        $statement = $conn->prepare("UPDATE prompts SET title = :title, description = :description, price = :price, modelId = :modelId, accepted = 0, prompt= :prompt WHERE id = :id");
+        $statement->bindValue(":title", $this->getTitle());
+        $statement->bindValue(":description", $this->getDescription());
+        $statement->bindValue(":price", $this->getPrice());
+        $statement->bindValue(":modelId", $this->getModel());
+        $statement->bindValue(":prompt", $this->getPrompt());
+
         $statement->bindValue(":id", $promptId);
         $statement->execute();
 

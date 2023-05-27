@@ -99,7 +99,6 @@ if(!empty($_POST) && isset($_POST["delete"])){
         <?php if(!empty($prompt["examples"])) { ?>
             <?php foreach($prompt["examples"] as $example):
                 $image = 'https://res.cloudinary.com/dbbz2g87h/image/upload/'. $example["example"];?>
-                <img src = "<?php echo $image?>" >
                 <div class="imageExample">
                         <img src="<?php echo $image?>" alt="example">  
                 </div>
