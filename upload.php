@@ -37,10 +37,20 @@ $promptId = "";
 
 $message = ""; 
 
+$fileSize = true;
 
 
+if(!empty($_FILES)) {
+    foreach($_FILES['files']['name'] as $key => $val){
+        if($_FILES['files']['size'][$key] > 1000000){
+            $fileSize = false;
 
-if(!empty($_FILES) && $_FILES['files'][0]["size"] > 1000000) {
+        }
+    }
+}
+
+
+if($fileSize == false) {
     $message = "File is too large";
 }else
 if (!empty($_POST) && !is_null(((int) $_POST['status']))) {
