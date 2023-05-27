@@ -112,7 +112,7 @@
         foreach($prompt["examples"] as $example){
             Prompts::updateExamples($_GET['prompt'], $example["example"]);
         }
-    }else if(!empty($_FILES) && $_FILES['files']['size'] > 1000000){
+    }else if(!empty($_FILES) && $_FILES['files']['size'] > 600000){
         $error = "File is too large";
     }
 
