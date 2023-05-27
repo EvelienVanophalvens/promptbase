@@ -40,7 +40,7 @@ $message = "";
 
 
 
-if(!empty($_FILES) && $_FILES['files']["size"] > 1000000) {
+if(!empty($_FILES) && $_FILES['files'][0]["size"] > 1000000) {
     $message = "File is too large";
 }else
 if (!empty($_POST) && !is_null(((int) $_POST['status']))) {
