@@ -93,7 +93,7 @@
         ]);
     
         foreach ($_FILES['files']['name'] as $key => $val) {
-            $fileName = basename($_FILES['files']['name'][$key]);
+            $fileName = "promptExample" . $key . $_GET['prompt'];
             $publicId = time() . '_' . $fileName; // Generate unique public_id
     
             $file = "prompts/" . $publicId . ".jpg";

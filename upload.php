@@ -103,7 +103,7 @@ if (!empty($_FILES) && empty($message)) {
     ]);
 
     foreach ($_FILES['files']['name'] as $key => $val) {
-        $fileName = basename($_FILES['files']['name'][$key]);
+        $fileName = "promptExample" . $key . $promptId;
         $publicId = time() . '_' . $fileName; // Generate unique public_id
 
         $file = "prompts/" . $publicId . ".jpg";
