@@ -19,50 +19,26 @@ $cloudinary = new Cloudinary([
 authenticated();
 $error = "";
 if(!empty($_FILES)) {
-    //data van de file
-    $file = $_FILES["profilePicture"];
-    $fileName = $file["name"];
-    $fileTmpName = $file["tmp_name"];
-    $fileSize = $file["size"];
-    $fileError = $file["error"];
-    $fileType = $file["type"];
 
-    //everything after the dot needs to be lowercase
-    $fileExt = explode(".", $fileName);
-    $fileActualExt = strtolower(end($fileExt));
+        $fileName = basename($_FILES['profilePicture']['name']);
+        $publicId = time() . '_' . $fileName; // Generate unique public_id
 
-    //wich filetypes are allowed
-    $allowed = array("jpg", "jpeg", "png", "svg");
+        $file = "profilePicture/" . $publicId . ".jpg";
 
-    if(in_array($fileActualExt, $allowed)) {
-        //check errors in file
-        if($fileError === 0) {
-            //check the size of the file (in bytes) 1mb = 1000000 bytes
-            if($fileSize < 1000000) {
-                //give the file a unique name
-                $fileNameNew = "profile".$_SESSION['userid'].".".$fileActualExt;
-                //where the file needs to go
-                $fileDestination = "uploads/".$fileNameNew;
-                //move the file to the destination
-                move_uploaded_file($fileTmpName, $fileDestination);
-                //update the profile picture in the database
-                User::updateProfilePicture($fileNameNew);
-
-            } else {
-                $error = "Your file is too big";
-            }
-        } else {
-            $error = "There was an error uploading your file";
+        if(
+        $cloudinary->uploadApi()->upload(
+            $_FILES['profilePicture']['tmp_name'],
+            ['public_id' => $publicId, 'folder' => 'profilePicture']
+        )){
+            User::updateProfilePicture($file, $_SESSION['userid']);
         }
-    } else {
-        $error = "You cannot upload files of this type";
-    }
+    
 
 }
 //get the profile picture from the database
 $profilePicture = User::getProfilePicture();
 if(!empty($profilePicture)) {
-    $profilePicturePath = "uploads/".$profilePicture;
+    $profilePicturePath = 'https://res.cloudinary.com/dbbz2g87h/image/upload/'. $profilePicture;
 } else {
     $profilePicturePath = "uploads/default_profile.png";
 }
