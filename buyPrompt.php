@@ -36,6 +36,7 @@ $user = User::getUser($_SESSION['userid']);
     <link rel="stylesheet" type="text/css" href="./css/style.css">
 </head>
 <body>
+    <div class="content">
     <div class="container">
     <div class="promptBlock">
     <section class="images" >
@@ -76,6 +77,7 @@ $user = User::getUser($_SESSION['userid']);
             </div>
         </div>
         <form action="buySucces.php" method="POST">    <input type="hidden" name="prompt" value="<?php echo $_GET["prompt"]; ?>" /><input type="submit" value="Buy" class="right blue small"></form>
+    </div>
     </div>
     </div>
 </body>
