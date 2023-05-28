@@ -1,5 +1,7 @@
 <?php
 include_once(__DIR__."/bootstrap.php");
+authenticated();
+
 include_once(__DIR__."/navbar.php");
 
 use Cloudinary\Cloudinary;
@@ -16,7 +18,6 @@ $cloudinary = new Cloudinary([
 ]);
 
 
-authenticated();
 $userId = filter_input(INPUT_GET, 'user', FILTER_VALIDATE_INT);
 if($userId === false) {
     header("Location: index.php");

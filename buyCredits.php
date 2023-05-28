@@ -1,5 +1,6 @@
 <?php 
 include_once(__DIR__."/bootstrap.php");
+authenticated();
 include_once(__DIR__."/navbar.php");
 
 

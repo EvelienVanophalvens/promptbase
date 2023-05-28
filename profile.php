@@ -1,5 +1,6 @@
 <?php
 include_once(__DIR__."/bootstrap.php");
+authenticated();
 include_once(__DIR__."/navbar.php");
 
 
@@ -16,7 +17,7 @@ $cloudinary = new Cloudinary([
     ],
 ]);
 
-authenticated();
+
 $error = "";
 
 //get the profile picture from the database
