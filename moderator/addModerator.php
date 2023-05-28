@@ -1,8 +1,16 @@
 <?php 
 include_once(__DIR__."/../bootstrap.php");
+User::isAdmin();
+if(!empty($_POST) && isset($_POST["remove"])){
+    $username = isset($_POST['username']) ? htmlspecialchars($_POST['username']) : '';
+    $email = isset($_POST['email']) ? htmlspecialchars($_POST['email']) : '';
+    $remove = User::removeModerator($username, $email);
+    header("Location: addModerator.php");
+    exit;
+}
 include_once(__DIR__."/navbarM.php");
 
-User::isAdmin();
+
 $accepted = User::acceptedModerators();
 
 
@@ -13,13 +21,7 @@ $add = User::addModerator($username, $email);
 $remove = User::removeModerator($username, $email);
 
 
-if(!empty($_POST) && isset($_POST["remove"])){
-    $username = isset($_POST['username']) ? htmlspecialchars($_POST['username']) : '';
-    $email = isset($_POST['email']) ? htmlspecialchars($_POST['email']) : '';
-    $remove = User::removeModerator($username, $email);
-    header("Location: addModerator.php");
-    exit;
-}
+
 
 ?>
 <!DOCTYPE html>

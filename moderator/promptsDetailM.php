@@ -1,5 +1,6 @@
 <?php
 include_once(__DIR__."/../bootstrap.php");
+User::isAdmin();
 if(!empty($_POST) && isset($_POST["accept"])) {
     Prompts::acceptPrompt($_POST["id"]);
     User::earnCredits($userId);

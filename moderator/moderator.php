@@ -1,5 +1,6 @@
 <?php
 include_once(__DIR__."/../bootstrap.php");
+User::isAdmin();
 include_once(__DIR__."/navbarM.php");
 
 

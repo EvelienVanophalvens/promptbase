@@ -1,12 +1,7 @@
 <?php 
 include_once(__DIR__."/../bootstrap.php");
-include_once(__DIR__."/navbarM.php");
 authenticated();
 User::isAdmin();
-
-$reportedUsers = User::reportedUsers();
-$blockedUsers = User::blockedUsers();
-
 if(!empty($_POST) && isset($_POST["approve"])) {
     $user = User::approveUser($_POST["id"]);
     
@@ -20,6 +15,13 @@ if(!empty($_POST) && isset($_POST["unblock"])) {
     header("Location: usersM.php");
     exit;
 }
+include_once(__DIR__."/navbarM.php");
+
+
+$reportedUsers = User::reportedUsers();
+$blockedUsers = User::blockedUsers();
+
+
 
 
 

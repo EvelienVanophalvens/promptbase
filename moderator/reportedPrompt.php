@@ -1,6 +1,23 @@
 <?php
 include_once(__DIR__."/../bootstrap.php");
+User::isAdmin();
+if(!empty($_POST) && isset($_POST["dontBlock"])) {
+    Prompts::acceptPrompt($_POST["id"]);
+    Reports::deleteReport($_POST["id"]);
+    header("Location: promptsM.php");
+} elseif(!empty($_POST) && isset($_POST["block"])) {
+    Prompts::rejectPrompt($_POST["id"]);
+    Reports::deleteReport($_POST["id"]);
+    $Notifications = new Notifications();
+    $Notifications->setReceiverId($prompt["prompts"]["user"]);
+    $Notifications->setTitle("Prompt blocked");
+    $Notifications->setMessage("Your prompt has been blocked, you can edit it and resubmit it if you want to. You can do this by <a href='http://localhost/promptbase/editPrompt.php?prompt=".$prompt["prompts"]["id"]."'>clicking here</a>.");
+
+    $Notifications->saveRejectNotifiction();    
+    header("Location: promptsM.php");
+}
 include_once(__DIR__."/navbarM.php");
+
 
 require_once(__DIR__ . '/../vendor/autoload.php');
 
@@ -17,7 +34,6 @@ $cloudinary = new Cloudinary([
 
 
 $prompt = Reports::getReportedPromptsDetail($_GET["prompt"]);
-var_dump($prompt);
 if ($prompt) {
     $userId = $prompt["prompts"]["user"];
     // Doe iets met $userId
@@ -27,21 +43,7 @@ if ($prompt) {
     echo "mislukt";
 }
 
-if(!empty($_POST) && isset($_POST["dontBlock"])) {
-    Prompts::acceptPrompt($_POST["id"]);
-    Reports::deleteReport($_POST["id"]);
-    header("Location: promptsM.php");
-} elseif(!empty($_POST) && isset($_POST["block"])) {
-    Prompts::rejectPrompt($_POST["id"]);
-    Reports::deleteReport($_POST["id"]);
-    $Notifications = new Notifications();
-    $Notifications->setReceiverId($prompt["prompts"]["user"]);
-    $Notifications->setTitle("Prompt blocked");
-    $Notifications->setMessage("Your prompt has been blocked, you can edit it and resubmit it if you want to. You can do this by <a href='http://localhost/promptbase/editPrompt.php?prompt=".$prompt["prompts"]["id"]."'>clicking here</a>.");
 
-    $Notifications->saveRejectNotifiction();    
-    header("Location: promptsM.php");
-}
 ?>
 
 <!DOCTYPE html>

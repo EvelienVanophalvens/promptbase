@@ -1,7 +1,7 @@
 <?php
 include_once(__DIR__."/bootstrap.php");
 authenticated();
-include_once(__DIR__."/navbar.php");
+
 
 
 use Cloudinary\Cloudinary;
@@ -47,7 +47,7 @@ if(!empty($_POST) && isset($_POST["delete"])){
         header("Location: profile.php");
 }
 
-
+include_once(__DIR__."/navbar.php");
 
 
 //$favourites = Prompts::addFavoritePrompt($userId, $promptId);

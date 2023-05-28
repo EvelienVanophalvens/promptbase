@@ -1,7 +1,11 @@
 <?php
 include_once(__DIR__."/bootstrap.php");
 authenticated();
-
+$userId = filter_input(INPUT_GET, 'user', FILTER_VALIDATE_INT);
+if($userId === false) {
+    header("Location: index.php");
+    exit;
+}
 include_once(__DIR__."/navbar.php");
 
 use Cloudinary\Cloudinary;
@@ -18,11 +22,7 @@ $cloudinary = new Cloudinary([
 ]);
 
 
-$userId = filter_input(INPUT_GET, 'user', FILTER_VALIDATE_INT);
-if($userId === false) {
-    header("Location: index.php");
-    exit;
-}
+
 $user = User::getUser($userId);
 $prompts = Prompts::getUserPrompts($user["id"]);
 
